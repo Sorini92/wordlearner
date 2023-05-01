@@ -1,0 +1,25 @@
+.table {
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 30px;
+    grid-auto-rows: 30px;
+    border: 1px solid black;
+    &__word {
+        padding-left: 5px;
+        padding-top: 6px;
+        border-bottom: 1px solid black;
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+    &__translate {
+        padding-left: 5px;
+        padding-top: 6px;
+        border-bottom: 1px solid #000;
+        border-left: 1px solid #000;
+        &:last-child {
+            border-bottom: none;
+        }
+    }      
+}
