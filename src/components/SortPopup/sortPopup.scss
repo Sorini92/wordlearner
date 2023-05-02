@@ -1,5 +1,4 @@
 .sort {
-    margin-top: 10px;
     position: relative;
     &__label {
         display: flex;
@@ -7,9 +6,9 @@
         svg {
             margin-right: 8px;
             transform: rotate(180deg);
-        &.rotated {
-            transform: rotate(0);
-        }
+            &.rotated {
+                transform: rotate(0);
+            }
         }
         b {
             margin-right: 8px;

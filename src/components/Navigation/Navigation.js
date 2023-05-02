@@ -1,6 +1,10 @@
+import { useState } from "react";
 import "./navigation.scss";
 
 const Navigation = () => {
+
+    const [word, setWord] = useState('');
+
     return (
         <>
             <div className="navigation__line"></div>
@@ -10,10 +14,12 @@ const Navigation = () => {
                     <a href="#" className="navigation__tab">Sentences</a>
                 </div>
                 <input 
+                    value={word}
                     className="navigation__search"
                     placeholder="Search"
+                    onChange={(e) => setWord(e.target.value)}
                 />
-                <button className="navigation__searchconfirm">Search</button>
+                {word.length > 0 ? <button className="navigation__searchconfirm">Search</button> : null}
             </div>
         </>
     )

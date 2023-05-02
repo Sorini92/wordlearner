@@ -10,9 +10,15 @@ const wordsSlice = createSlice({
     name: 'words',
     initialState,
     reducers: {
-        addWords: (state, action) => {
+        setWords: (state, action) => {
             state.words = action.payload
             state.wordsLoadingStatus = 'idle';
+        },
+        addWord: (state, action) => {
+            state.words.push(action.payload)
+        },
+        deleteWord: (state, action) => {
+            state.words = state.words.filter(item => item.id !== action.payload)
         },
         activeSortTypeChanged: (state, action) => {state.sortType = action.payload},
         sortBy: (state, action) => {
@@ -42,7 +48,9 @@ const {actions, reducer} = wordsSlice;
 
 export default reducer;
 export const {
-    addWords,
+    setWords,
+    addWord,
+    deleteWord,
     activeSortTypeChanged,
     sortBy
 } = actions;

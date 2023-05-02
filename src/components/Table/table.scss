@@ -4,15 +4,16 @@
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 30px;
     grid-auto-rows: 30px;
-    border-top: 1px solid black;
-    border-left: 1px solid black;
-    border-right: 1px solid black;
-    border-bottom: 1px solid black;
-    border-radius: 5px;
+    border-top: 1px solid #2222;
+    border-left: 1px solid #2222;
+    border-right: 1px solid #2222;
+    border-bottom: 1px solid #2222;
+    border-radius: 2px;
     &__word {
         padding-left: 5px;
         padding-top: 4px;
-        border-bottom: 1px solid black;
+        border-bottom: 1px solid #2222;
+        cursor: pointer;
         &:nth-last-child(-n+2) {
             border: none;
         }
@@ -20,10 +21,16 @@
     &__translate {
         padding-left: 5px;
         padding-top: 4px;
-        border-bottom: 1px solid #000;
-        border-left: 1px solid #000;
+        border-bottom: 1px solid #2222;
+        border-left: 1px solid #2222;
+        cursor: pointer;
         &:last-child {
             border-bottom: none;
         }
     }      
+}
+
+.activeWord {
+    background-color: palegoldenrod;
+    border: 1px solid #2222 !important;
 }
