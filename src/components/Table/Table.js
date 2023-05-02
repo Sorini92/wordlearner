@@ -23,7 +23,7 @@ const Table = ({onDelete}) => {
         setSelectedWord(english)
         onDelete(id, selectedWord)
     }
-    console.log(sortType)
+
     const elements = words.map((item, i) => {
         return (
             <Fragment key={item.id}>

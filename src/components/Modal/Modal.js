@@ -2,10 +2,9 @@ import { getDatabase, ref, set } from "firebase/database";
 import { v4 as uuidv4 } from 'uuid';
 import { useState } from 'react';
 import { useDispatch } from "react-redux";
-import { addWord } from "../../store/slices/wordSlice";
 import './modal.scss';
 
-const Modal = ({active, setActive}) => {
+const Modal = ({active, setActive, address, addWord}) => {
 
     const [english, setEnglish] = useState('');
     const [russian, setRussian] = useState('');
@@ -16,14 +15,14 @@ const Modal = ({active, setActive}) => {
         e.preventDefault();
         const db = getDatabase();
 
-        const newWord = {
+        const newObj = {
             english: english.toLocaleLowerCase(),
             russian: russian.toLocaleLowerCase(),
-            id: uuidv4()
+            id: uuidv4(),
         }
         
-        dispatch(addWord(newWord));
-        set(ref(db, 'words/' + english.toLocaleLowerCase()), newWord);
+        dispatch(addWord(newObj));
+        set(ref(db, `${address}/` + english.toLocaleLowerCase()), newObj);
         setEnglish('');
         setRussian('');
         setActive(false);

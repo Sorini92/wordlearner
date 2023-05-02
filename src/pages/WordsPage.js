@@ -7,7 +7,7 @@ import Table from "../components/Table/Table";
 import SortPopup from "../components/SortPopup/SortPopup";
 import Modification from "../components/Modification/Modification";
 import Modal from "../components/Modal/Modal";
-import {deleteWord} from '../store/slices/wordSlice';
+import {deleteWord, addWord} from '../store/slices/wordSlice';
 import { useDispatch } from 'react-redux';
 import { getDatabase, ref, remove } from "firebase/database";
 
@@ -20,8 +20,8 @@ const HomePage = () => {
     const dispatch = useDispatch();
 
     const sortItems = [
-        { name: 'Date', type: 'date'},
-        { name: 'Alphabet', type: 'alphabet'},
+        { name: 'alphabet', type: 'alphabet'},
+        { name: 'date', type: 'date'},        
     ];
 
     const handleModal = () => {
@@ -82,7 +82,12 @@ const HomePage = () => {
                 <Modification handleModal={handleModal} onDeleteWord={onDeleteWord}/>
             </div>
             <Table onDelete={onDelete}/>
-            <Modal active={modalActive} setActive={setModalActive}/>
+            <Modal 
+                active={modalActive} 
+                setActive={setModalActive} 
+                address={'words'}
+                addWord={addWord}
+            />
         </>
     )
 }

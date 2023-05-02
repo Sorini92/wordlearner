@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     words: [],
     wordsLoadingStatus: 'loading',
-    sortType: 'date'
+    sortType: 'alphabet'
 }
 
 const wordsSlice = createSlice({
@@ -24,14 +24,14 @@ const wordsSlice = createSlice({
         sortBy: (state, action) => {
             switch(action.payload) {
                 case 'date': 
-                    state.pizzas = state.pizzas.sort((a, b) => b.rating - a.rating);
+                    state.words = state.words.sort((a, b) => b.date - a.date);
                     break
                 case 'alphabet': 
-                    state.pizzas = state.pizzas.sort((a, b) => {
-                        if (a.name > b.name) {
+                    state.words = state.words.sort((a, b) => {
+                        if (a.english > b.english) {
                             return 1;
                         }
-                        if (a.name < b.name) {
+                        if (a.english < b.english) {
                             return -1;
                         }
                         return 0;
