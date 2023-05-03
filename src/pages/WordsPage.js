@@ -1,36 +1,41 @@
+import {useDispatch} from 'react-redux';
 import {useNavigate} from "react-router-dom";
-import { useState } from "react";
+import {useState} from "react";
+import {getDatabase, ref, remove} from "firebase/database";
+import {deleteWord, addWord, modifyWord} from '../store/slices/wordSlice';
 import useAuth from '../hooks/use-auth';
 import Header from "../components/Header/Header";
 import Navigation from "../components/Navigation/Navigation";
 import Table from "../components/Table/Table";
 import SortPopup from "../components/SortPopup/SortPopup";
 import Modification from "../components/Modification/Modification";
-import Modal from "../components/Modal/Modal";
-import {deleteWord, addWord} from '../store/slices/wordSlice';
-import { useDispatch } from 'react-redux';
-import { getDatabase, ref, remove } from "firebase/database";
+import AddModal from "../components/AddModal/AddModal";
+import ModifyModal from "../components/ModifyModal/ModifyModal";
 
 const HomePage = () => {
 
-    const [modalActive, setModalActive] = useState(false);
+    const [addModalActive, setAddModalActive] = useState(false);
+    const [modifyModalActive, setModifyModalActive] = useState(false);
     const [selectedId, setSelectedId] = useState('');
-    const [selectedWord, setSelectedWord] = useState('');
 
     const dispatch = useDispatch();
 
     const sortItems = [
-        { name: 'alphabet', type: 'alphabet'},
+        { name: 'english', type: 'english'},
+        { name: 'russian', type: 'russian'},
         { name: 'date', type: 'date'},        
     ];
 
-    const handleModal = () => {
-        setModalActive(!modalActive);
+    const handleAddModal = () => {
+        setAddModalActive(!addModalActive);
     }
 
-    const onDelete = (id, selected) => {
+    const handleModifyModal = () => {
+        setModifyModalActive(!modifyModalActive);
+    }
+
+    const onDelete = (id) => {
         setSelectedId(id);
-        setSelectedWord(selected);
     }
 
     const onDeleteWord = () => {
@@ -39,11 +44,12 @@ const HomePage = () => {
         if (window.confirm('Are you sure?')) {
             dispatch(deleteWord(selectedId));
 
-            const tasksRef = ref(db, `words/${selectedWord}`);
+            const tasksRef = ref(db, `words/${selectedId}`);
 
-            remove(tasksRef).then(() => {
-            console.log("location removed");
-});
+            remove(tasksRef)
+                .then(() => {
+                    console.log("location removed");
+                });
         }
     }
 
@@ -79,14 +85,26 @@ const HomePage = () => {
             <Navigation/>
             <div className="modifying">
                 <SortPopup sortItems={sortItems}/>
-                <Modification handleModal={handleModal} onDeleteWord={onDeleteWord}/>
+                <Modification 
+                    handleModifyModal={handleModifyModal}
+                    handleAddModal={handleAddModal} 
+                    onDeleteWord={onDeleteWord}
+                    id={selectedId}
+                />
             </div>
             <Table onDelete={onDelete}/>
-            <Modal 
-                active={modalActive} 
-                setActive={setModalActive} 
+            <AddModal 
+                active={addModalActive} 
+                setActive={setAddModalActive} 
                 address={'words'}
-                addWord={addWord}
+                func={addWord}
+            />
+            <ModifyModal
+                active={modifyModalActive} 
+                setActive={setModifyModalActive} 
+                address={'words'}
+                func={modifyWord}
+                id={selectedId}
             />
         </>
     )

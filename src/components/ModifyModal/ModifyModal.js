@@ -1,38 +1,57 @@
-import { getDatabase, ref, set } from "firebase/database";
-import { v4 as uuidv4 } from 'uuid';
-import { useState } from 'react';
-import { useDispatch } from "react-redux";
-import './modal.scss';
+import { getDatabase, update, ref } from "firebase/database";
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import './modifyModal.scss';
 
-const Modal = ({active, setActive, address, addWord}) => {
+const ModifyModal = ({active, setActive, address, func, id}) => {
+
+    const {words} = useSelector(state => state.words);
+    const wordForModify = words.find(item => item.id === id)
 
     const [english, setEnglish] = useState('');
     const [russian, setRussian] = useState('');
-
+    
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (wordForModify !== undefined) {
+            setEnglish(wordForModify.english);
+            setRussian(wordForModify.russian);
+        }
+    }, [wordForModify])
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const db = getDatabase();
 
-        const newObj = {
-            english: english.toLocaleLowerCase(),
-            russian: russian.toLocaleLowerCase(),
-            id: uuidv4(),
+        const index = words.findIndex(e => e.english === english.toLocaleLowerCase());
+
+        if (index === -1) {
+            const obj = {
+                english: english.toLocaleLowerCase(),
+                russian: russian.toLocaleLowerCase(),
+                id: id,
+                date: Date.now()
+            }
+            
+            dispatch(func(obj));
+            setActive(false);
+
+            const updates = {};
+
+            updates[`${address}/${id}/`] = obj;
+            
+            return update(ref(db), updates);
+        } else {
+            alert('There are this word in the table or it is same word!')
         }
-        
-        dispatch(addWord(newObj));
-        set(ref(db, `${address}/` + english.toLocaleLowerCase()), newObj);
-        setEnglish('');
-        setRussian('');
-        setActive(false);
     }
 
     return (
         <div className={active ? "modal active" : "modal"} onClick={() => setActive(false)}>
             <div className={active ? "modal__content active" : "modal__content"} onClick={e => e.stopPropagation()}>
                 <form className='modal__form' onSubmit={handleSubmit}>
-                    <div className='modal__title'>Add new word</div>
+                    <div className='modal__title'>Modify word</div>
 
                     <label htmlFor="english">English word</label>
                     <input 
@@ -61,7 +80,7 @@ const Modal = ({active, setActive, address, addWord}) => {
                             }}    
                         >Close
                         </button>
-                        <button className='modal__btn' type='submit'>Add</button>
+                        <button className='modal__btn' type='submit'>Modify</button>
                     </div>
                 </form>
             </div>
@@ -69,4 +88,4 @@ const Modal = ({active, setActive, address, addWord}) => {
     )
 }
 
-export default Modal;
+export default ModifyModal;
