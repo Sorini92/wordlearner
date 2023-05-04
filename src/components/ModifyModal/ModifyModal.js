@@ -1,6 +1,7 @@
 import { getDatabase, update, ref } from "firebase/database";
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
+import useAuth from '../../hooks/use-auth';
 import './modifyModal.scss';
 
 const ModifyModal = ({active, setActive, address, func, id}) => {
@@ -12,6 +13,7 @@ const ModifyModal = ({active, setActive, address, func, id}) => {
     const [russian, setRussian] = useState('');
     
     const dispatch = useDispatch();
+    const {email} = useAuth();
 
     useEffect(() => {
         if (wordForModify !== undefined) {
@@ -39,6 +41,7 @@ const ModifyModal = ({active, setActive, address, func, id}) => {
 
             const updates = {};
 
+            //updates[`${email.split('@')[0]}/${address}/${id}/`] = obj;
             updates[`${address}/${id}/`] = obj;
             
             return update(ref(db), updates);

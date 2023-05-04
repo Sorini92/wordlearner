@@ -4,7 +4,7 @@ import "./navigation.scss";
 
 import { getDatabase, ref, onValue} from "firebase/database";
 
-const Navigation = () => {
+const Navigation = ({setSearchedWord, setValueInSearchInput}) => {
 
     const [word, setWord] = useState('');
     const [active, setActive] = useState(0);
@@ -19,14 +19,51 @@ const Navigation = () => {
     };  
 
     const handleSearch = (value) => {
-        const db = getDatabase();
-        let word = 'd206c9b0-afc1-49d6-aa60-798c7a703f91';
-        const starCountRef = ref(db, 'words/' + word);
 
-        onValue(starCountRef, (snapshot) => {
-            const data = snapshot.val();
-            console.log(data)
-        });
+        setWord(value)
+        const db = getDatabase();
+        const dbRef = ref(db, '/words');
+        let arr = [];
+
+        if (!!value.match(/[^а-я]/g)) {
+            onValue(dbRef, (snapshot) => {
+                snapshot.forEach((childSnapshot) => {
+                    const english = childSnapshot.val();
+                    arr.push(english);
+                });
+                }, {
+                    onlyOnce: true
+            });
+    
+            const filteredArr =  arr.filter(item => {
+                if (item.english.includes(value)) {
+                    return true
+                }
+    
+                return false
+            })
+            setValueInSearchInput(word)
+            setSearchedWord(filteredArr)
+        } else {
+            onValue(dbRef, (snapshot) => {
+                snapshot.forEach((childSnapshot) => {
+                    const russian = childSnapshot.val();
+                    arr.push(russian);
+                });
+                }, {
+                    onlyOnce: true
+            });
+    
+            const filteredArr =  arr.filter(item => {
+                if (item.russian.includes(value)) {
+                    return true
+                }
+    
+                return false
+            })
+            setValueInSearchInput(word)
+            setSearchedWord(filteredArr)
+        }
     }
 
     const tabs = links.map((item, i) => {
@@ -52,16 +89,16 @@ const Navigation = () => {
                     value={word}
                     className="navigation__search"
                     placeholder="Search"
-                    onChange={(e) => setWord(e.target.value)}
+                    onChange={(e) => handleSearch(e.target.value.replace(/[^a-z, а-я]/g, ''))}
                 />
-                {word.length > 0 ? 
+                {/* {word.length > 0 ? 
                 <button 
                     type="submit"
                     className="navigation__searchconfirm"
                     onClick={() => handleSearch(word)}
                 >
                     Search
-                </button> : null}
+                </button> : null} */}
             </div>
         </>
     )

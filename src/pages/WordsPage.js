@@ -1,6 +1,6 @@
 import {useDispatch} from 'react-redux';
 import {useNavigate} from "react-router-dom";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {getDatabase, ref, remove} from "firebase/database";
 import {deleteWord, addWord, modifyWord} from '../store/slices/wordSlice';
 import useAuth from '../hooks/use-auth';
@@ -17,8 +17,12 @@ const HomePage = () => {
     const [addModalActive, setAddModalActive] = useState(false);
     const [modifyModalActive, setModifyModalActive] = useState(false);
     const [selectedId, setSelectedId] = useState('');
+    const [searchedWord, setSearchedWord] = useState([]);
+    const [valueInSearchInput, setValueInSearchInput] = useState('');
 
     const dispatch = useDispatch();
+    const {isAuth} = useAuth();
+    const navigate = useNavigate();
 
     const sortItems = [
         { name: 'english', type: 'english'},
@@ -44,18 +48,15 @@ const HomePage = () => {
         if (window.confirm('Are you sure?')) {
             dispatch(deleteWord(selectedId));
 
-            const tasksRef = ref(db, `words/${selectedId}`);
+            //const wordRef = ref(db, `${email.split('@')[0]}/words/${selectedId}`);
+            const wordRef = ref(db, `words/${selectedId}`);
 
-            remove(tasksRef)
+            remove(wordRef)
                 .then(() => {
                     console.log("location removed");
                 });
         }
     }
-
-    const {isAuth} = useAuth();
-
-    const navigate = useNavigate();
 
     /* useEffect(() => {
         if(!isAuth) {
@@ -69,9 +70,27 @@ const HomePage = () => {
             <Navigation/>
             <div className="modifying">
                 <SortPopup sortItems={sortItems}/>
-                <Modification/>
+                <Modification 
+                    handleModifyModal={handleModifyModal}
+                    handleAddModal={handleAddModal} 
+                    onDeleteWord={onDeleteWord}
+                    id={selectedId}
+                />
             </div>
-            <Table/>
+            <Table onDelete={onDelete}/>
+            <AddModal 
+                active={addModalActive} 
+                setActive={setAddModalActive} 
+                address={'words'}
+                func={addWord}
+            />
+            <ModifyModal
+                active={modifyModalActive} 
+                setActive={setModifyModalActive} 
+                address={'words'}
+                func={modifyWord}
+                id={selectedId}
+            />
         </>
     ) : (
         <>
@@ -82,7 +101,7 @@ const HomePage = () => {
     return (
         <>
             <Header/>
-            <Navigation/>
+            <Navigation setSearchedWord={setSearchedWord} setValueInSearchInput={setValueInSearchInput}/>
             <div className="modifying">
                 <SortPopup sortItems={sortItems}/>
                 <Modification 
@@ -92,7 +111,11 @@ const HomePage = () => {
                     id={selectedId}
                 />
             </div>
-            <Table onDelete={onDelete}/>
+            <Table 
+                onDelete={onDelete} 
+                searchedWord={searchedWord}
+                valueInSearchInput={valueInSearchInput}
+                />
             <AddModal 
                 active={addModalActive} 
                 setActive={setAddModalActive} 

@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { sortBy, activeSortTypeChanged } from '../../store/slices/wordSlice';
-
 import './sortPopup.scss';
 
 const SortPopup = ({sortItems}) => {

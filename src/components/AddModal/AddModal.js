@@ -1,7 +1,8 @@
-import { getDatabase, ref, set } from "firebase/database";
+import { getDatabase, ref, set, push } from "firebase/database";
 import { v4 as uuidv4 } from 'uuid';
 import { useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
+import useAuth from '../../hooks/use-auth';
 import './addModal.scss';
 
 const AddModal = ({active, setActive, address, func}) => {
@@ -11,6 +12,7 @@ const AddModal = ({active, setActive, address, func}) => {
     
     const {words} = useSelector(state => state.words);
     const dispatch = useDispatch();
+    const {email} = useAuth();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -27,6 +29,7 @@ const AddModal = ({active, setActive, address, func}) => {
             }
             
             dispatch(func(newObj));
+            //set(ref(db, `${email.split('@')[0]}/${address}/` + newObj.id), newObj);
             set(ref(db, `${address}/` + newObj.id), newObj);
             setEnglish('');
             setRussian('');
