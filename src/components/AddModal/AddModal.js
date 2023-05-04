@@ -30,7 +30,7 @@ const AddModal = ({active, setActive, address, func}) => {
             
             dispatch(func(newObj));
             //set(ref(db, `${email.split('@')[0]}/${address}/` + newObj.id), newObj);
-            set(ref(db, `${address}/` + newObj.id), newObj);
+            set(ref(db, `${address}/` + newObj.english.toLocaleLowerCase()), newObj);
             setEnglish('');
             setRussian('');
             setActive(false);

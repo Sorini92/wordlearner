@@ -6,7 +6,7 @@ import useAuth from '../../hooks/use-auth';
 import Spinner from '../Spinner/Spinner';
 import './table.scss';
 
-const Table = ({onDelete, searchedWord, valueInSearchInput}) => {
+const Table = ({onDelete, searchedWord}) => {
 
     const [index, setIndex] = useState('');
 
@@ -20,9 +20,9 @@ const Table = ({onDelete, searchedWord, valueInSearchInput}) => {
         dispatch(fetchData(`words`, setWords, emptyBase, errorOnFetch));
     }, []);
 
-    const handeClick = (i, id) => {
+    const handeClick = (i, word) => {
         setIndex(i);
-        onDelete(id); 
+        onDelete(word); 
     }
 
     const elements = (array) => {
@@ -30,11 +30,11 @@ const Table = ({onDelete, searchedWord, valueInSearchInput}) => {
             return (
                 <Fragment key={item.id}>
                     <div 
-                        onClick={() => handeClick(i, item.id)} 
+                        onClick={() => handeClick(i, item)} 
                         className={index !== i ? 'table__word' : 'table__word activeWord'}>
                         {item.english}
                     </div>
-                    <div onClick={() => handeClick(i, item.id)} 
+                    <div onClick={() => handeClick(i, item)} 
                         className={index !== i ? 'table__translate' : 'table__word activeWord'}>
                         {item.russian}
                     </div>
@@ -43,10 +43,12 @@ const Table = ({onDelete, searchedWord, valueInSearchInput}) => {
         })
     }
 
+
+
     const table = () => {
         return (
             <>
-                {words.length === 0 || (searchedWord.length === 0 && valueInSearchInput.length !== 0) ? 
+                {words.length === 0 || searchedWord.length === 0 ? 
                 <div className='emptyTable'>There are no words!</div> 
                 : 
                 <div className='table'>

@@ -1,13 +1,13 @@
-import { getDatabase, update, ref } from "firebase/database";
+import { getDatabase, update, ref, remove } from "firebase/database";
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import useAuth from '../../hooks/use-auth';
 import './modifyModal.scss';
 
-const ModifyModal = ({active, setActive, address, func, id}) => {
-
+const ModifyModal = ({active, setActive, address, func, word}) => {
+    
     const {words} = useSelector(state => state.words);
-    const wordForModify = words.find(item => item.id === id)
+    const wordForModify = words.find(item => item.id === word.id);
 
     const [english, setEnglish] = useState('');
     const [russian, setRussian] = useState('');
@@ -25,14 +25,16 @@ const ModifyModal = ({active, setActive, address, func, id}) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         const db = getDatabase();
-
+        
         const index = words.findIndex(e => e.english === english.toLocaleLowerCase());
 
         if (index === -1) {
+            const temp = word.english;
+
             const obj = {
                 english: english.toLocaleLowerCase(),
                 russian: russian.toLocaleLowerCase(),
-                id: id,
+                id: word.id,
                 date: Date.now()
             }
             
@@ -41,8 +43,16 @@ const ModifyModal = ({active, setActive, address, func, id}) => {
 
             const updates = {};
 
-            //updates[`${email.split('@')[0]}/${address}/${id}/`] = obj;
-            updates[`${address}/${id}/`] = obj;
+            //updates[`${email.split('@')[0]}/${address}/${obj.toLocaleLowerCase()}/`] = obj;
+
+            updates[`${address}/${obj.english.toLocaleLowerCase()}/`] = obj;
+
+            const wordRef = ref(db, `words/${temp}`);
+
+            remove(wordRef)
+                .then(() => {
+                    console.log("Modificated");
+                });
             
             return update(ref(db), updates);
         } else {

@@ -16,9 +16,8 @@ const HomePage = () => {
 
     const [addModalActive, setAddModalActive] = useState(false);
     const [modifyModalActive, setModifyModalActive] = useState(false);
-    const [selectedId, setSelectedId] = useState('');
+    const [selectedWord, setSelectedWord] = useState({});
     const [searchedWord, setSearchedWord] = useState([]);
-    const [valueInSearchInput, setValueInSearchInput] = useState('');
 
     const dispatch = useDispatch();
     const {isAuth} = useAuth();
@@ -38,18 +37,18 @@ const HomePage = () => {
         setModifyModalActive(!modifyModalActive);
     }
 
-    const onDelete = (id) => {
-        setSelectedId(id);
+    const onDelete = (word) => {
+        setSelectedWord(word)
     }
 
     const onDeleteWord = () => {
         const db = getDatabase();
 
         if (window.confirm('Are you sure?')) {
-            dispatch(deleteWord(selectedId));
+            dispatch(deleteWord(selectedWord.id));
 
             //const wordRef = ref(db, `${email.split('@')[0]}/words/${selectedId}`);
-            const wordRef = ref(db, `words/${selectedId}`);
+            const wordRef = ref(db, `words/${selectedWord.english}`);
 
             remove(wordRef)
                 .then(() => {
@@ -101,20 +100,19 @@ const HomePage = () => {
     return (
         <>
             <Header/>
-            <Navigation setSearchedWord={setSearchedWord} setValueInSearchInput={setValueInSearchInput}/>
+            <Navigation setSearchedWord={setSearchedWord}/>
             <div className="modifying">
                 <SortPopup sortItems={sortItems}/>
                 <Modification 
                     handleModifyModal={handleModifyModal}
                     handleAddModal={handleAddModal} 
                     onDeleteWord={onDeleteWord}
-                    id={selectedId}
+                    id={selectedWord.id}
                 />
             </div>
             <Table 
                 onDelete={onDelete} 
                 searchedWord={searchedWord}
-                valueInSearchInput={valueInSearchInput}
                 />
             <AddModal 
                 active={addModalActive} 
@@ -127,7 +125,7 @@ const HomePage = () => {
                 setActive={setModifyModalActive} 
                 address={'words'}
                 func={modifyWord}
-                id={selectedId}
+                word={selectedWord}
             />
         </>
     )

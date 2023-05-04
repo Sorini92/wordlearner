@@ -21,7 +21,8 @@ const wordsSlice = createSlice({
         modifyWord: (state, action) => {
             state.words = state.words.map((item) => {
                 if (item.id === action.payload.id) {
-                    return action.payload
+                    item = action.payload
+                    return item
                 }
                 return item
             })
