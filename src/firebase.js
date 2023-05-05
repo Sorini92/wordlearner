@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getDatabase } from "firebase/database";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -8,9 +8,8 @@ const firebaseConfig = {
   storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
-  measurementId: process.env.REACT_APP_FIREBASE_GA_MEASUREMENT_ID,
-  databaseURL: 'https://wordlearner-ca1f8-default-rtdb.europe-west1.firebasedatabase.app/'
+  measurementId: process.env.REACT_APP_FIREBASE_GA_MEASUREMENT_ID
 };
 
 const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
+export const database = getFirestore(app);

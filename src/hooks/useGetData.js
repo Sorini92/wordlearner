@@ -1,27 +1,26 @@
-import { getDatabase, ref, onValue, query, orderByChild } from "firebase/database";
+import { database } from "../firebase";
+import { getDocs, collection } from 'firebase/firestore';
 
 export const useGetData = () => {
-    const fetchData = (link, setFunc, emptyBaseFunc, errorFunc) => (dispatch) => {
-
-        const db = getDatabase();
-        const words = ref(db, link);
         
-        try {
-            onValue(words, (snapshot) => {
-                if (snapshot.exists()) {
-                    const data = Object.values(snapshot.val());
-                    dispatch(setFunc(data));
-                } else {
-                    dispatch(emptyBaseFunc())
-                    console.log("No data available");
-                }
-            })
-        } catch (e) {
-            console.log(e);
-            dispatch(errorFunc());
-        }
-    };
+        const request = async (url) => {
+            try {
+                const dataRef = await collection(database, url.firstUrl, url.secondUrl, url.thirdUrl)
+                const data = await getDocs(dataRef);
 
-    return {fetchData}
+                const fileredData = data.docs.map((doc) => {
+                    return {
+                        ...doc.data()
+                    }
+                })
+                
+                return fileredData;
+                
+            } catch(e) {
+                throw e;
+            }
+        }
+        
+    return {request}
 }
 

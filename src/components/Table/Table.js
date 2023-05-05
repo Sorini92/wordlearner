@@ -1,23 +1,21 @@
-import { useState, useEffect, Fragment } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setWords, emptyBase, errorOnFetch} from '../../store/slices/wordSlice';
-import { useGetData } from '../../hooks/useGetData';
+import { fetchWords} from '../../store/slices/wordSlice';
 import useAuth from '../../hooks/use-auth';
 import Spinner from '../Spinner/Spinner';
 import './table.scss';
 
-const Table = ({onDelete, searchedWord}) => {
+const Table = ({onDelete, searchedWord, reverseWords}) => {
 
     const [index, setIndex] = useState('');
 
     const {words, wordsLoadingStatus} = useSelector(state => state.words)
     const dispatch = useDispatch();
-    const {fetchData} = useGetData();
     const {email} = useAuth();
 
     useEffect(() => {
-        //dispatch(fetchData(`${email.split('@')[0]}/words`, setWords, emptyBase, errorOnFetch));
-        dispatch(fetchData(`words`, setWords, emptyBase, errorOnFetch));
+        dispatch(fetchWords());
+        // eslint-disable-next-line
     }, []);
 
     const handeClick = (i, word) => {
@@ -28,42 +26,53 @@ const Table = ({onDelete, searchedWord}) => {
     const elements = (array) => {
         return array.map((item, i) => {
             return (
-                <Fragment key={item.id}>
-                    <div 
-                        onClick={() => handeClick(i, item)} 
-                        className={index !== i ? 'table__word' : 'table__word activeWord'}>
-                        {item.english}
-                    </div>
-                    <div onClick={() => handeClick(i, item)} 
-                        className={index !== i ? 'table__translate' : 'table__word activeWord'}>
-                        {item.russian}
-                    </div>
-                </Fragment>
+                <tbody key={item.id} onClick={() => handeClick(i, item)}>
+                    <tr>
+                        <td 
+                            className={index !== i ? 'table__word' : 'table__word activeWord'}
+                        >
+                            {reverseWords ? item.russian : item.english}
+                        </td>
+                        <td 
+                            className={index !== i ? 'table__translate' : 'table__word activeWord'}
+                        >
+                            {reverseWords ? item.english : item.russian}
+                        </td>
+                    </tr>
+                </tbody>
             )
         })
     }
 
-
-
     const table = () => {
         return (
             <>
-                {words.length === 0 || searchedWord.length === 0 ? 
+                {words.length === 0 ? 
                 <div className='emptyTable'>There are no words!</div> 
                 : 
-                <div className='table'>
+                <table className='table'>
+                    <thead>
+                        <tr>
+                            <th>
+                                {reverseWords ? 'Russian words' : 'English words'}
+                            </th>
+                            <th>
+                                {reverseWords ? 'English words' : 'Russian words'}
+                            </th>
+                        </tr>
+                    </thead>
                     {searchedWord.length === 0 ? elements(words) : elements(searchedWord)}
-                </div> }
+                </table> }
             </>
         )
     }
 
     return (
         <>
-            {wordsLoadingStatus === "idle" ? 
-            table()
-            :
+            {wordsLoadingStatus === "loading" ? 
             <Spinner/>
+            :
+            table()
             }
         </>
     )

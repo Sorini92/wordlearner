@@ -1,4 +1,5 @@
-import { getDatabase, update, ref, remove } from "firebase/database";
+import { database } from "../../firebase";
+import { setDoc, collection, doc } from "firebase/firestore"; 
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import useAuth from '../../hooks/use-auth';
@@ -24,12 +25,10 @@ const ModifyModal = ({active, setActive, address, func, word}) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const db = getDatabase();
         
         const index = words.findIndex(e => e.english === english.toLocaleLowerCase());
 
         if (index === -1) {
-            const temp = word.english;
 
             const obj = {
                 english: english.toLocaleLowerCase(),
@@ -41,20 +40,8 @@ const ModifyModal = ({active, setActive, address, func, word}) => {
             dispatch(func(obj));
             setActive(false);
 
-            const updates = {};
-
-            //updates[`${email.split('@')[0]}/${address}/${obj.toLocaleLowerCase()}/`] = obj;
-
-            updates[`${address}/${obj.english.toLocaleLowerCase()}/`] = obj;
-
-            const wordRef = ref(db, `words/${temp}`);
-
-            remove(wordRef)
-                .then(() => {
-                    console.log("Modificated");
-                });
-            
-            return update(ref(db), updates);
+            const colRef = collection(database, address.firstUrl, address.secondUrl, address.thirdUrl)
+            setDoc(doc(colRef, obj.id), obj);
         } else {
             alert('There are this word in the table or it is same word!')
         }

@@ -1,8 +1,8 @@
-import { getDatabase, ref, set, push } from "firebase/database";
+import { database } from "../../firebase";
+import { setDoc, collection, doc } from "firebase/firestore"; 
 import { v4 as uuidv4 } from 'uuid';
 import { useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import useAuth from '../../hooks/use-auth';
 import './addModal.scss';
 
 const AddModal = ({active, setActive, address, func}) => {
@@ -12,11 +12,9 @@ const AddModal = ({active, setActive, address, func}) => {
     
     const {words} = useSelector(state => state.words);
     const dispatch = useDispatch();
-    const {email} = useAuth();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const db = getDatabase();
 
         const index = words.findIndex(e => e.english === english.toLocaleLowerCase());
 
@@ -24,13 +22,14 @@ const AddModal = ({active, setActive, address, func}) => {
             const newObj = {
                 english: english.toLocaleLowerCase(),
                 russian: russian.toLocaleLowerCase(),
-                id: uuidv4(),
-                date: Date.now()
+                date: Date.now(),
+                id: uuidv4()
             }
             
             dispatch(func(newObj));
-            //set(ref(db, `${email.split('@')[0]}/${address}/` + newObj.id), newObj);
-            set(ref(db, `${address}/` + newObj.english.toLocaleLowerCase()), newObj);
+            const colRef = collection(database, address.firstUrl, address.secondUrl, address.thirdUrl)
+            setDoc(doc(colRef, newObj.id), newObj);
+
             setEnglish('');
             setRussian('');
             setActive(false);

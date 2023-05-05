@@ -1,4 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import {useGetData} from '../../hooks/useGetData';
 
 const initialState = {
     words: [],
@@ -7,14 +8,23 @@ const initialState = {
     error: false
 }
 
+export const fetchWords = createAsyncThunk(
+    'words/fetchWords',
+    async () => {
+        const {request} = useGetData();
+        const linkToWords = {
+            firstUrl: 'users',
+            secondUrl: 'user1',
+            thirdUrl: 'words'
+        }
+        return await request(linkToWords);
+    }
+);
+
 const wordsSlice = createSlice({
     name: 'words',
     initialState,
     reducers: {
-        setWords: (state, action) => {
-            state.words = action.payload
-            state.wordsLoadingStatus = 'idle';
-        },
         addWord: (state, action) => {
             state.words.push(action.payload)
         },
@@ -29,12 +39,6 @@ const wordsSlice = createSlice({
         },
         deleteWord: (state, action) => {
             state.words = state.words.filter(item => item.id !== action.payload)
-        },
-        emptyBase:(state) => {
-            state.wordsLoadingStatus = 'idle';
-        },
-        errorOnFetch: (state) => {
-            state.error = true;
         },
         activeSortTypeChanged: (state, action) => {state.sortType = action.payload},
         sortBy: (state, action) => {
@@ -69,18 +73,32 @@ const wordsSlice = createSlice({
             }
         },
     },
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchWords.pending, state => {
+                state.wordsLoadingStatus = 'loading'
+            })
+            .addCase(fetchWords.fulfilled, (state, action) => {
+                state.wordsLoadingStatus = 'idle';
+                state.words = action.payload;
+            })
+            .addCase(fetchWords.rejected, state => {
+                state.wordsLoadingStatus = 'error';
+            })
+            .addDefaultCase(() => {})
+    }
 });
 
 const {actions, reducer} = wordsSlice;
 
 export default reducer;
 export const {
-    emptyBase,
-    setWords,
+    wordsFetching,
+    wordsFetched,
+    wordsFetchingError,
     addWord,
     modifyWord,
     deleteWord,
-    errorOnFetch,
     activeSortTypeChanged,
     sortBy
 } = actions;

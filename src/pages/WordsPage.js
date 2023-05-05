@@ -1,7 +1,8 @@
 import {useDispatch} from 'react-redux';
 import {useNavigate} from "react-router-dom";
 import {useState, useEffect} from "react";
-import {getDatabase, ref, remove} from "firebase/database";
+import { database } from "../firebase";
+import { deleteDoc, collection, doc } from "firebase/firestore"; 
 import {deleteWord, addWord, modifyWord} from '../store/slices/wordSlice';
 import useAuth from '../hooks/use-auth';
 import Header from "../components/Header/Header";
@@ -11,6 +12,7 @@ import SortPopup from "../components/SortPopup/SortPopup";
 import Modification from "../components/Modification/Modification";
 import AddModal from "../components/AddModal/AddModal";
 import ModifyModal from "../components/ModifyModal/ModifyModal";
+import ReverseArrows from '../components/ReverseArrows/ReverseArrow';
 
 const HomePage = () => {
 
@@ -18,6 +20,7 @@ const HomePage = () => {
     const [modifyModalActive, setModifyModalActive] = useState(false);
     const [selectedWord, setSelectedWord] = useState({});
     const [searchedWord, setSearchedWord] = useState([]);
+    const [reverseWords, setReverseWords] = useState(false);
 
     const dispatch = useDispatch();
     const {isAuth} = useAuth();
@@ -28,6 +31,12 @@ const HomePage = () => {
         { name: 'russian', type: 'russian'},
         { name: 'date', type: 'date'},        
     ];
+
+    const linkToWords = {
+        firstUrl: 'users',
+        secondUrl: 'user1',
+        thirdUrl: 'words'
+    }
 
     const handleAddModal = () => {
         setAddModalActive(!addModalActive);
@@ -42,18 +51,12 @@ const HomePage = () => {
     }
 
     const onDeleteWord = () => {
-        const db = getDatabase();
 
         if (window.confirm('Are you sure?')) {
             dispatch(deleteWord(selectedWord.id));
 
-            //const wordRef = ref(db, `${email.split('@')[0]}/words/${selectedId}`);
-            const wordRef = ref(db, `words/${selectedWord.english}`);
-
-            remove(wordRef)
-                .then(() => {
-                    console.log("location removed");
-                });
+            const colRef = collection(database, linkToWords.firstUrl, linkToWords.secondUrl, linkToWords.thirdUrl)
+            deleteDoc(doc(colRef, selectedWord.id));
         }
     }
 
@@ -103,6 +106,10 @@ const HomePage = () => {
             <Navigation setSearchedWord={setSearchedWord}/>
             <div className="modifying">
                 <SortPopup sortItems={sortItems}/>
+                <ReverseArrows 
+                    setReverseWords={setReverseWords} 
+                    reverseWords={reverseWords}
+                />
                 <Modification 
                     handleModifyModal={handleModifyModal}
                     handleAddModal={handleAddModal} 
@@ -113,17 +120,18 @@ const HomePage = () => {
             <Table 
                 onDelete={onDelete} 
                 searchedWord={searchedWord}
+                reverseWords={reverseWords}
                 />
             <AddModal 
                 active={addModalActive} 
                 setActive={setAddModalActive} 
-                address={'words'}
+                address={linkToWords}
                 func={addWord}
             />
             <ModifyModal
                 active={modifyModalActive} 
                 setActive={setModifyModalActive} 
-                address={'words'}
+                address={linkToWords}
                 func={modifyWord}
                 word={selectedWord}
             />

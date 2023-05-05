@@ -21,27 +21,8 @@ const Navigation = ({setSearchedWord}) => {
     const handleSearch = (value) => {
         setWord(value)
         const db = getDatabase();
-        let arr = [];
-        const dbRef = ref(db, `/words/`);
+        
         if (!!value.match(/[^а-я]/g)) {
-            /* onValue(dbRef, (snapshot) => {
-                snapshot.forEach((childSnapshot) => {
-                    const english = childSnapshot.val();
-                    arr.push(english);
-                });
-                }, {
-                    onlyOnce: true
-            });
-    
-            const filteredArr =  arr.filter(item => {
-                if (item.english.includes(value)) {
-                    return true
-                }
-    
-                return false
-            })
-            setSearchedWord(filteredArr)
-            setWord('') */
             try {
                 const words = ref(db, `/words/${word}`);
                 onValue(words, (snapshot) => {
@@ -56,23 +37,6 @@ const Navigation = ({setSearchedWord}) => {
                 console.log(e);
             }
         } else {
-           /*  onValue(dbRef, (snapshot) => {
-                snapshot.forEach((childSnapshot) => {
-                    const russian = childSnapshot.val();
-                    arr.push(russian);
-                });
-                }, {
-                    onlyOnce: true
-            });
-    
-            const filteredArr =  arr.filter(item => {
-                if (item.russian.includes(value)) {
-                    return true
-                }
-    
-                return false
-            })
-            setSearchedWord(filteredArr) */
             try {
                 const words = ref(db, `/words/${word}`);
                 onValue(words, (snapshot) => {
