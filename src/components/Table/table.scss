@@ -1,57 +1,15 @@
-/* .table {
-    margin-top: 10px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 25px;
-    grid-auto-rows: 25px;
-    border-top: 1px solid #2222;
-    border-left: 1px solid #2222;
-    border-right: 1px solid #2222;
-    border-bottom: 1px solid #2222;
-    border-radius: 2px;
-    &__word {
-        padding-left: 5px;
-        padding-top: 2px;
-        font-size: 15px;
-        border-bottom: 1px solid #2222;
-.table tr:nth-child(even){}
-        cursor: pointer;
-        &:nth-last-child(-n+2) {
-            border: none;
-        }
-    }
-    &__translate {
-        padding-left: 5px;
-        font-size: 15px;
-        padding-top: 2px;
-        border-bottom: 1px solid #2222;
-        border-left: 1px solid #2222;
-        cursor: pointer;
-        &:last-child {
-            border-bottom: none;
-        }
-    }      
-}
-
-.activeWord {
-    background-color: palegoldenrod;
-    border: 1px solid #2222 !important;
-}
-
-.emptyTable {
-    margin-top: 200px;
-    text-align: center;
-    font-size: 50px;
-} */
-
 .table {
     margin-top: 10px;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
+    tbody {
+        cursor: pointer;
+    }
     td, th {
         border: 1px solid #9999;
-        padding: 5px;
+        padding: 1px;
+        padding-left: 5px;
         width: 50%;
     }
     th {
