@@ -5,10 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import useAuth from '../../hooks/use-auth';
 import './modifyModal.scss';
 
-const ModifyModal = ({active, setActive, address, func, word}) => {
+const ModifyModal = ({active, setActive, address, func, data,  selected}) => {
     
-    const {words} = useSelector(state => state.words);
-    const wordForModify = words.find(item => item.id === word.id);
+    const dataForModify = data.find(item => item.id === selected.id);
 
     const [english, setEnglish] = useState('');
     const [russian, setRussian] = useState('');
@@ -17,23 +16,23 @@ const ModifyModal = ({active, setActive, address, func, word}) => {
     const {email} = useAuth();
 
     useEffect(() => {
-        if (wordForModify !== undefined) {
-            setEnglish(wordForModify.english);
-            setRussian(wordForModify.russian);
+        if (dataForModify !== undefined) {
+            setEnglish(dataForModify.english);
+            setRussian(dataForModify.russian);
         }
-    }, [wordForModify])
+    }, [dataForModify])
 
     const handleSubmit = (e) => {
         e.preventDefault();
         
-        const index = words.findIndex(e => e.english === english.toLocaleLowerCase());
-
+        const index = data.findIndex(e => e.english === english.toLocaleLowerCase());
+        
         if (index === -1) {
 
             const obj = {
                 english: english.toLocaleLowerCase(),
                 russian: russian.toLocaleLowerCase(),
-                id: word.id,
+                id: selected.id,
                 date: Date.now()
             }
             
@@ -56,6 +55,7 @@ const ModifyModal = ({active, setActive, address, func, word}) => {
                     <label htmlFor="english">English word</label>
                     <input 
                         value={english}
+                        maxLength={30}
                         onChange={(e) => setEnglish(e.target.value.replace(/[^a-z]/g, ''))}
                         type="text" 
                         id='english' 
@@ -65,6 +65,7 @@ const ModifyModal = ({active, setActive, address, func, word}) => {
                     <label htmlFor="russian">Russian word</label>
                     <input 
                         value={russian}
+                        maxLength={30}
                         onChange={(e) => setRussian(e.target.value.replace(/[^а-я]/g, ''))}
                         type="text" 
                         id='russian' 

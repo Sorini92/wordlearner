@@ -5,18 +5,17 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import './addModal.scss';
 
-const AddModal = ({active, setActive, address, func}) => {
+const AddModal = ({active, setActive, address, func, data}) => {
 
     const [english, setEnglish] = useState('');
     const [russian, setRussian] = useState('');
     
-    const {words} = useSelector(state => state.words);
     const dispatch = useDispatch();
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const index = words.findIndex(e => e.english === english.toLocaleLowerCase());
+        const index = data.findIndex(e => e.english === english.toLocaleLowerCase());
 
         if (index === -1) {
             const newObj = {
@@ -27,6 +26,7 @@ const AddModal = ({active, setActive, address, func}) => {
             }
             
             dispatch(func(newObj));
+
             const colRef = collection(database, address.firstUrl, address.secondUrl, address.thirdUrl)
             setDoc(doc(colRef, newObj.id), newObj);
 
@@ -36,7 +36,7 @@ const AddModal = ({active, setActive, address, func}) => {
         } else {
             setEnglish('');
             setRussian('');
-            alert('There are this word in the table!')
+            alert("it's already there");
         }
     }
 
@@ -49,6 +49,7 @@ const AddModal = ({active, setActive, address, func}) => {
                     <label htmlFor="english">English word</label>
                     <input 
                         value={english}
+                        maxLength={30}
                         onChange={(e) => setEnglish(e.target.value.replace(/[^a-z]/g, ''))}
                         type="text" 
                         id='english' 
@@ -58,6 +59,7 @@ const AddModal = ({active, setActive, address, func}) => {
                     <label htmlFor="russian">Russian word</label>
                     <input 
                         value={russian}
+                        maxLength={30}
                         onChange={(e) => setRussian(e.target.value.replace(/[^а-я]/g, ''))}
                         type="text" 
                         id='russian' 

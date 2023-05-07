@@ -24,35 +24,40 @@
         height: 35px;
         background-color: #9999;
     }
+    &__wrapper {
+        position: relative;
+    }
     &__search {
         border-radius: 3px;
         padding: 5px;
+        padding-left: 30px;
+        padding-right: 30px;
         border: 2px solid #ccc;
-        border-radius: 5px;
+        border-radius: 20px;
         font-size: 16px;
         color: #555;
         outline: none;
+        width: 195px;
         &:focus {
-            width: 100%;
+            width: 700px;
             border-color: #007bff;
             box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
         }
-    }
-    &__searchconfirm {
-        top: 7px;
-        position: absolute;
-        right: 5px;
-        background-color: #0d6efd;
-        border: none;
-        border-radius: 3px;
-        cursor: pointer;
-        color: white;
-        text-align: center;
-        padding: 3px;
-        text-decoration: none;
-        &:hover {
-            opacity: 0.9;
+        &-scope {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            left: 10px;
+            top: 9px;
         }
+    }
+    &__searchclear {
+        position: absolute;
+        top: -3px;
+        font-size: 25px;
+        right: 10px;
+        cursor: pointer;
+        color: #555;
     }
 }
 

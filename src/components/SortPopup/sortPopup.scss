@@ -20,6 +20,7 @@
         }
     }
     &__popup {
+        z-index: 1;
         position: absolute;
         left: 80px;
         background: #ffffff;

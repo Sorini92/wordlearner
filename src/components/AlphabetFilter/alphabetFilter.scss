@@ -1,0 +1,18 @@
+.alphabet {
+    display: flex;
+    width: 100%;
+    margin-top: 10px;
+    justify-content: center;
+    &__letter {
+        padding: 0 4px;
+        cursor: pointer;
+        color: #fe5f1e;
+    }
+    &__dot {
+        padding: 0 5px;
+    }
+    &__all {
+        color: #0d6efd;
+        cursor: pointer;
+    }
+}

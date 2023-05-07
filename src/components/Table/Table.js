@@ -1,41 +1,31 @@
-import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchWords} from '../../store/slices/wordSlice';
-import useAuth from '../../hooks/use-auth';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import Spinner from '../Spinner/Spinner';
 import './table.scss';
 
-const Table = ({onDelete, searchedWord, reverseWords}) => {
+const Table = ({onDelete, searchedWord, reverseWords, cuttedArrayOfWords, selectedLetter, words}) => {
 
-    const [index, setIndex] = useState('');
+    const [idForCompare, setIdForCompare] = useState('');
 
-    const {words, wordsLoadingStatus} = useSelector(state => state.words)
-    const dispatch = useDispatch();
-    const {email} = useAuth();
+    const {wordsLoadingStatus} = useSelector(state => state.words)
 
-    useEffect(() => {
-        dispatch(fetchWords());
-        // eslint-disable-next-line
-    }, []);
-
-    const handeClick = (i, word) => {
-        setIndex(i);
+    const handleClick = (word) => {
+        setIdForCompare(word.id);
         onDelete(word); 
     }
-
+    
     const elements = (array) => {
-        return array.map((item, i) => {
+        return array.map((item) => {
             return (
-                <tbody key={item.id} onClick={() => handeClick(i, item)}>
+                <tbody 
+                    key={item.id} 
+                    className={idForCompare !== item.id ? '' : 'activeWord'}
+                    onClick={() => handleClick(item)}>
                     <tr>
-                        <td 
-                            className={index !== i ? 'table__word' : 'table__word activeWord'}
-                        >
+                        <td className='table__word'>
                             {reverseWords ? item.russian : item.english}
                         </td>
-                        <td 
-                            className={index !== i ? 'table__translate' : 'table__word activeWord'}
-                        >
+                        <td className='table__translate'>
                             {reverseWords ? item.english : item.russian}
                         </td>
                     </tr>
@@ -44,10 +34,33 @@ const Table = ({onDelete, searchedWord, reverseWords}) => {
         })
     }
 
+    const filteredElements = (array) => {
+        let data = [];
+        if (searchedWord.length > 0) {
+            if (!!searchedWord.match(/[^а-я]/g)) {
+                data = array.filter(item => item.english.toLowerCase().includes(searchedWord))
+                //setFillteredWords(data);
+                //return elements(data);
+            } else {
+                data = array.filter(item => item.russian.toLowerCase().includes(searchedWord))
+                //setFillteredWords(data);
+                //return elements(data);
+            }
+        } else {
+            if (selectedLetter.length !== 0) {
+                data = array.filter(item => item.english.toLowerCase().slice(0, 1) === selectedLetter)
+                //setFillteredWords(data);
+                //console.log(data)
+                //return elements(data);
+            } 
+        }
+        return data;
+    }  
+
     const table = () => {
         return (
             <>
-                {words.length === 0 ? 
+                {words.length === 0 || (filteredElements(words).length === 0 && searchedWord.length > 0) || (filteredElements(words).length === 0 && selectedLetter.length > 0)? 
                 <div className='emptyTable'>There are no words!</div> 
                 : 
                 <table className='table'>
@@ -61,7 +74,7 @@ const Table = ({onDelete, searchedWord, reverseWords}) => {
                             </th>
                         </tr>
                     </thead>
-                    {searchedWord.length === 0 ? elements(words) : elements(searchedWord)}
+                    {selectedLetter.length !== 0 || searchedWord.length > 0 ? elements(filteredElements(words)) : elements(cuttedArrayOfWords)}
                 </table> }
             </>
         )

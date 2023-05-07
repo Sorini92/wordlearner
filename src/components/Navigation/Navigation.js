@@ -1,10 +1,9 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import scope from '../../resources/scope.svg';
 import "./navigation.scss";
 
-import { getDatabase, ref, onValue} from "firebase/database";
-
-const Navigation = ({setSearchedWord}) => {
+const Navigation = ({setSearchedWord, data}) => {
 
     const [word, setWord] = useState('');
     const [active, setActive] = useState(0);
@@ -20,37 +19,12 @@ const Navigation = ({setSearchedWord}) => {
 
     const handleSearch = (value) => {
         setWord(value)
-        const db = getDatabase();
-        
-        if (!!value.match(/[^а-я]/g)) {
-            try {
-                const words = ref(db, `/words/${word}`);
-                onValue(words, (snapshot) => {
-                    if (snapshot.exists()) {
-                        const data = snapshot.val();
-                        setSearchedWord([data]);
-                    } else {
-                        console.log("No data available");
-                    }
-                })
-            } catch (e) {
-                console.log(e);
-            }
-        } else {
-            try {
-                const words = ref(db, `/words/${word}`);
-                onValue(words, (snapshot) => {
-                    if (snapshot.exists()) {
-                        const data = snapshot.val();
-                        setSearchedWord([data]);
-                    } else {
-                        console.log("No data available");
-                    }
-                })
-            } catch (e) {
-                console.log(e);
-            }
-        }
+        setSearchedWord(value)
+    }
+
+    const clearSearch = () => {
+        setWord('')
+        setSearchedWord('')
     }
 
     const tabs = links.map((item, i) => {
@@ -72,21 +46,23 @@ const Navigation = ({setSearchedWord}) => {
                 <div className="navigation__tabs">
                     {tabs}
                 </div>
-                <input 
-                    value={word}
-                    className="navigation__search"
-                    placeholder="Search"
-                    /* onChange={(e) => handleSearch(e.target.value.replace(/[^a-z, а-я]/g, ''))} */
-                    onChange={(e) => setWord(e.target.value.replace(/[^a-z, а-я]/g, ''))}
-                />
-                {word.length > 0 ? 
-                <button 
-                    type="submit"
-                    className="navigation__searchconfirm"
-                    onClick={() => handleSearch(word)}
-                >
-                    Search
-                </button> : null}
+                <div className="navigation__wrapper">
+                    <input 
+                        value={word}
+                        className="navigation__search"
+                        placeholder="Search"
+                        onChange={(e) => handleSearch(e.target.value.replace(/[^a-z, а-я]/g, ''))}
+                    />
+                    <img src={scope} className="navigation__search-scope" alt="scope"/>
+                    {word.length > 0 ? 
+                    <div
+                        className="navigation__searchclear"
+                        onClick={() => clearSearch('')}
+                    >
+                        &times;
+                    </div> : 
+                    null}
+                </div>
             </div>
         </>
     )

@@ -3,9 +3,10 @@ import {useGetData} from '../../hooks/useGetData';
 
 const initialState = {
     words: [],
-    sortType: 'english',
+    sortType: 'date',
     wordsLoadingStatus: 'loading',
-    error: false
+    currentPage: 1,
+    totalPages: 1,
 }
 
 export const fetchWords = createAsyncThunk(
@@ -26,7 +27,7 @@ const wordsSlice = createSlice({
     initialState,
     reducers: {
         addWord: (state, action) => {
-            state.words.push(action.payload)
+            state.words.unshift(action.payload)
         },
         modifyWord: (state, action) => {
             state.words = state.words.map((item) => {
@@ -39,6 +40,12 @@ const wordsSlice = createSlice({
         },
         deleteWord: (state, action) => {
             state.words = state.words.filter(item => item.id !== action.payload)
+        },
+        setPage: (state, action) => {
+            state.currentPage = action.payload;
+        },
+        setTotalPages: (state, action) => {
+            state.totalPages = action.payload;
         },
         activeSortTypeChanged: (state, action) => {state.sortType = action.payload},
         sortBy: (state, action) => {
@@ -80,7 +87,7 @@ const wordsSlice = createSlice({
             })
             .addCase(fetchWords.fulfilled, (state, action) => {
                 state.wordsLoadingStatus = 'idle';
-                state.words = action.payload;
+                state.words = action.payload.sort((a, b) => b.date - a.date);
             })
             .addCase(fetchWords.rejected, state => {
                 state.wordsLoadingStatus = 'error';
@@ -99,6 +106,8 @@ export const {
     addWord,
     modifyWord,
     deleteWord,
+    setPage,
+    setTotalPages,
     activeSortTypeChanged,
     sortBy
 } = actions;
