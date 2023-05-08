@@ -7,6 +7,7 @@ const initialState = {
     wordsLoadingStatus: 'loading',
     currentPage: 1,
     totalPages: 1,
+    wordsPerUpload: 35
 }
 
 export const fetchWords = createAsyncThunk(

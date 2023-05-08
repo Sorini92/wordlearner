@@ -3,10 +3,10 @@
     height: 25px;
     padding: 5px;
     border-radius: 5px;
-    margin-left: 180px;
     cursor: pointer;
     :hover {
         opacity: 0.5;
+        transform: scale(1.1);
     }
     img {
         width: 100%;

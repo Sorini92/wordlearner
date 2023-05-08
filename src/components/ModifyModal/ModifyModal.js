@@ -1,11 +1,11 @@
 import { database } from "../../firebase";
 import { setDoc, collection, doc } from "firebase/firestore"; 
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import useAuth from '../../hooks/use-auth';
 import './modifyModal.scss';
 
-const ModifyModal = ({active, setActive, address, func, data,  selected}) => {
+const ModifyModal = ({active, setActive, address, func, data,  selected, setMessage, setShowMessage}) => {
     
     const dataForModify = data.find(item => item.id === selected.id);
 
@@ -41,8 +41,18 @@ const ModifyModal = ({active, setActive, address, func, data,  selected}) => {
 
             const colRef = collection(database, address.firstUrl, address.secondUrl, address.thirdUrl)
             setDoc(doc(colRef, obj.id), obj);
+
+            setShowMessage(true);
+            setMessage({
+                text: "It's was successfully modifyied!",
+                color: 'green'
+            })
         } else {
-            alert('There are this word in the table or it is same word!')
+            setShowMessage(true);
+            setMessage({
+                text: "It's already there!",
+                color: 'red'
+            })
         }
     }
 

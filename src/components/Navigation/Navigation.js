@@ -3,7 +3,7 @@ import { useState } from "react";
 import scope from '../../resources/scope.svg';
 import "./navigation.scss";
 
-const Navigation = ({setSearchedWord, data}) => {
+const Navigation = ({setSearchedWord, setOffset, wordsPerUpload}) => {
 
     const [word, setWord] = useState('');
     const [active, setActive] = useState(0);
@@ -25,6 +25,7 @@ const Navigation = ({setSearchedWord, data}) => {
     const clearSearch = () => {
         setWord('')
         setSearchedWord('')
+        setOffset(wordsPerUpload)
     }
 
     const tabs = links.map((item, i) => {

@@ -1,0 +1,39 @@
+.message {
+    width: 100%;
+    z-index: 2;
+    position: absolute;
+    top: -50px;
+    left: 0;
+    //left: 50%;
+    //transform: translate(-50%, 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    border-radius: 12px;
+    pointer-events: none;
+    transition: 0.5s all;
+    transform: scale(0);
+    &__content {
+        text-align: center;
+        padding: 15px;
+        border-radius: 12px;
+        background-color: white;
+        //transform: scale(0.5);
+        transition: 0.5s all;
+        //width: 30%;
+        height: 100%;
+    }
+}
+
+.message.active {
+    opacity: 1;
+    top: 50px;
+    //left: 50%;
+    //transform: translate(-50%, 0);
+    transform: scale(1);
+}
+
+.message__content.active {
+    transform: scale(1);
+}

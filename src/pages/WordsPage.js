@@ -15,19 +15,23 @@ import ModifyModal from "../components/ModifyModal/ModifyModal";
 import ReverseArrows from '../components/ReverseArrows/ReverseArrow';
 import Pagination from '../components/Pagination/Pagination';
 import AlpabetFilter from '../components/AlphabetFilter/AlphabetFilter';
+import Message from '../components/Message/Message';
 
 const HomePage = () => {
 
-    const {words} = useSelector(state => state.words);
+    const {words, wordsPerUpload} = useSelector(state => state.words);
 
     const [addModalActive, setAddModalActive] = useState(false);
+    const [showMessage, setShowMessage] = useState(false);
+    const [message, setMessage] = useState({});
     const [modifyModalActive, setModifyModalActive] = useState(false);
     const [selectedWord, setSelectedWord] = useState({});
     const [selectedLetter, setSelectedLetter] = useState('');
     const [searchedWord, setSearchedWord] = useState([]);
     const [reverseWords, setReverseWords] = useState(false);
     const [cuttedArrayOfWords, setCuttedArrayOfWords] = useState([]);
-	const [offset, setOffset] = useState(34);
+    const [filteredArreyLength, setFilteredArreyLength] = useState(0);
+	const [offset, setOffset] = useState(wordsPerUpload);
 
     const dispatch = useDispatch();
     const {isAuth} = useAuth();
@@ -50,14 +54,55 @@ const HomePage = () => {
         // eslint-disable-next-line
     }, []);
 
-    useEffect(() => {
+    /* useEffect(() => {
         setCuttedArrayOfWords(words.slice(0, offset));
-    }, [words, offset]);
+    }, [words, offset]); */
 
+    const filteredElements = (array) => {
+        let data = [];
+        if (searchedWord.length > 0) {
+            if (!!searchedWord.match(/[^а-я]/g)) {
+                data = array.filter(item => item.english.toLowerCase().includes(searchedWord))
+            } else {
+                data = array.filter(item => item.russian.toLowerCase().includes(searchedWord))
+            }
+        } else {
+            if (selectedLetter.length !== 0) {
+                if (!!selectedLetter.match(/[^а-я]/g)) {
+                    data = array.filter(item => item.english.toLowerCase().slice(0, 1) === selectedLetter)
+                    
+                } else {
+                    data = array.filter(item => item.russian.toLowerCase().slice(0, 1) === selectedLetter)
+                }
+            } 
+        }
+        setFilteredArreyLength(data.length)
+        return data;
+    }
+
+    useEffect(() => {
+        if (selectedLetter.length !== 0 || searchedWord.length > 0) {
+            setCuttedArrayOfWords(filteredElements(words).slice(0, offset));
+        } else {
+            setCuttedArrayOfWords(words.slice(0, offset));
+        }
+        // eslint-disable-next-line
+    }, [words, offset, selectedLetter, searchedWord.length]);
+    
     const addNewWords = () => {
+		if (selectedLetter.length !== 0 || searchedWord.length > 0) {
+            setOffset(offset + wordsPerUpload);
+		    setCuttedArrayOfWords([...cuttedArrayOfWords, ...filteredElements(words).slice(offset, offset + wordsPerUpload)]);
+        } else {
+            setOffset(offset + wordsPerUpload);
+		    setCuttedArrayOfWords([...cuttedArrayOfWords, ...words.slice(offset, offset + wordsPerUpload)]);
+        }
+	}
+
+    /* const addNewWords = () => {
 		setOffset(offset + 34);
 		setCuttedArrayOfWords([...cuttedArrayOfWords, ...words.slice(offset, offset + 34)]);
-	}
+	} */
 
     const handleAddModal = () => {
         setAddModalActive(!addModalActive);
@@ -82,8 +127,18 @@ const HomePage = () => {
     
                 setSelectedWord({})
             }
+
+            setShowMessage(true)
+            setMessage({
+                text: "The word was successfully deleted!",
+                color: 'green'
+            })
         } else {
-            alert('Choose the word!')
+            setShowMessage(true)
+            setMessage({
+                text: "Choose the word!",
+                color: 'red'
+            })
         }
     }
     /* console.log(words.length)
@@ -131,7 +186,11 @@ const HomePage = () => {
     return (
         <>
             <Header/>
-            <Navigation setSearchedWord={setSearchedWord}/>
+            <Navigation 
+                setSearchedWord={setSearchedWord}
+                setOffset={setOffset}
+                wordsPerUpload={wordsPerUpload}
+            />
             <div className="modifying">
                 <SortPopup sortItems={sortItems}/>
                 <ReverseArrows 
@@ -145,12 +204,15 @@ const HomePage = () => {
                     selected={selectedWord.id}
                 />
             </div>
-            <AlpabetFilter setSelectedLetter={setSelectedLetter}/>
+            <AlpabetFilter 
+                setSelectedLetter={setSelectedLetter} 
+                setOffset={setOffset}
+                wordsPerUpload={wordsPerUpload}
+            />
             <Table 
                 onDelete={onDelete} 
                 searchedWord={searchedWord}
                 reverseWords={reverseWords}
-                words={words}
                 cuttedArrayOfWords={cuttedArrayOfWords}
                 selectedLetter={selectedLetter}
             />
@@ -158,8 +220,8 @@ const HomePage = () => {
                 addNewWords={addNewWords} 
                 words={words}
                 cuttedArrayOfWords={cuttedArrayOfWords}
-                searchedWord={searchedWord} 
-                selectedLetter={selectedLetter}   
+                filteredArreyLength={filteredArreyLength}
+                wordsPerUpload={wordsPerUpload}
             />
             <AddModal 
                 active={addModalActive} 
@@ -167,6 +229,8 @@ const HomePage = () => {
                 address={linkToWords}
                 func={addWord}
                 data={words}
+                setShowMessage={setShowMessage}
+                setMessage={setMessage}
             />
             <ModifyModal
                 active={modifyModalActive} 
@@ -175,6 +239,14 @@ const HomePage = () => {
                 func={modifyWord}
                 data={words}
                 selected={selectedWord}
+                setShowMessage={setShowMessage}
+                setMessage={setMessage}
+            />
+            <Message 
+                message={message.text} 
+                showMessage={showMessage} 
+                setShowMessage={setShowMessage}
+                color={message.color}
             />
         </>
     )

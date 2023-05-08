@@ -4,7 +4,6 @@
     justify-content: center;
     align-items: center;
     &__btn {
-        margin-top: 10px;
         width: 200px;
         height: 30px;
         display: inline-block;
@@ -86,6 +85,24 @@
             background-color: rgb(204, 204, 204);
         }
     }
+    &__prev, &__next {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 5px;
+        color: black;
+        float: left;
+        width: 40px;
+        height: 40px;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        border-radius: 100%; 
+        background-color: inherit;         
+        &:hover {
+            background-color: rgb(204, 204, 204);
+        }
+    }
     &__activepage {
         display: flex;
         justify-content: center;
@@ -113,4 +130,10 @@
     }
 }
 
-
+.disabled {
+    color: grey;
+    cursor: default;
+    &:hover {
+        background-color: inherit;
+    }
+}

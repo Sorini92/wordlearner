@@ -3,11 +3,11 @@ import { useSelector } from 'react-redux';
 import Spinner from '../Spinner/Spinner';
 import './table.scss';
 
-const Table = ({onDelete, searchedWord, reverseWords, cuttedArrayOfWords, selectedLetter, words}) => {
+const Table = ({onDelete, searchedWord, reverseWords, cuttedArrayOfWords, selectedLetter}) => {
 
     const [idForCompare, setIdForCompare] = useState('');
 
-    const {wordsLoadingStatus} = useSelector(state => state.words)
+    const {wordsLoadingStatus, words} = useSelector(state => state.words)
 
     const handleClick = (word) => {
         setIdForCompare(word.id);
@@ -33,34 +33,31 @@ const Table = ({onDelete, searchedWord, reverseWords, cuttedArrayOfWords, select
             )
         })
     }
-
-    const filteredElements = (array) => {
+    
+    /* const filteredElements = (array) => {
         let data = [];
         if (searchedWord.length > 0) {
             if (!!searchedWord.match(/[^а-я]/g)) {
                 data = array.filter(item => item.english.toLowerCase().includes(searchedWord))
-                //setFillteredWords(data);
-                //return elements(data);
             } else {
                 data = array.filter(item => item.russian.toLowerCase().includes(searchedWord))
-                //setFillteredWords(data);
-                //return elements(data);
             }
         } else {
             if (selectedLetter.length !== 0) {
-                data = array.filter(item => item.english.toLowerCase().slice(0, 1) === selectedLetter)
-                //setFillteredWords(data);
-                //console.log(data)
-                //return elements(data);
+                if (!!selectedLetter.match(/[^а-я]/g)) {
+                    data = array.filter(item => item.english.toLowerCase().slice(0, 1) === selectedLetter)
+                } else {
+                    data = array.filter(item => item.russian.toLowerCase().slice(0, 1) === selectedLetter)
+                }
             } 
         }
         return data;
-    }  
+    } */  
 
     const table = () => {
         return (
             <>
-                {words.length === 0 || (filteredElements(words).length === 0 && searchedWord.length > 0) || (filteredElements(words).length === 0 && selectedLetter.length > 0)? 
+                {words.length === 0 || (cuttedArrayOfWords.length === 0 && searchedWord.length > 0) || (cuttedArrayOfWords.length === 0 && selectedLetter.length > 0)? 
                 <div className='emptyTable'>There are no words!</div> 
                 : 
                 <table className='table'>
@@ -74,7 +71,7 @@ const Table = ({onDelete, searchedWord, reverseWords, cuttedArrayOfWords, select
                             </th>
                         </tr>
                     </thead>
-                    {selectedLetter.length !== 0 || searchedWord.length > 0 ? elements(filteredElements(words)) : elements(cuttedArrayOfWords)}
+                    {elements(cuttedArrayOfWords)}
                 </table> }
             </>
         )
