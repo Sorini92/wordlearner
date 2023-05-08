@@ -3,12 +3,12 @@ import {useNavigate} from "react-router-dom";
 import {useState, useEffect} from "react";
 import { database } from "../firebase";
 import { deleteDoc, collection, doc } from "firebase/firestore"; 
-import {deleteWord, addWord, modifyWord, fetchWords} from '../store/slices/wordSlice';
+import {deleteWord, addWord, modifyWord, fetchWords, sortBy, activeSortTypeChanged, setWordsPerUpload} from '../store/slices/wordSlice';
 import useAuth from '../hooks/use-auth';
 import Header from "../components/Header/Header";
 import Navigation from "../components/Navigation/Navigation";
 import Table from "../components/Table/Table";
-import SortPopup from "../components/SortPopup/SortPopup";
+import SelectPopup from "../components/SelectPopup/SelectPopup";
 import Modification from "../components/Modification/Modification";
 import AddModal from "../components/AddModal/AddModal";
 import ModifyModal from "../components/ModifyModal/ModifyModal";
@@ -19,7 +19,7 @@ import Message from '../components/Message/Message';
 
 const HomePage = () => {
 
-    const {words, wordsPerUpload} = useSelector(state => state.words);
+    const {words, wordsPerUpload, sortType} = useSelector(state => state.words);
 
     const [addModalActive, setAddModalActive] = useState(false);
     const [showMessage, setShowMessage] = useState(false);
@@ -31,16 +31,22 @@ const HomePage = () => {
     const [reverseWords, setReverseWords] = useState(false);
     const [cuttedArrayOfWords, setCuttedArrayOfWords] = useState([]);
     const [filteredArreyLength, setFilteredArreyLength] = useState(0);
-	const [offset, setOffset] = useState(wordsPerUpload);
+	const [offset, setOffset] = useState(30);
 
     const dispatch = useDispatch();
     const {isAuth} = useAuth();
     const navigate = useNavigate();
 
     const sortItems = [
-        { name: 'english', type: 'english'},
-        { name: 'russian', type: 'russian'},
-        { name: 'date', type: 'date'},        
+        { name: 'english'},
+        { name: 'russian'},
+        { name: 'date'},        
+    ];
+
+    const numberOfWordsPerPage = [
+        { name: 30},
+        { name: 60},
+        { name: 90},        
     ];
 
     const linkToWords = {
@@ -51,6 +57,7 @@ const HomePage = () => {
 
     useEffect(() => {
         dispatch(fetchWords());
+        //setOffset(wordsPerUpload)
         // eslint-disable-next-line
     }, []);
 
@@ -79,21 +86,27 @@ const HomePage = () => {
         setFilteredArreyLength(data.length)
         return data;
     }
-
+    //console.log(words)
     useEffect(() => {
+        /* if (offset === 30) {
+            //setOffset(wordsPerUpload);
+        } */
         if (selectedLetter.length !== 0 || searchedWord.length > 0) {
+            //setOffset(wordsPerUpload)
             setCuttedArrayOfWords(filteredElements(words).slice(0, offset));
         } else {
+            //setOffset(wordsPerUpload)
             setCuttedArrayOfWords(words.slice(0, offset));
         }
         // eslint-disable-next-line
-    }, [words, offset, selectedLetter, searchedWord.length]);
+    }, [words, offset, selectedLetter, searchedWord.length, wordsPerUpload]);
     
     const addNewWords = () => {
 		if (selectedLetter.length !== 0 || searchedWord.length > 0) {
             setOffset(offset + wordsPerUpload);
 		    setCuttedArrayOfWords([...cuttedArrayOfWords, ...filteredElements(words).slice(offset, offset + wordsPerUpload)]);
         } else {
+            console.log(cuttedArrayOfWords)
             setOffset(offset + wordsPerUpload);
 		    setCuttedArrayOfWords([...cuttedArrayOfWords, ...words.slice(offset, offset + wordsPerUpload)]);
         }
@@ -182,7 +195,7 @@ const HomePage = () => {
             {navigate('/login')}
         </>
     ) */
-
+    console.log(wordsPerUpload)
     return (
         <>
             <Header/>
@@ -192,7 +205,13 @@ const HomePage = () => {
                 wordsPerUpload={wordsPerUpload}
             />
             <div className="modifying">
-                <SortPopup sortItems={sortItems}/>
+                <SelectPopup 
+                    items={sortItems} 
+                    active={sortType}
+                    text={"Sort by:"}
+                    dispatchFunction={sortBy}
+                    activeTypeChanged={activeSortTypeChanged}
+                />
                 <ReverseArrows 
                     setReverseWords={setReverseWords} 
                     reverseWords={reverseWords}
@@ -202,6 +221,8 @@ const HomePage = () => {
                     handleAddModal={handleAddModal} 
                     onDeleteWord={onDeleteWord}
                     selected={selectedWord.id}
+                    setShowMessage={setShowMessage}
+                    setMessage={setMessage}
                 />
             </div>
             <AlpabetFilter 
@@ -216,13 +237,23 @@ const HomePage = () => {
                 cuttedArrayOfWords={cuttedArrayOfWords}
                 selectedLetter={selectedLetter}
             />
-            <Pagination 
-                addNewWords={addNewWords} 
-                words={words}
-                cuttedArrayOfWords={cuttedArrayOfWords}
-                filteredArreyLength={filteredArreyLength}
-                wordsPerUpload={wordsPerUpload}
-            />
+            <div className='footer'>
+            {cuttedArrayOfWords.length !== 0 ? <div className='footer__numberOfWords'>Total words: {words.length}</div> : null}
+                <Pagination 
+                    addNewWords={addNewWords} 
+                    words={words}
+                    cuttedArrayOfWords={cuttedArrayOfWords}
+                    filteredArreyLength={filteredArreyLength}
+                    wordsPerUpload={wordsPerUpload}
+                />
+                {cuttedArrayOfWords.length !== 0 ? 
+                <SelectPopup 
+                    items={numberOfWordsPerPage} 
+                    active={wordsPerUpload}
+                    text={"Words per page:"}
+                    dispatchFunction={setWordsPerUpload}
+                /> : null}
+            </div>
             <AddModal 
                 active={addModalActive} 
                 setActive={setAddModalActive} 

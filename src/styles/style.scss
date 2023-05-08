@@ -16,3 +16,18 @@
     padding-top: 10px;
     align-items: center;
 }
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    &__numberOfWords {
+        font-size: 24px;
+    }
+}
+
+.error {
+    color: red;
+    font-size: 50px;
+    text-align: center;
+    margin-top: 200px;
+}

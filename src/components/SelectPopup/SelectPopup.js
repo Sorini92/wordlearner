@@ -1,37 +1,49 @@
 import { useState, useRef, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { sortBy, activeSortTypeChanged } from '../../store/slices/wordSlice';
-import './sortPopup.scss';
+import {  useDispatch } from 'react-redux';
+import './selectPopup.scss';
 
-const SortPopup = ({sortItems}) => {
+const SelectPopup = ({items, active, text, dispatchFunction, activeTypeChanged}) => {
     const [visiblePopup, setVisiblePopup] = useState(false);
-    const sortRef = useRef();
-    const activeSortType = useSelector(state => state.words.sortType); 
+    const selectRef = useRef();
     const dispatch = useDispatch();
-
+    
     const toggleVisiblePopup = () => {
         setVisiblePopup(!visiblePopup);
     };
 
     const handleOutsideClick = (event) => {
         const path = event.path || (event.composedPath && event.composedPath());
-        if (!path.includes(sortRef.current)) {
+        if (!path.includes(selectRef.current)) {
           setVisiblePopup(false);
         }
     };
 
     const onSelectItem = (name) => {
-        dispatch(activeSortTypeChanged(name))
-        dispatch(sortBy(name))
-        setVisiblePopup(false);
+        if (activeTypeChanged) {
+            dispatch(activeTypeChanged(name))    
+        } else {
+            dispatch(dispatchFunction(name))
+            setVisiblePopup(false);
+        }
     };
 
     useEffect(() => {
         document.body.addEventListener('click', handleOutsideClick);
     }, []);
 
+    const elements = (array) => {
+         return array.map((item, index) => (
+            <li
+                onClick={() => onSelectItem(item.name)}
+                className=''
+                key={`${item.name}_${index}`}>
+                {item.name}
+            </li>
+        ))
+    }
+
     return (
-        <div ref={sortRef} className="sort">
+        <div ref={selectRef} className="sort">
             <div className="sort__label">
                 <svg
                 className={visiblePopup ? 'rotated' : ''}
@@ -45,21 +57,13 @@ const SortPopup = ({sortItems}) => {
                     fill="#2C2C2C"
                 />
                 </svg>
-                <b>Sort by:</b>
-                <span onClick={toggleVisiblePopup}>{activeSortType}</span>
+                <b>{text}</b>
+                <span onClick={toggleVisiblePopup}>{active}</span>
             </div>
             {visiblePopup && (
                 <div className="sort__popup">
                 <ul>
-                    {sortItems &&
-                    sortItems.map((item, index) => (
-                        <li
-                        onClick={() => onSelectItem(item.name)}
-                        className=''
-                        key={`${item.type}_${index}`}>
-                        {item.name}
-                        </li>
-                    ))}
+                    {items && elements(items)}
                 </ul>
                 </div>
             )}
@@ -67,4 +71,4 @@ const SortPopup = ({sortItems}) => {
     )
 }
 
-export default SortPopup;
+export default SelectPopup;

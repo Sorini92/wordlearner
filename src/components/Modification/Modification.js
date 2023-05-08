@@ -1,12 +1,16 @@
 import './modification.scss';
 
-const Modification = ({handleModifyModal, handleAddModal, onDeleteWord, selected}) => {
+const Modification = ({handleModifyModal, handleAddModal, onDeleteWord, selected, setShowMessage, setMessage}) => {
 
     const onHandleModify = () => {
         if (selected !== undefined) {
             handleModifyModal();
         } else {
-            alert('Choose the word!')
+            setShowMessage(true);
+            setMessage({
+                text: "Choose the word!",
+                color: 'red'
+            })
         }
     }
 

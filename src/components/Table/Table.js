@@ -82,7 +82,7 @@ const Table = ({onDelete, searchedWord, reverseWords, cuttedArrayOfWords, select
             {wordsLoadingStatus === "loading" ? 
             <Spinner/>
             :
-            table()
+            wordsLoadingStatus === "error" ? <div className='error'>Something went wrong, error from server</div> : table()
             }
         </>
     )

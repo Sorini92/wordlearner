@@ -7,7 +7,7 @@ const initialState = {
     wordsLoadingStatus: 'loading',
     currentPage: 1,
     totalPages: 1,
-    wordsPerUpload: 35
+    wordsPerUpload: 30
 }
 
 export const fetchWords = createAsyncThunk(
@@ -47,6 +47,9 @@ const wordsSlice = createSlice({
         },
         setTotalPages: (state, action) => {
             state.totalPages = action.payload;
+        },
+        setWordsPerUpload: (state, action) => {
+            state.wordsPerUpload = action.payload;
         },
         activeSortTypeChanged: (state, action) => {state.sortType = action.payload},
         sortBy: (state, action) => {
@@ -108,6 +111,7 @@ export const {
     modifyWord,
     deleteWord,
     setPage,
+    setWordsPerUpload,
     setTotalPages,
     activeSortTypeChanged,
     sortBy

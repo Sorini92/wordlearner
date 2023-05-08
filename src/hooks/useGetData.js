@@ -17,6 +17,7 @@ export const useGetData = () => {
                 return fileredData;
                 
             } catch(e) {
+                console.log(e)
                 throw e;
             }
         }

@@ -7,8 +7,8 @@ const Message = ({showMessage, message, setShowMessage, color}) => {
         if (showMessage) {
             setTimeout(() => {
                 setShowMessage(false)
-            }, 1500);
-            }
+            }, 1000);
+        }
     }, [showMessage]);
 
     return (
