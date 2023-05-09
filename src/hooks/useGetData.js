@@ -1,9 +1,13 @@
-import { database } from "../firebase";
-import { getDocs, collection, orderBy, query, limit } from 'firebase/firestore';
+import database from "../firebase";
+import { getDocs, collection, disableNetwork } from 'firebase/firestore';
 
 export const useGetData = () => {
         
         const request = async (url) => {
+
+            /* await disableNetwork(database);
+            console.log("Network disabled!"); */
+
             try {
                 const dataRef = await collection(database, url.firstUrl, url.secondUrl, url.thirdUrl);
                 const data = await getDocs(dataRef);

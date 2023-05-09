@@ -26,7 +26,9 @@ const SignUp = () => {
     }
 
     return (
-        <Form type='Register' title="register" handleClick={handleRegister}/>
+        <div className='firstpage'>
+            <Form text={'Already have an account?'} to={'login'} type='Register' title="register" handleClick={handleRegister}/>
+        </div>
     )
 }
 

@@ -11,7 +11,7 @@ const Login = () => {
 
     const handleLogin = (email, password) => {
         const auth = getAuth();
-        
+
         signInWithEmailAndPassword(auth, email, password)
             .then(({user}) => {
                 dispatch(setUser({
@@ -25,7 +25,9 @@ const Login = () => {
     }
 
     return (
-        <Form type='Login' title="sign in" handleClick={handleLogin}/>
+        <div className='firstpage'>
+            <Form text={'or'} to={'register'} type='Login' title="sign in" handleClick={handleLogin}/>
+        </div>
     )
 }
 

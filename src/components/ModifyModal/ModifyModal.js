@@ -1,4 +1,4 @@
-import { database } from "../../firebase";
+import database from "../../firebase";
 import { setDoc, collection, doc } from "firebase/firestore"; 
 import { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";

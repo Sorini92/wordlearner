@@ -27,6 +27,9 @@
     }
     tr:nth-child(even){
         background-color: #f2f2f2;
+        &:hover {
+            background-color: #bbb4b4;
+        }
     }
     &__nowords {
         position: absolute;
@@ -36,7 +39,7 @@
 }
 
 .activeWord {
-    background-color: palegoldenrod;
+    background-color: palegoldenrod !important;
     border: 1px solid #2222 !important;
 }
 
@@ -45,3 +48,21 @@
     text-align: center;
     font-size: 50px;
 } 
+
+.word-enter {
+    opacity: 0;
+}
+
+.word-enter-active {
+    opacity: 1;
+    transition: opacity 500ms ease-in;
+}
+
+.word-exit {
+    opacity: 1;
+}
+
+.word-exit-active {
+    opacity: 0;
+    transition: opacity 500ms ease-in;
+}

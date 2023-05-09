@@ -1,14 +1,41 @@
+.firstpage {
+    background-color: #fff;
+    width: 868px;
+    height: 650px;
+    background: radial-gradient(100% 100% at 50% 0%, #6570b4 0%, #0F1436 100%);
+    border-radius: 15px;
+    margin: 0 auto;
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .form {
     margin: 0 auto;
-    width: 400px;
+    //width: 400px;
+    width: 382px;
+    height: 342px;
+    justify-content: center;
     display: flex;
     flex-direction: column;
     &__type {
-        margin-top: 30px;
+        //margin-top: 200px;
         font-size: 30px;
+        color:white;
+    }
+    &__p {
+        text-align: center;
+        color: white;
+    }
+    &__link {
+        color: rgb(74, 204, 193);
+        &:hover {
+            color: rgb(226, 104, 104);
+        }
     }
     &__input {
-        width: 385px;
+        width: 369px;
         margin: 8px auto;
         border-radius: 3px;
         height: 25px;

@@ -2,13 +2,14 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import './form.scss';
 
-const Form = ({link, type, title, handleClick}) => {
+const Form = ({link, type, title, handleClick, to, text}) => {
 
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
 
     return (
         <div className="form">
+
             <div className="form__type">{type}</div>
             <input
                 className="form__input"
@@ -33,6 +34,9 @@ const Form = ({link, type, title, handleClick}) => {
                     {title}
                 </button>
             </div>
+            <p className="form__p">
+                {text} <Link className="form__link" to={`/${to}`}>{to}</Link>
+            </p>
         </div>
     )
 }

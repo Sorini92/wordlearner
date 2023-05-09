@@ -1,7 +1,7 @@
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigate} from "react-router-dom";
 import {useState, useEffect} from "react";
-import { database } from "../firebase";
+import database from "../firebase";
 import { deleteDoc, collection, doc } from "firebase/firestore"; 
 import {deleteWord, addWord, modifyWord, fetchWords, sortBy, activeSortTypeChanged, setWordsPerUpload} from '../store/slices/wordSlice';
 import useAuth from '../hooks/use-auth';
@@ -57,10 +57,16 @@ const HomePage = () => {
 
     useEffect(() => {
         dispatch(fetchWords());
-        //setOffset(wordsPerUpload)
         // eslint-disable-next-line
     }, []);
 
+    useEffect(() => {
+        setOffset(wordsPerUpload);
+        setCuttedArrayOfWords(words.slice(0, wordsPerUpload));
+    }, [words, wordsPerUpload]);
+    console.log(cuttedArrayOfWords, 'cuttedArrayOfWords');
+    console.log(wordsPerUpload, "wordsPerUpload");
+    console.log(offset, 'offset');
     /* useEffect(() => {
         setCuttedArrayOfWords(words.slice(0, offset));
     }, [words, offset]); */
@@ -88,14 +94,9 @@ const HomePage = () => {
     }
     //console.log(words)
     useEffect(() => {
-        /* if (offset === 30) {
-            //setOffset(wordsPerUpload);
-        } */
         if (selectedLetter.length !== 0 || searchedWord.length > 0) {
-            //setOffset(wordsPerUpload)
             setCuttedArrayOfWords(filteredElements(words).slice(0, offset));
         } else {
-            //setOffset(wordsPerUpload)
             setCuttedArrayOfWords(words.slice(0, offset));
         }
         // eslint-disable-next-line
@@ -106,7 +107,6 @@ const HomePage = () => {
             setOffset(offset + wordsPerUpload);
 		    setCuttedArrayOfWords([...cuttedArrayOfWords, ...filteredElements(words).slice(offset, offset + wordsPerUpload)]);
         } else {
-            console.log(cuttedArrayOfWords)
             setOffset(offset + wordsPerUpload);
 		    setCuttedArrayOfWords([...cuttedArrayOfWords, ...words.slice(offset, offset + wordsPerUpload)]);
         }
@@ -165,29 +165,85 @@ const HomePage = () => {
     return isAuth ? (
         <>
             <Header/>
-            <Navigation/>
+            <Navigation 
+                setSearchedWord={setSearchedWord}
+                setOffset={setOffset}
+                wordsPerUpload={wordsPerUpload}
+            />
             <div className="modifying">
-                <SortPopup sortItems={sortItems}/>
+                <SelectPopup 
+                    items={sortItems} 
+                    active={sortType}
+                    text={"Sort by:"}
+                    dispatchFunction={sortBy}
+                    activeTypeChanged={activeSortTypeChanged}
+                />
+                <ReverseArrows 
+                    setReverseWords={setReverseWords} 
+                    reverseWords={reverseWords}
+                />
                 <Modification 
                     handleModifyModal={handleModifyModal}
                     handleAddModal={handleAddModal} 
                     onDeleteWord={onDeleteWord}
-                    id={selectedId}
+                    selected={selectedWord.id}
+                    setShowMessage={setShowMessage}
+                    setMessage={setMessage}
                 />
             </div>
-            <Table onDelete={onDelete}/>
+            <AlpabetFilter 
+                setSelectedLetter={setSelectedLetter} 
+                setOffset={setOffset}
+                wordsPerUpload={wordsPerUpload}
+            />
+            <Table 
+                onDelete={onDelete} 
+                searchedWord={searchedWord}
+                reverseWords={reverseWords}
+                cuttedArrayOfWords={cuttedArrayOfWords}
+                selectedLetter={selectedLetter}
+            />
+            <div className='footer'>
+            {cuttedArrayOfWords.length !== 0 ? <div className='footer__numberOfWords'>Total words: {words.length}</div> : null}
+                <Pagination 
+                    addNewWords={addNewWords} 
+                    words={words}
+                    cuttedArrayOfWords={cuttedArrayOfWords}
+                    filteredArreyLength={filteredArreyLength}
+                    wordsPerUpload={wordsPerUpload}
+                />
+                {cuttedArrayOfWords.length !== 0 ? 
+                <SelectPopup 
+                    items={numberOfWordsPerPage} 
+                    active={wordsPerUpload}
+                    text={"Words per page:"}
+                    dispatchFunction={setWordsPerUpload}
+                /> : null}
+            </div>
             <AddModal 
                 active={addModalActive} 
                 setActive={setAddModalActive} 
-                address={'words'}
+                address={linkToWords}
                 func={addWord}
+                data={words}
+                setShowMessage={setShowMessage}
+                setMessage={setMessage}
             />
             <ModifyModal
                 active={modifyModalActive} 
                 setActive={setModifyModalActive} 
-                address={'words'}
+                address={linkToWords}
                 func={modifyWord}
-                id={selectedId}
+                data={words}
+                selected={selectedWord}
+                setShowMessage={setShowMessage}
+                setMessage={setMessage}
+            />
+            <Message 
+                message={message.text} 
+                showMessage={showMessage} 
+                setShowMessage={setShowMessage}
+                color={message.color}
             />
         </>
     ) : (
@@ -195,7 +251,7 @@ const HomePage = () => {
             {navigate('/login')}
         </>
     ) */
-    console.log(wordsPerUpload)
+    
     return (
         <>
             <Header/>
@@ -250,7 +306,7 @@ const HomePage = () => {
                 <SelectPopup 
                     items={numberOfWordsPerPage} 
                     active={wordsPerUpload}
-                    text={"Words per page:"}
+                    text={"On the page:"}
                     dispatchFunction={setWordsPerUpload}
                 /> : null}
             </div>

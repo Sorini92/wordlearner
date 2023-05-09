@@ -22,12 +22,12 @@
     &__popup {
         z-index: 1;
         position: absolute;
-        left: 80px;
+        left: 70px;
         background: #ffffff;
         box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.09);
         border-radius: 10px;
         overflow: hidden;
-        padding: 10px 0;
+        padding: 5px 0;
         width: 70px;
         ul {
             overflow: hidden;
@@ -36,7 +36,7 @@
             li {
                 text-align: center;
                 list-style-type: none;
-                padding: 10px 10px;
+                padding: 3px 5px;
                 cursor: pointer;
                 &.active,
                 &:hover {
