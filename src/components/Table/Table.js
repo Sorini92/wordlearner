@@ -18,25 +18,26 @@ const Table = ({onDelete, searchedWord, reverseWords, cuttedArrayOfWords, select
     const elements = (array) => {
         return array.map((item) => {
             return (
-                 <CSSTransition 
+                <CSSTransition 
                     timeout={500}
                     key={item.id}
-                    
-                    
-                    >
-                        {/* key={item.id} 
-                        className={idForCompare !== item.id ? '' : 'activeWord'}
-                        onClick={() => handleClick(item)} */}
-                    {state => (
-                        <tr className={idForCompare !== item.id ? 'word' : 'word activeWord'} onClick={() => handleClick(item)} >
-                            <td className='table__word'>
-                                {reverseWords ? item.russian : item.english}
-                            </td>
-                            <td className='table__translate'>
-                                {reverseWords ? item.english : item.russian}
-                            </td>
-                        </tr>
-                    )}
+                    classNames={{
+                        appear: 'word-appear',
+                        appearActive: 'word-appear-active',
+                        enter: 'word-enter',
+                        enterActive: 'word-enter-active',
+                        exit: 'word-exit',
+                        exitActive: 'word-exit-active'
+                    }}
+                >
+                    <tr className={idForCompare !== item.id ? 'word' : 'word activeWord'} onClick={() => handleClick(item)}>
+                        <td className='table__word'>
+                            {reverseWords ? item.russian : item.english}
+                        </td>
+                        <td className='table__translate'>
+                            {reverseWords ? item.english : item.russian}
+                        </td>
+                    </tr>
                 </CSSTransition>
             )
         })
@@ -46,10 +47,9 @@ const Table = ({onDelete, searchedWord, reverseWords, cuttedArrayOfWords, select
         return (
             <>
                 {words.length === 0 || (cuttedArrayOfWords.length === 0 && searchedWord.length > 0) || (cuttedArrayOfWords.length === 0 && selectedLetter.length > 0)? 
-                <div className='emptyTable'>There are no words!</div> 
-                : 
-                <TransitionGroup component="table" className='table'>
-                    {/* <table className='table'> */}
+                    <div className='emptyTable'>There are no words!</div> 
+                    : 
+                    <table className='table'>
                         <thead>
                             <tr>
                                 <th>
@@ -60,12 +60,11 @@ const Table = ({onDelete, searchedWord, reverseWords, cuttedArrayOfWords, select
                                 </th>
                             </tr>
                         </thead>
-                        <tbody className='word'>
+                        <TransitionGroup component="tbody">
                             {elements(cuttedArrayOfWords)}
-                        </tbody>
-                    {/* </table> */}
-                </TransitionGroup>
-                 }
+                        </TransitionGroup>
+                    </table>
+                }
             </>
         )
     }

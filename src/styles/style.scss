@@ -6,10 +6,13 @@
 }
 
 .footer {
+    margin-top: 10px;
+    margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
     &__numberOfWords {
-        font-size: 24px;
+        font-size: 17px;
+        font-weight: 700;
     }
 }
 

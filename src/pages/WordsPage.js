@@ -16,6 +16,7 @@ import ReverseArrows from '../components/ReverseArrows/ReverseArrow';
 import Pagination from '../components/Pagination/Pagination';
 import AlpabetFilter from '../components/AlphabetFilter/AlphabetFilter';
 import Message from '../components/Message/Message';
+import ArrowScrollUp from '../components/ArrowScrollUp/ArrowScrollUp';
 
 const HomePage = () => {
 
@@ -64,9 +65,9 @@ const HomePage = () => {
         setOffset(wordsPerUpload);
         setCuttedArrayOfWords(words.slice(0, wordsPerUpload));
     }, [words, wordsPerUpload]);
-    console.log(cuttedArrayOfWords, 'cuttedArrayOfWords');
+    /* console.log(cuttedArrayOfWords, 'cuttedArrayOfWords');
     console.log(wordsPerUpload, "wordsPerUpload");
-    console.log(offset, 'offset');
+    console.log(offset, 'offset'); */
     /* useEffect(() => {
         setCuttedArrayOfWords(words.slice(0, offset));
     }, [words, offset]); */
@@ -97,6 +98,7 @@ const HomePage = () => {
         if (selectedLetter.length !== 0 || searchedWord.length > 0) {
             setCuttedArrayOfWords(filteredElements(words).slice(0, offset));
         } else {
+            setFilteredArreyLength(0)
             setCuttedArrayOfWords(words.slice(0, offset));
         }
         // eslint-disable-next-line
@@ -111,7 +113,6 @@ const HomePage = () => {
 		    setCuttedArrayOfWords([...cuttedArrayOfWords, ...words.slice(offset, offset + wordsPerUpload)]);
         }
 	}
-
     /* const addNewWords = () => {
 		setOffset(offset + 34);
 		setCuttedArrayOfWords([...cuttedArrayOfWords, ...words.slice(offset, offset + 34)]);
@@ -137,7 +138,7 @@ const HomePage = () => {
     
                 const colRef = collection(database, linkToWords.firstUrl, linkToWords.secondUrl, linkToWords.thirdUrl)
                 deleteDoc(doc(colRef, selectedWord.id));
-    
+
                 setSelectedWord({})
             }
 
@@ -294,7 +295,10 @@ const HomePage = () => {
                 selectedLetter={selectedLetter}
             />
             <div className='footer'>
-            {cuttedArrayOfWords.length !== 0 ? <div className='footer__numberOfWords'>Total words: {words.length}</div> : null}
+                <div className='footer__numberOfWords'>
+                    {cuttedArrayOfWords.length !== 0 ? <div className='footer__numberOfWords'>Total words: {words.length}</div> : null}
+                    {cuttedArrayOfWords.length !== 0 ? <div className='footer__numberOfWords'>Current words: {filteredArreyLength === 0 ? words.length : filteredArreyLength}</div> : null}
+                </div>
                 <Pagination 
                     addNewWords={addNewWords} 
                     words={words}
@@ -335,6 +339,7 @@ const HomePage = () => {
                 setShowMessage={setShowMessage}
                 color={message.color}
             />
+            <ArrowScrollUp/>
         </>
     )
 }
