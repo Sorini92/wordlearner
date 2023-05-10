@@ -11,8 +11,14 @@ const Pagination = ({addNewWords, words, cuttedArrayOfWords, filteredArreyLength
     const {currentPage, totalPages} = useSelector((state) => state.words);
 
     useEffect(() => {
-        dispatch(setTotalPages(Math.round(words.length/wordsPerUpload)))
-    }, [words])
+        if (!(words.length % wordsPerUpload)) {
+            dispatch(setTotalPages(words.length/wordsPerUpload))
+        } else {
+            dispatch(setTotalPages(Math.round((words.length/wordsPerUpload) + 1)))
+        }
+        
+        // eslint-disable-next-line
+    }, [words, wordsPerUpload])
 
     useEffect(() => {
         const numberOfPages = []
@@ -63,6 +69,7 @@ const Pagination = ({addNewWords, words, cuttedArrayOfWords, filteredArreyLength
     
         setArrOfCurrButtons(tempNumberOfPages)
         dispatch(setPage(currentPage))
+        // eslint-disable-next-line
     }, [currentPage, cuttedArrayOfWords])
 
     const handlePageClick = (pageNumber) => {
@@ -128,7 +135,7 @@ const Pagination = ({addNewWords, words, cuttedArrayOfWords, filteredArreyLength
     return (
         <div className='pagination'>
             {(words.length === cuttedArrayOfWords.length) || words.length < wordsPerUpload || cuttedArrayOfWords.length < wordsPerUpload || cuttedArrayOfWords.length === filteredArreyLength ? null : <button className='pagination__btn' onClick={() => addNewWords()}>More</button>}
-            {words.length < wordsPerUpload || cuttedArrayOfWords.length < wordsPerUpload || cuttedArrayOfWords.length === filteredArreyLength ? null : elements()}
+            {(words.length < wordsPerUpload || cuttedArrayOfWords.length < wordsPerUpload || cuttedArrayOfWords.length === filteredArreyLength) && currentPage !== totalPages? null : elements()}
         </div>
     )
 }

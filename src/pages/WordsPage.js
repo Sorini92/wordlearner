@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {useState, useEffect} from "react";
 import database from "../firebase";
 import { deleteDoc, collection, doc } from "firebase/firestore"; 
-import {deleteWord, addWord, modifyWord, fetchWords, sortBy, activeSortTypeChanged, setWordsPerUpload} from '../store/slices/wordSlice';
+import {deleteWord, addWord, modifyWord, fetchWords, sortBy, activeSortTypeChanged, setWordsPerUpload, setPage} from '../store/slices/wordSlice';
 import useAuth from '../hooks/use-auth';
 import Header from "../components/Header/Header";
 import Navigation from "../components/Navigation/Navigation";
@@ -20,7 +20,7 @@ import ArrowScrollUp from '../components/ArrowScrollUp/ArrowScrollUp';
 
 const HomePage = () => {
 
-    const {words, wordsPerUpload, sortType} = useSelector(state => state.words);
+    const {words, wordsPerUpload, sortType, currentPage} = useSelector(state => state.words);
 
     const [addModalActive, setAddModalActive] = useState(false);
     const [showMessage, setShowMessage] = useState(false);
@@ -62,9 +62,34 @@ const HomePage = () => {
     }, []);
 
     useEffect(() => {
+        dispatch(setPage(1))
+    }, [wordsPerUpload]);
+
+    /* useEffect(() => {
+        if(cuttedArrayOfWords.length !== wordsPerUpload) {
+            dispatch(setPage(cuttedArrayOfWords.length/wordsPerUpload))
+        }
+    }, [cuttedArrayOfWords.length]);
+    console.log(cuttedArrayOfWords.length); */
+    useEffect(() => {
+        let lastIndex = currentPage*wordsPerUpload;
+        let firstIndex = lastIndex - wordsPerUpload;
         setOffset(wordsPerUpload);
-        setCuttedArrayOfWords(words.slice(0, wordsPerUpload));
-    }, [words, wordsPerUpload]);
+        setCuttedArrayOfWords(words.slice(firstIndex, lastIndex));
+    }, [words, wordsPerUpload, currentPage]);
+
+    /* useEffect(() => {
+        if (currentPage === 1) {
+            setOffset(wordsPerUpload);
+            setCuttedArrayOfWords(words.slice(0, wordsPerUpload));
+        } else {
+            let lastIndex = currentPage*wordsPerUpload;
+            let firstIndex = lastIndex - wordsPerUpload;
+            setOffset(wordsPerUpload);
+            setCuttedArrayOfWords(words.slice(firstIndex, lastIndex));
+        }
+        
+    }, [currentPage]); */
     /* console.log(cuttedArrayOfWords, 'cuttedArrayOfWords');
     console.log(wordsPerUpload, "wordsPerUpload");
     console.log(offset, 'offset'); */
@@ -112,6 +137,7 @@ const HomePage = () => {
             setOffset(offset + wordsPerUpload);
 		    setCuttedArrayOfWords([...cuttedArrayOfWords, ...words.slice(offset, offset + wordsPerUpload)]);
         }
+        
 	}
     /* const addNewWords = () => {
 		setOffset(offset + 34);
@@ -252,7 +278,6 @@ const HomePage = () => {
             {navigate('/login')}
         </>
     ) */
-    
     return (
         <>
             <Header/>
@@ -262,17 +287,6 @@ const HomePage = () => {
                 wordsPerUpload={wordsPerUpload}
             />
             <div className="modifying">
-                <SelectPopup 
-                    items={sortItems} 
-                    active={sortType}
-                    text={"Sort by:"}
-                    dispatchFunction={sortBy}
-                    activeTypeChanged={activeSortTypeChanged}
-                />
-                <ReverseArrows 
-                    setReverseWords={setReverseWords} 
-                    reverseWords={reverseWords}
-                />
                 <Modification 
                     handleModifyModal={handleModifyModal}
                     handleAddModal={handleAddModal} 
@@ -281,6 +295,19 @@ const HomePage = () => {
                     setShowMessage={setShowMessage}
                     setMessage={setMessage}
                 />
+                <ReverseArrows 
+                    setReverseWords={setReverseWords} 
+                    reverseWords={reverseWords}
+                />
+                {filteredArreyLength === 0 ? 
+                <SelectPopup 
+                    items={sortItems} 
+                    active={sortType}
+                    text={"Sort by:"}
+                    dispatchFunction={sortBy}
+                    activeTypeChanged={activeSortTypeChanged}
+                /> : 
+                null}
             </div>
             <AlpabetFilter 
                 setSelectedLetter={setSelectedLetter} 

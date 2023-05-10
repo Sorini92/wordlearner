@@ -49,21 +49,23 @@ const Table = ({onDelete, searchedWord, reverseWords, cuttedArrayOfWords, select
                 {words.length === 0 || (cuttedArrayOfWords.length === 0 && searchedWord.length > 0) || (cuttedArrayOfWords.length === 0 && selectedLetter.length > 0)? 
                     <div className='emptyTable'>There are no words!</div> 
                     : 
-                    <table className='table'>
-                        <thead>
-                            <tr>
-                                <th>
-                                    {reverseWords ? 'Russian words' : 'English words'}
-                                </th>
-                                <th>
-                                    {reverseWords ? 'English words' : 'Russian words'}
-                                </th>
-                            </tr>
-                        </thead>
-                        <TransitionGroup component="tbody">
-                            {elements(cuttedArrayOfWords)}
-                        </TransitionGroup>
-                    </table>
+                    <div className='table__wrapper'>
+                        <table className='table'>
+                            <thead>
+                                <tr>
+                                    <th>
+                                        {reverseWords ? 'Russian words' : 'English words'}
+                                    </th>
+                                    <th>
+                                        {reverseWords ? 'English words' : 'Russian words'}
+                                    </th>
+                                </tr>
+                            </thead>
+                            <TransitionGroup component="tbody">
+                                {elements(cuttedArrayOfWords)}
+                            </TransitionGroup>
+                        </table>
+                    </div>
                 }
             </>
         )

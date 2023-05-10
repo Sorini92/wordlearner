@@ -3,7 +3,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
     &__btn {
         width: 200px;
@@ -67,6 +67,7 @@
         }
     }
     &__pages{
+        
         margin-left: 10px;
         display: block;
         margin-top: 10px;
