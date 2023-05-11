@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {useState, useEffect} from "react";
 import database from "../firebase";
 import { deleteDoc, collection, doc } from "firebase/firestore"; 
-import {deleteWord, addWord, modifyWord, fetchWords, sortBy, activeSortTypeChanged, setWordsPerUpload, setPage} from '../store/slices/wordSlice';
+import {deleteWord, addWord, modifyWord, setTotalPages, fetchWords, sortBy, activeSortTypeChanged, setWordsPerUpload, setPage} from '../store/slices/wordSlice';
 import useAuth from '../hooks/use-auth';
 import Header from "../components/Header/Header";
 import Navigation from "../components/Navigation/Navigation";
@@ -20,7 +20,7 @@ import ArrowScrollUp from '../components/ArrowScrollUp/ArrowScrollUp';
 
 const HomePage = () => {
 
-    const {words, wordsPerUpload, sortType, currentPage} = useSelector(state => state.words);
+    const {words, wordsPerUpload, sortType, currentPage, totalPages} = useSelector(state => state.words);
 
     const [addModalActive, setAddModalActive] = useState(false);
     const [showMessage, setShowMessage] = useState(false);
@@ -39,9 +39,12 @@ const HomePage = () => {
     const navigate = useNavigate();
 
     const sortItems = [
-        { name: 'english'},
-        { name: 'russian'},
-        { name: 'date'},        
+        { name: 'from new'},
+        { name: 'from old'},         
+        { name: 'a to z'},
+        { name: 'z to a'},
+        { name: 'а to я'},
+        { name: 'я to а'},
     ];
 
     const numberOfWordsPerPage = [
@@ -55,7 +58,27 @@ const HomePage = () => {
         secondUrl: 'user1',
         thirdUrl: 'words'
     }
-
+    /* console.log(totalPages, 'total')
+    console.log(filteredArreyLength, 'filteredArrLeng');
+    console.log(currentPage, 'cr'); */
+    useEffect(() => {
+        if (selectedLetter.length !== 0 || searchedWord.length > 0) {
+            if (!(filteredArreyLength % wordsPerUpload)) {
+                dispatch(setTotalPages(filteredArreyLength/wordsPerUpload))
+            } else {
+                dispatch(setTotalPages(Math.ceil((filteredArreyLength/wordsPerUpload))))
+            }
+        } else {
+            if (!(words.length % wordsPerUpload)) {
+                dispatch(setTotalPages(words.length/wordsPerUpload))
+            } else {
+                dispatch(setTotalPages(Math.ceil((words.length/wordsPerUpload))))
+            }
+        }
+        // eslint-disable-next-line
+    }, [words, wordsPerUpload, selectedLetter, searchedWord.length, filteredArreyLength, totalPages])
+    //console.log(sortType)
+    //console.log(words)
     useEffect(() => {
         dispatch(fetchWords());
         // eslint-disable-next-line
@@ -63,40 +86,23 @@ const HomePage = () => {
 
     useEffect(() => {
         dispatch(setPage(1))
-    }, [wordsPerUpload]);
+        // eslint-disable-next-line
+    }, [wordsPerUpload, words, filteredArreyLength]);
 
-    /* useEffect(() => {
-        if(cuttedArrayOfWords.length !== wordsPerUpload) {
-            dispatch(setPage(cuttedArrayOfWords.length/wordsPerUpload))
-        }
-    }, [cuttedArrayOfWords.length]);
-    console.log(cuttedArrayOfWords.length); */
     useEffect(() => {
-        let lastIndex = currentPage*wordsPerUpload;
+        let lastIndex = currentPage * wordsPerUpload;
         let firstIndex = lastIndex - wordsPerUpload;
-        setOffset(wordsPerUpload);
-        setCuttedArrayOfWords(words.slice(firstIndex, lastIndex));
-    }, [words, wordsPerUpload, currentPage]);
 
-    /* useEffect(() => {
-        if (currentPage === 1) {
-            setOffset(wordsPerUpload);
-            setCuttedArrayOfWords(words.slice(0, wordsPerUpload));
+        if (selectedLetter.length !== 0 || searchedWord.length > 0) {
+            //setOffset(wordsPerUpload);
+            setCuttedArrayOfWords(filteredElements(words).slice(firstIndex, lastIndex));
         } else {
-            let lastIndex = currentPage*wordsPerUpload;
-            let firstIndex = lastIndex - wordsPerUpload;
-            setOffset(wordsPerUpload);
+            //setOffset(wordsPerUpload);
             setCuttedArrayOfWords(words.slice(firstIndex, lastIndex));
         }
-        
-    }, [currentPage]); */
-    /* console.log(cuttedArrayOfWords, 'cuttedArrayOfWords');
-    console.log(wordsPerUpload, "wordsPerUpload");
-    console.log(offset, 'offset'); */
-    /* useEffect(() => {
-        setCuttedArrayOfWords(words.slice(0, offset));
-    }, [words, offset]); */
-
+        // eslint-disable-next-line
+    }, [currentPage, wordsPerUpload, offset]);
+    
     const filteredElements = (array) => {
         let data = [];
         if (searchedWord.length > 0) {
@@ -118,7 +124,7 @@ const HomePage = () => {
         setFilteredArreyLength(data.length)
         return data;
     }
-    //console.log(words)
+
     useEffect(() => {
         if (selectedLetter.length !== 0 || searchedWord.length > 0) {
             setCuttedArrayOfWords(filteredElements(words).slice(0, offset));
@@ -128,21 +134,18 @@ const HomePage = () => {
         }
         // eslint-disable-next-line
     }, [words, offset, selectedLetter, searchedWord.length, wordsPerUpload]);
-    
+
     const addNewWords = () => {
 		if (selectedLetter.length !== 0 || searchedWord.length > 0) {
+            dispatch(setPage(currentPage + 1))
             setOffset(offset + wordsPerUpload);
 		    setCuttedArrayOfWords([...cuttedArrayOfWords, ...filteredElements(words).slice(offset, offset + wordsPerUpload)]);
         } else {
+            dispatch(setPage(currentPage + 1))
             setOffset(offset + wordsPerUpload);
 		    setCuttedArrayOfWords([...cuttedArrayOfWords, ...words.slice(offset, offset + wordsPerUpload)]);
         }
-        
 	}
-    /* const addNewWords = () => {
-		setOffset(offset + 34);
-		setCuttedArrayOfWords([...cuttedArrayOfWords, ...words.slice(offset, offset + 34)]);
-	} */
 
     const handleAddModal = () => {
         setAddModalActive(!addModalActive);

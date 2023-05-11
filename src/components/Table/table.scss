@@ -15,7 +15,7 @@
         border: 1px solid #9999;
         padding: 2px;
         padding-left: 5px;
-        width: 50%;
+        width: 42%;
         font-size: 14px;
     }
     th {
@@ -38,6 +38,9 @@
         position: absolute;
         top: 50px;
         left: 330px;
+    }
+    &__date {
+        transition: 1s ;
     }
 }
 

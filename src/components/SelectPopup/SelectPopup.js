@@ -19,8 +19,11 @@ const SelectPopup = ({items, active, text, dispatchFunction, activeTypeChanged})
     };
 
     const onSelectItem = (name) => {
-        if (activeTypeChanged) {
-            dispatch(activeTypeChanged(name))    
+        console.log(!!activeTypeChanged)
+        if (!!activeTypeChanged) {
+            dispatch(activeTypeChanged(name))  
+            dispatch(dispatchFunction(name))
+            setVisiblePopup(false);
         } else {
             dispatch(dispatchFunction(name))
             setVisiblePopup(false);

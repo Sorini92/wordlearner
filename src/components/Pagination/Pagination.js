@@ -1,24 +1,14 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { setPage, setTotalPages } from '../../store/slices/wordSlice';
+import { setPage } from '../../store/slices/wordSlice';
 import './pagination.scss';
 
 const Pagination = ({addNewWords, words, cuttedArrayOfWords, filteredArreyLength, wordsPerUpload}) => {
 
-    const [arrOfCurrButtons, setArrOfCurrButtons] = useState([])
+    const [arrOfCurrPages, setArrOfCurrPages] = useState([])
 
     const dispatch = useDispatch();
     const {currentPage, totalPages} = useSelector((state) => state.words);
-
-    useEffect(() => {
-        if (!(words.length % wordsPerUpload)) {
-            dispatch(setTotalPages(words.length/wordsPerUpload))
-        } else {
-            dispatch(setTotalPages(Math.round((words.length/wordsPerUpload) + 1)))
-        }
-        
-        // eslint-disable-next-line
-    }, [words, wordsPerUpload])
 
     useEffect(() => {
         const numberOfPages = []
@@ -26,7 +16,7 @@ const Pagination = ({addNewWords, words, cuttedArrayOfWords, filteredArreyLength
             numberOfPages.push(i)
         }
 
-        let tempNumberOfPages = [...arrOfCurrButtons]
+        let tempNumberOfPages = [...arrOfCurrPages]
         
         let dotsInitial = '...'
         let dotsLeft = '... '
@@ -57,20 +47,20 @@ const Pagination = ({addNewWords, words, cuttedArrayOfWords, filteredArreyLength
         }
         
         else if (currentPage === dotsInitial) {
-            dispatch(setPage(arrOfCurrButtons[arrOfCurrButtons.length-3] + 1)) 
+            dispatch(setPage(arrOfCurrPages[arrOfCurrPages.length-3] + 1)) 
         }
         else if (currentPage === dotsRight) {
-            dispatch(setPage(arrOfCurrButtons[3] + 2))
+            dispatch(setPage(arrOfCurrPages[3] + 2))
         }
     
         else if (currentPage === dotsLeft) {
-            dispatch(setPage(arrOfCurrButtons[3] - 2))
+            dispatch(setPage(arrOfCurrPages[3] - 2))
         }
     
-        setArrOfCurrButtons(tempNumberOfPages)
+        setArrOfCurrPages(tempNumberOfPages)
         dispatch(setPage(currentPage))
         // eslint-disable-next-line
-    }, [currentPage, cuttedArrayOfWords])
+    }, [currentPage, cuttedArrayOfWords, totalPages])
 
     const handlePageClick = (pageNumber) => {
         dispatch(setPage(pageNumber));
@@ -116,7 +106,7 @@ const Pagination = ({addNewWords, words, cuttedArrayOfWords, filteredArreyLength
         return (
             <div className="pagination__pages">
                 {prevBtns()}
-               {arrOfCurrButtons.map(((item, i) => {
+               {arrOfCurrPages.map(((item, i) => {
                     return (
                         <div
                             key={i}
@@ -131,11 +121,11 @@ const Pagination = ({addNewWords, words, cuttedArrayOfWords, filteredArreyLength
             </div>
         )
     }
-    
+
     return (
         <div className='pagination'>
-            {(words.length === cuttedArrayOfWords.length) || words.length < wordsPerUpload || cuttedArrayOfWords.length < wordsPerUpload || cuttedArrayOfWords.length === filteredArreyLength ? null : <button className='pagination__btn' onClick={() => addNewWords()}>More</button>}
-            {(words.length < wordsPerUpload || cuttedArrayOfWords.length < wordsPerUpload || cuttedArrayOfWords.length === filteredArreyLength) && currentPage !== totalPages? null : elements()}
+            {(words.length === cuttedArrayOfWords.length) || words.length < wordsPerUpload || cuttedArrayOfWords.length < wordsPerUpload || cuttedArrayOfWords.length === filteredArreyLength || currentPage === totalPages ? null : <button className='pagination__btn' onClick={() => addNewWords()}>More</button>}
+            {(words.length < wordsPerUpload || cuttedArrayOfWords.length < wordsPerUpload || cuttedArrayOfWords.length === filteredArreyLength) && (currentPage === 1 && totalPages < 2) ? null : elements()}
         </div>
     )
 }

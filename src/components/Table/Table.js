@@ -7,14 +7,22 @@ import './table.scss';
 const Table = ({onDelete, searchedWord, reverseWords, cuttedArrayOfWords, selectedLetter}) => {
 
     const [idForCompare, setIdForCompare] = useState('');
+    const [isShowDate, setIsShowDate] = useState(false);
 
     const {wordsLoadingStatus, words} = useSelector(state => state.words)
 
     const handleClick = (word) => {
         setIdForCompare(word.id);
         onDelete(word); 
+        setIsShowDate(!isShowDate)
     }
     
+    const FormationgDate = (date) => {
+        let normalDate = new Date(date)
+        const formattedDate = `${normalDate.toLocaleTimeString()} ${normalDate.toLocaleDateString()}`;
+        return formattedDate
+    }
+
     const elements = (array) => {
         return array.map((item) => {
             return (
@@ -37,6 +45,11 @@ const Table = ({onDelete, searchedWord, reverseWords, cuttedArrayOfWords, select
                         <td className='table__translate'>
                             {reverseWords ? item.english : item.russian}
                         </td>
+                        {isShowDate ? 
+                        <td className='table__date'>
+                           {FormationgDate(item.date)}
+                        </td> 
+                        : null}
                     </tr>
                 </CSSTransition>
             )
@@ -59,6 +72,11 @@ const Table = ({onDelete, searchedWord, reverseWords, cuttedArrayOfWords, select
                                     <th>
                                         {reverseWords ? 'English words' : 'Russian words'}
                                     </th>
+                                    {isShowDate ? 
+                                    <th className='table__date'>
+                                        Date of adding
+                                    </th> 
+                                    : null}
                                 </tr>
                             </thead>
                             <TransitionGroup component="tbody">
