@@ -12,7 +12,6 @@ import SelectPopup from "../components/SelectPopup/SelectPopup";
 import Modification from "../components/Modification/Modification";
 import AddModal from "../components/AddModal/AddModal";
 import ModifyModal from "../components/ModifyModal/ModifyModal";
-import ReverseArrows from '../components/ReverseArrows/ReverseArrow';
 import Pagination from '../components/Pagination/Pagination';
 import AlpabetFilter from '../components/AlphabetFilter/AlphabetFilter';
 import Message from '../components/Message/Message';
@@ -29,7 +28,6 @@ const HomePage = () => {
     const [selectedWord, setSelectedWord] = useState({});
     const [selectedLetter, setSelectedLetter] = useState('');
     const [searchedWord, setSearchedWord] = useState([]);
-    const [reverseWords, setReverseWords] = useState(false);
     const [cuttedArrayOfWords, setCuttedArrayOfWords] = useState([]);
     const [filteredArreyLength, setFilteredArreyLength] = useState(0);
 	const [offset, setOffset] = useState(30);
@@ -64,14 +62,18 @@ const HomePage = () => {
     useEffect(() => {
         if (selectedLetter.length !== 0 || searchedWord.length > 0) {
             if (!(filteredArreyLength % wordsPerUpload)) {
+                setOffset(wordsPerUpload);
                 dispatch(setTotalPages(filteredArreyLength/wordsPerUpload))
             } else {
+                setOffset(wordsPerUpload);
                 dispatch(setTotalPages(Math.ceil((filteredArreyLength/wordsPerUpload))))
             }
         } else {
             if (!(words.length % wordsPerUpload)) {
+                setOffset(wordsPerUpload);
                 dispatch(setTotalPages(words.length/wordsPerUpload))
             } else {
+                setOffset(wordsPerUpload);
                 dispatch(setTotalPages(Math.ceil((words.length/wordsPerUpload))))
             }
         }
@@ -165,17 +167,17 @@ const HomePage = () => {
             if (window.confirm('Are you sure?')) {
                 dispatch(deleteWord(selectedWord.id));
     
-                const colRef = collection(database, linkToWords.firstUrl, linkToWords.secondUrl, linkToWords.thirdUrl)
-                deleteDoc(doc(colRef, selectedWord.id));
+                /* const colRef = collection(database, linkToWords.firstUrl, linkToWords.secondUrl, linkToWords.thirdUrl)
+                deleteDoc(doc(colRef, selectedWord.id)); */
 
                 setSelectedWord({})
-            }
 
-            setShowMessage(true)
-            setMessage({
-                text: "The word was successfully deleted!",
-                color: 'green'
-            })
+                setShowMessage(true)
+                setMessage({
+                    text: "The word was successfully deleted!",
+                    color: 'green'
+                })
+            }
         } else {
             setShowMessage(true)
             setMessage({
@@ -298,10 +300,6 @@ const HomePage = () => {
                     setShowMessage={setShowMessage}
                     setMessage={setMessage}
                 />
-                <ReverseArrows 
-                    setReverseWords={setReverseWords} 
-                    reverseWords={reverseWords}
-                />
                 {filteredArreyLength === 0 ? 
                 <SelectPopup 
                     items={sortItems} 
@@ -320,7 +318,6 @@ const HomePage = () => {
             <Table 
                 onDelete={onDelete} 
                 searchedWord={searchedWord}
-                reverseWords={reverseWords}
                 cuttedArrayOfWords={cuttedArrayOfWords}
                 selectedLetter={selectedLetter}
             />
