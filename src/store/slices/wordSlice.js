@@ -42,6 +42,9 @@ const wordsSlice = createSlice({
         deleteWord: (state, action) => {
             state.words = state.words.filter(item => item.id !== action.payload)
         },
+        deleteWords: (state, action) => {
+            state.words = state.words.filter(item => !action.payload.includes(item.id));
+        },
         setPage: (state, action) => {
             state.currentPage = action.payload;
         },
@@ -135,6 +138,7 @@ export const {
     addWord,
     modifyWord,
     deleteWord,
+    deleteWords,
     setPage,
     setWordsPerUpload,
     setTotalPages,

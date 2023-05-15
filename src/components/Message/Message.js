@@ -7,7 +7,7 @@ const Message = ({showMessage, message, setShowMessage, color}) => {
         if (showMessage) {
             setTimeout(() => {
                 setShowMessage(false)
-            }, 1000);
+            }, 2000);
         }
     }, [showMessage]);
 

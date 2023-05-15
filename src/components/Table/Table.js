@@ -5,7 +5,7 @@ import ReverseArrows from '../ReverseArrows/ReverseArrow';
 import Spinner from '../Spinner/Spinner';
 import './table.scss';
 
-const Table = ({onDelete, searchedWord, cuttedArrayOfWords, selectedLetter}) => {
+const Table = ({searchedWord, cuttedArrayOfWords, selectedLetter, setSelectedWord, selectedWords, setSelectedWords}) => {
     
     const {wordsLoadingStatus, words} = useSelector(state => state.words)
 
@@ -13,20 +13,31 @@ const Table = ({onDelete, searchedWord, cuttedArrayOfWords, selectedLetter}) => 
     const [isShowDate, setIsShowDate] = useState(false);
     const [isShowTicks, setIsShowTicks] = useState(false);
     const [reverseWords, setReverseWords] = useState(false);
-    const [selectedWords, setSelectedWords] = useState([]);
-
-    const isSelected = (word) => selectedWords.indexOf(word.id) !== -1;
+    const [isChecked, setIsChecked] = useState(false);
 
     const handleClick = (word) => {
+        setSelectedWord(word)
         setIdForCompare(word.id);
-        /* onDelete(word); */
-        console.log(word)
-        const selectedIndex = selectedWords.indexOf(word.id);
-        
+    }
+
+    const handleSelectAllClick = (event) => {
+        setIsChecked(event.target.checked);
+        if (event.target.checked) {
+            const newSelected = cuttedArrayOfWords.map((n) => n.id);
+            setSelectedWords(newSelected);
+            return;
+        }
+        setSelectedWords([]);
+    };
+
+    const handleSelect = (id) => {
+
+        const selectedIndex = selectedWords.indexOf(id);
+
         let newSelected = [];
         
         if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selectedWords, word.id);
+            newSelected = newSelected.concat(selectedWords, id);
         } else if (selectedIndex === 0) {
             newSelected = newSelected.concat(selectedWords.slice(1));
         } else if (selectedIndex === selectedWords.length - 1) {
@@ -41,17 +52,6 @@ const Table = ({onDelete, searchedWord, cuttedArrayOfWords, selectedLetter}) => 
         setSelectedWords(newSelected);
     }
 
-    //console.log(selectedWords)
-
-    const handleSelectAllClick = (event) => {
-        if (event.target.checked) {
-            const newSelected = cuttedArrayOfWords;
-            setSelectedWords(newSelected);
-            return;
-        }
-        setSelectedWords([]);
-    };
-    
     const onFormattedDate = (date) => {
         let normalDate = new Date(date)
         const formattedDate = `${normalDate.toLocaleTimeString()} ${normalDate.toLocaleDateString()}`;
@@ -65,11 +65,9 @@ const Table = ({onDelete, searchedWord, cuttedArrayOfWords, selectedLetter}) => 
     const handleShowTicks = () => {
         setIsShowTicks(!isShowTicks);
     }
-    console.log(selectedWords);
+    
     const elements = (array) => {
         return array.map((item) => {
-            const isItemSelected = isSelected(item);
-            console.log(isItemSelected)
             return (
                 <CSSTransition 
                     timeout={500}
@@ -84,25 +82,46 @@ const Table = ({onDelete, searchedWord, cuttedArrayOfWords, selectedLetter}) => 
                     }}
                 >
                     <tr 
-                        selected={isItemSelected}
-                        aria-checked={isItemSelected}
                         role="checkbox"
                         className={idForCompare !== item.id ? 'word' : 'word activeWord'} 
                         onClick={() => handleClick(item)}
                     >
                         {isShowTicks ? 
                             <td className='table__ticks'>
-                                <input defaultChecked={isItemSelected} type='checkbox'/>
+                                <input 
+                                    checked={selectedWords.includes(item.id) || isChecked} 
+                                    onChange={(e) => handleSelect(item.id)} 
+                                    type='checkbox'
+                                />
                             </td>
                             :
                             null
                         }
-                        <td className='table__word'>
+                        {reverseWords ? 
+                            <>
+                                <td className='table__word'>
+                                    {item.russian}
+                                </td> 
+                                <td className='table__translate'>
+                                    {item.english}
+                                </td>
+                            </>
+                            : 
+                            <>
+                                <td className='table__word'>
+                                    {item.english}
+                                </td> 
+                                <td className='table__translate'>
+                                    {item.russian}
+                                </td>
+                            </>
+                        }
+                        {/* <td className='table__word'>
                             {reverseWords ? item.russian : item.english}
                         </td>
                         <td className='table__translate'>
                             {reverseWords ? item.english : item.russian}
-                        </td>
+                        </td> */}
                         {isShowDate ? 
                             <td className='table__date'>
                                 {onFormattedDate(item.date)}
@@ -142,18 +161,41 @@ const Table = ({onDelete, searchedWord, cuttedArrayOfWords, selectedLetter}) => 
                             <thead>
                                 <tr>
                                     {isShowTicks ? 
-                                        <th onChange={handleSelectAllClick}  className='table__ticks'>
+                                        <th 
+                                            onChange={handleSelectAllClick}  
+                                            className='table__ticks'
+                                            checked={isChecked}
+                                        >
                                             <input type='checkbox'/>
                                         </th> 
                                         :
                                         null
                                     }
-                                    <th className='table__translate'>
+                                    {reverseWords ? 
+                                        <>
+                                            <th className='table__wordHeader'>
+                                                Russian words
+                                            </th> 
+                                            <th className='table__translateHeader'>
+                                                English words
+                                            </th>
+                                        </>
+                                        : 
+                                        <>
+                                            <th className='table__wordHeader'>
+                                                English words
+                                            </th>
+                                            <th className='table__translateHeader'>
+                                                Russian words
+                                            </th>
+                                        </>
+                                    }
+                                    {/* <th className='table__word'>
                                         {reverseWords ? 'Russian words' : 'English words'}
                                     </th>
                                     <th className='table__translate'>
                                         {reverseWords ? 'English words' : 'Russian words'}
-                                    </th>
+                                    </th> */}
                                     {isShowDate ? 
                                         <th className='table__date'>
                                             Date of adding

@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {useState, useEffect} from "react";
 import database from "../firebase";
 import { deleteDoc, collection, doc } from "firebase/firestore"; 
-import {deleteWord, addWord, modifyWord, setTotalPages, fetchWords, sortBy, activeSortTypeChanged, setWordsPerUpload, setPage} from '../store/slices/wordSlice';
+import {deleteWord, deleteWords, addWord, modifyWord, setTotalPages, fetchWords, sortBy, activeSortTypeChanged, setWordsPerUpload, setPage} from '../store/slices/wordSlice';
 import useAuth from '../hooks/use-auth';
 import Header from "../components/Header/Header";
 import Navigation from "../components/Navigation/Navigation";
@@ -26,6 +26,7 @@ const HomePage = () => {
     const [message, setMessage] = useState({});
     const [modifyModalActive, setModifyModalActive] = useState(false);
     const [selectedWord, setSelectedWord] = useState({});
+    const [selectedWords, setSelectedWords] = useState([]);
     const [selectedLetter, setSelectedLetter] = useState('');
     const [searchedWord, setSearchedWord] = useState([]);
     const [cuttedArrayOfWords, setCuttedArrayOfWords] = useState([]);
@@ -156,28 +157,43 @@ const HomePage = () => {
     const handleModifyModal = () => {
         setModifyModalActive(!modifyModalActive);
     }
-
-    const onDelete = (word) => {
-        setSelectedWord(word)
-    }
-
+    
     const onDeleteWord = () => {
 
         if (selectedWord.id !== undefined) {
-            if (window.confirm('Are you sure?')) {
-                dispatch(deleteWord(selectedWord.id));
+            if (selectedWords.length === 0) {
+                if (window.confirm('Are you sure?')) {
+                    dispatch(deleteWord(selectedWord.id));
+        
+                    const colRef = collection(database, linkToWords.firstUrl, linkToWords.secondUrl, linkToWords.thirdUrl)
+                    deleteDoc(doc(colRef, selectedWord.id));
     
-                /* const colRef = collection(database, linkToWords.firstUrl, linkToWords.secondUrl, linkToWords.thirdUrl)
-                deleteDoc(doc(colRef, selectedWord.id)); */
-
-                setSelectedWord({})
-
-                setShowMessage(true)
-                setMessage({
-                    text: "The word was successfully deleted!",
-                    color: 'green'
-                })
+                    setSelectedWord({})
+    
+                    setShowMessage(true)
+                    setMessage({
+                        text: "The word was successfully deleted!",
+                        color: 'green'
+                    })
+                }
+            } else {
+                if (window.confirm('Are you sure?')) {
+                    dispatch(deleteWords(selectedWords));
+        
+                    const colRef = collection(database, linkToWords.firstUrl, linkToWords.secondUrl, linkToWords.thirdUrl)
+                    
+                    selectedWords.forEach(item => deleteDoc(doc(colRef, item)))
+    
+                    setSelectedWords([]);
+    
+                    setShowMessage(true)
+                    setMessage({
+                        text: "The word was successfully deleted!",
+                        color: 'green'
+                    })
+                }
             }
+
         } else {
             setShowMessage(true)
             setMessage({
@@ -296,7 +312,8 @@ const HomePage = () => {
                     handleModifyModal={handleModifyModal}
                     handleAddModal={handleAddModal} 
                     onDeleteWord={onDeleteWord}
-                    selected={selectedWord.id}
+                    selectedItem={selectedWord.id}
+                    selectedItems={selectedWords}
                     setShowMessage={setShowMessage}
                     setMessage={setMessage}
                 />
@@ -316,10 +333,12 @@ const HomePage = () => {
                 wordsPerUpload={wordsPerUpload}
             />
             <Table 
-                onDelete={onDelete} 
                 searchedWord={searchedWord}
                 cuttedArrayOfWords={cuttedArrayOfWords}
                 selectedLetter={selectedLetter}
+                setSelectedWord={setSelectedWord}
+                selectedWords={selectedWords}
+                setSelectedWords={setSelectedWords}
             />
             <div className='footer'>
                 <div className='footer__numberOfWords'>
