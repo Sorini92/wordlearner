@@ -4,11 +4,13 @@ import './message.scss';
 const Message = ({showMessage, message, setShowMessage, color}) => {
 
     useEffect(() => {
+        let timer;
         if (showMessage) {
-            setTimeout(() => {
+            timer = setTimeout(() => {
                 setShowMessage(false)
             }, 2000);
         }
+        return () => clearTimeout(timer);
     }, [showMessage]);
 
     return (

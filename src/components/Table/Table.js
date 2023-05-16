@@ -65,9 +65,12 @@ const Table = ({searchedWord, cuttedArrayOfWords, selectedLetter, setSelectedWor
 
     const handleUnblur = (word) => {
         setUnbluredWord(word);
-        setTimeout(() => {
+
+        let timer = setTimeout(() => {
             setUnbluredWord('')
         }, 2000);
+
+        //clearTimeout(timer)        
     }
     
     const elements = (array) => {
