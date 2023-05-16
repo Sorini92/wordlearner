@@ -6,6 +6,7 @@ const ArrowScrollUp = () => {
     const [showScroll, setShowScroll] = useState(false);
 
     useEffect(() => {
+
         const handleScroll = () => {
             if (window.scrollY >= 500) {
                 setShowScroll(true);
@@ -30,7 +31,7 @@ const ArrowScrollUp = () => {
         });
       }
     }
-    //&#9650;
+
     return (
         <div className={ showScroll ? 'scrollup' : 'show'} onClick={handlerScrollUp}></div>
     );

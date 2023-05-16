@@ -1,6 +1,6 @@
 import './modification.scss';
 
-const Modification = ({handleModifyModal, handleAddModal, onDeleteWord, selectedItem, selectedItems, setShowMessage, setMessage}) => {
+const Modification = ({handleModifyModal, handleAddModal, onDelete, selectedItem, selectedItems, setShowMessage, setMessage}) => {
 
     const onHandleModify = () => {
         if (selectedItem !== undefined || selectedItems.length !== 0) {
@@ -16,24 +16,9 @@ const Modification = ({handleModifyModal, handleAddModal, onDeleteWord, selected
 
     return (
         <div className='modification'>
-            <button 
-                className='modification__btn'
-                onClick={() => handleAddModal()}
-            >
-                Add
-            </button>
-            <button 
-                className='modification__btn'
-                onClick={() => onHandleModify()}
-            >
-                Modify
-            </button>
-            <button 
-                className='modification__btn'
-                onClick={() => onDeleteWord()}
-            >
-                Delete
-            </button>
+            <button className='modification__btn' onClick={() => handleAddModal()}>Add</button>
+            <button className='modification__btn' onClick={() => onHandleModify()}>Modify</button>
+            <button className='modification__btn' onClick={() => onDelete()}>Delete</button>
         </div>
     )
 }

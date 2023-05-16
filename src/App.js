@@ -1,12 +1,13 @@
 import { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate} from "react-router-dom";
 import Spinner from "./components/Spinner/Spinner";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
 import './styles/style.scss';
 
 const WordsPage = lazy(() => import("./pages/WordsPage"))
 const Page404 = lazy(() => import("./pages/404"))
+const SentencesPage = lazy(() => import("./pages/SentencesPage"))
+const LoginPage = lazy(() => import("./pages/LoginPage"))
+const RegisterPage = lazy(() => import("./pages/RegisterPage"))
 
 function App() {
 	return (
@@ -18,12 +19,18 @@ function App() {
 						path="/words" 
 						element={<Suspense fallback={<Spinner/>}><WordsPage/></Suspense>}
 					/>
-					{/* <Route 
+					<Route 
 						path="/sentences" 
 						element={<Suspense fallback={<Spinner/>}><SentencesPage/></Suspense>}
-					/> */}
-					<Route path="/login" element={<LoginPage/>} />
-					<Route path="/register" element={<RegisterPage/>} />
+					/>
+					<Route 
+						path="/login" 
+						element={<Suspense fallback={<Spinner/>}><LoginPage/></Suspense>}
+					/>
+					<Route 
+						path="/register" 
+						element={<Suspense fallback={<Spinner/>}><RegisterPage/></Suspense>}
+					/>
 					<Route 
 						path="*" 
 						element={<Suspense fallback={<Spinner/>}><Page404/></Suspense>}

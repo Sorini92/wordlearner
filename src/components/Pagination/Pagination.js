@@ -1,17 +1,17 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { setPage } from '../../store/slices/wordSlice';
 import './pagination.scss';
 
-const Pagination = ({addNewWords, words, cuttedArrayOfWords, filteredArreyLength, wordsPerUpload}) => {
+const Pagination = ({addNew, items, cuttedArray, filteredArreyLength, numberPerUpload, currentPage, totalPages}) => {
 
     const [arrOfCurrPages, setArrOfCurrPages] = useState([])
 
     const dispatch = useDispatch();
-    const {currentPage, totalPages} = useSelector((state) => state.words);
 
     useEffect(() => {
         const numberOfPages = []
+
         for (let i = 1; i <= totalPages; i++) {
             numberOfPages.push(i)
         }
@@ -60,7 +60,7 @@ const Pagination = ({addNewWords, words, cuttedArrayOfWords, filteredArreyLength
         setArrOfCurrPages(tempNumberOfPages)
         dispatch(setPage(currentPage))
         // eslint-disable-next-line
-    }, [currentPage, cuttedArrayOfWords, totalPages])
+    }, [currentPage, cuttedArray, totalPages])
 
     const handlePageClick = (pageNumber) => {
         dispatch(setPage(pageNumber));
@@ -124,8 +124,8 @@ const Pagination = ({addNewWords, words, cuttedArrayOfWords, filteredArreyLength
 
     return (
         <div className='pagination'>
-            {(words.length === cuttedArrayOfWords.length) || words.length < wordsPerUpload || cuttedArrayOfWords.length < wordsPerUpload || cuttedArrayOfWords.length === filteredArreyLength || currentPage === totalPages ? null : <button className='pagination__btn' onClick={() => addNewWords()}>More</button>}
-            {(words.length < wordsPerUpload || cuttedArrayOfWords.length < wordsPerUpload || cuttedArrayOfWords.length === filteredArreyLength) && (currentPage === 1 && totalPages < 2) ? null : elements()}
+            {(items.length === cuttedArray.length) || items.length < numberPerUpload || cuttedArray.length < numberPerUpload || cuttedArray.length === filteredArreyLength || currentPage === totalPages ? null : <button className='pagination__btn' onClick={() => addNew()}>More</button>}
+            {(items.length < numberPerUpload || cuttedArray.length < numberPerUpload || cuttedArray.length === filteredArreyLength) && (currentPage === 1 && totalPages < 2) ? null : elements()}
         </div>
     )
 }

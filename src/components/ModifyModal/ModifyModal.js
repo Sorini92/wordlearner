@@ -2,7 +2,6 @@ import database from "../../firebase";
 import { setDoc, collection, doc } from "firebase/firestore"; 
 import { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
-import useAuth from '../../hooks/use-auth';
 import './modifyModal.scss';
 
 const ModifyModal = ({active, setActive, address, func, data,  selected, setMessage, setShowMessage}) => {
@@ -13,7 +12,6 @@ const ModifyModal = ({active, setActive, address, func, data,  selected, setMess
     const [russian, setRussian] = useState('');
     
     const dispatch = useDispatch();
-    const {email} = useAuth();
 
     useEffect(() => {
         if (dataForModify !== undefined) {

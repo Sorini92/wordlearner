@@ -39,14 +39,12 @@ const AddModal = ({active, setActive, address, func, data, setMessage, setShowMe
             setEnglish('');
             setRussian('');
             setActive(false);
-            
         } else {
             setShowMessage(true);
             setMessage({
                 text: "It's already there!",
                 color: 'red'
             })
-
             setEnglish('');
             setRussian('');
         }

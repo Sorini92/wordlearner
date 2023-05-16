@@ -57,9 +57,7 @@ const HomePage = () => {
         secondUrl: 'user1',
         thirdUrl: 'words'
     }
-    /* console.log(totalPages, 'total')
-    console.log(filteredArreyLength, 'filteredArrLeng');
-    console.log(currentPage, 'cr'); */
+
     useEffect(() => {
         if (selectedLetter.length !== 0 || searchedWord.length > 0) {
             if (!(filteredArreyLength % wordsPerUpload)) {
@@ -80,8 +78,7 @@ const HomePage = () => {
         }
         // eslint-disable-next-line
     }, [words, wordsPerUpload, selectedLetter, searchedWord.length, filteredArreyLength, totalPages])
-    //console.log(sortType)
-    //console.log(words)
+
     useEffect(() => {
         dispatch(fetchWords());
         // eslint-disable-next-line
@@ -97,10 +94,8 @@ const HomePage = () => {
         let firstIndex = lastIndex - wordsPerUpload;
 
         if (selectedLetter.length !== 0 || searchedWord.length > 0) {
-            //setOffset(wordsPerUpload);
             setCuttedArrayOfWords(filteredElements(words).slice(firstIndex, lastIndex));
         } else {
-            //setOffset(wordsPerUpload);
             setCuttedArrayOfWords(words.slice(firstIndex, lastIndex));
         }
         // eslint-disable-next-line
@@ -108,6 +103,7 @@ const HomePage = () => {
     
     const filteredElements = (array) => {
         let data = [];
+
         if (searchedWord.length > 0) {
             if (!!searchedWord.match(/[^а-я]/g)) {
                 data = array.filter(item => item.english.toLowerCase().includes(searchedWord))
@@ -118,12 +114,12 @@ const HomePage = () => {
             if (selectedLetter.length !== 0) {
                 if (!!selectedLetter.match(/[^а-я]/g)) {
                     data = array.filter(item => item.english.toLowerCase().slice(0, 1) === selectedLetter)
-                    
                 } else {
                     data = array.filter(item => item.russian.toLowerCase().slice(0, 1) === selectedLetter)
                 }
             } 
         }
+
         setFilteredArreyLength(data.length)
         return data;
     }
@@ -159,7 +155,6 @@ const HomePage = () => {
     }
     
     const onDeleteWord = () => {
-
         if (selectedWord.id !== undefined) {
             if (selectedWords.length === 0) {
                 if (window.confirm('Are you sure?')) {
@@ -169,7 +164,6 @@ const HomePage = () => {
                     deleteDoc(doc(colRef, selectedWord.id));
     
                     setSelectedWord({})
-    
                     setShowMessage(true)
                     setMessage({
                         text: "The word was successfully deleted!",
@@ -185,7 +179,6 @@ const HomePage = () => {
                     selectedWords.forEach(item => deleteDoc(doc(colRef, item)))
     
                     setSelectedWords([]);
-    
                     setShowMessage(true)
                     setMessage({
                         text: "The word was successfully deleted!",
@@ -202,8 +195,7 @@ const HomePage = () => {
             })
         }
     }
-    /* console.log(words.length)
-    console.log(cuttedArrayOfWords.length) */
+
     /* useEffect(() => {
         if(!isAuth) {
             navigate('/login')
@@ -214,98 +206,9 @@ const HomePage = () => {
         <>
             <Header/>
             <Navigation 
-                setSearchedWord={setSearchedWord}
+                setSearched={setSearchedWord}
                 setOffset={setOffset}
-                wordsPerUpload={wordsPerUpload}
-            />
-            <div className="modifying">
-                <SelectPopup 
-                    items={sortItems} 
-                    active={sortType}
-                    text={"Sort by:"}
-                    dispatchFunction={sortBy}
-                    activeTypeChanged={activeSortTypeChanged}
-                />
-                <ReverseArrows 
-                    setReverseWords={setReverseWords} 
-                    reverseWords={reverseWords}
-                />
-                <Modification 
-                    handleModifyModal={handleModifyModal}
-                    handleAddModal={handleAddModal} 
-                    onDeleteWord={onDeleteWord}
-                    selected={selectedWord.id}
-                    setShowMessage={setShowMessage}
-                    setMessage={setMessage}
-                />
-            </div>
-            <AlpabetFilter 
-                setSelectedLetter={setSelectedLetter} 
-                setOffset={setOffset}
-                wordsPerUpload={wordsPerUpload}
-            />
-            <Table 
-                onDelete={onDelete} 
-                searchedWord={searchedWord}
-                reverseWords={reverseWords}
-                cuttedArrayOfWords={cuttedArrayOfWords}
-                selectedLetter={selectedLetter}
-            />
-            <div className='footer'>
-            {cuttedArrayOfWords.length !== 0 ? <div className='footer__numberOfWords'>Total words: {words.length}</div> : null}
-                <Pagination 
-                    addNewWords={addNewWords} 
-                    words={words}
-                    cuttedArrayOfWords={cuttedArrayOfWords}
-                    filteredArreyLength={filteredArreyLength}
-                    wordsPerUpload={wordsPerUpload}
-                />
-                {cuttedArrayOfWords.length !== 0 ? 
-                <SelectPopup 
-                    items={numberOfWordsPerPage} 
-                    active={wordsPerUpload}
-                    text={"Words per page:"}
-                    dispatchFunction={setWordsPerUpload}
-                /> : null}
-            </div>
-            <AddModal 
-                active={addModalActive} 
-                setActive={setAddModalActive} 
-                address={linkToWords}
-                func={addWord}
-                data={words}
-                setShowMessage={setShowMessage}
-                setMessage={setMessage}
-            />
-            <ModifyModal
-                active={modifyModalActive} 
-                setActive={setModifyModalActive} 
-                address={linkToWords}
-                func={modifyWord}
-                data={words}
-                selected={selectedWord}
-                setShowMessage={setShowMessage}
-                setMessage={setMessage}
-            />
-            <Message 
-                message={message.text} 
-                showMessage={showMessage} 
-                setShowMessage={setShowMessage}
-                color={message.color}
-            />
-        </>
-    ) : (
-        <>
-            {navigate('/login')}
-        </>
-    ) */
-    return (
-        <>
-            <Header/>
-            <Navigation 
-                setSearchedWord={setSearchedWord}
-                setOffset={setOffset}
-                wordsPerUpload={wordsPerUpload}
+                numberPerUpload={wordsPerUpload}
             />
             <div className="modifying">
                 <Modification 
@@ -351,6 +254,101 @@ const HomePage = () => {
                     cuttedArrayOfWords={cuttedArrayOfWords}
                     filteredArreyLength={filteredArreyLength}
                     wordsPerUpload={wordsPerUpload}
+                />
+                {cuttedArrayOfWords.length !== 0 ? 
+                <SelectPopup 
+                    items={numberOfWordsPerPage} 
+                    active={wordsPerUpload}
+                    text={"On the page:"}
+                    dispatchFunction={setWordsPerUpload}
+                /> : null}
+            </div>
+            <AddModal 
+                active={addModalActive} 
+                setActive={setAddModalActive} 
+                address={linkToWords}
+                func={addWord}
+                data={words}
+                setShowMessage={setShowMessage}
+                setMessage={setMessage}
+            />
+            <ModifyModal
+                active={modifyModalActive} 
+                setActive={setModifyModalActive} 
+                address={linkToWords}
+                func={modifyWord}
+                data={words}
+                selected={selectedWord}
+                setShowMessage={setShowMessage}
+                setMessage={setMessage}
+            />
+            <Message 
+                message={message.text} 
+                showMessage={showMessage} 
+                setShowMessage={setShowMessage}
+                color={message.color}
+            />
+            <ArrowScrollUp/>
+        </>
+    ) : (
+        <>
+            {navigate('/login')}
+        </>
+    ) */
+    return (
+        <>
+            <Header/>
+            <Navigation 
+                setSearched={setSearchedWord}
+                setOffset={setOffset}
+                numberPerUpload={wordsPerUpload}
+            />
+            <div className="modifying">
+                <Modification 
+                    handleModifyModal={handleModifyModal}
+                    handleAddModal={handleAddModal} 
+                    onDelete={onDeleteWord}
+                    selectedItem={selectedWord.id}
+                    selectedItems={selectedWords}
+                    setShowMessage={setShowMessage}
+                    setMessage={setMessage}
+                />
+                {filteredArreyLength === 0 ? 
+                <SelectPopup 
+                    items={sortItems} 
+                    active={sortType}
+                    text={"Sort by:"}
+                    dispatchFunction={sortBy}
+                    activeTypeChanged={activeSortTypeChanged}
+                /> : 
+                null}
+            </div>
+            <AlpabetFilter 
+                setSelectedLetter={setSelectedLetter} 
+                setOffset={setOffset}
+                wordsPerUpload={wordsPerUpload}
+            />
+            <Table 
+                searchedWord={searchedWord}
+                cuttedArrayOfWords={cuttedArrayOfWords}
+                selectedLetter={selectedLetter}
+                setSelectedWord={setSelectedWord}
+                selectedWords={selectedWords}
+                setSelectedWords={setSelectedWords}
+            />
+            <div className='footer'>
+                <div className='footer__numberOfWords'>
+                    {cuttedArrayOfWords.length !== 0 ? <div className='footer__numberOfWords'>Total words: {words.length}</div> : null}
+                    {cuttedArrayOfWords.length !== 0 ? <div className='footer__numberOfWords'>Current words: {filteredArreyLength === 0 ? words.length : filteredArreyLength}</div> : null}
+                </div>
+                <Pagination 
+                    addNew={addNewWords} 
+                    items={words}
+                    cuttedArray={cuttedArrayOfWords}
+                    filteredArreyLength={filteredArreyLength}
+                    numberPerUpload={wordsPerUpload}
+                    currentPage={currentPage}
+                    totalPages={totalPages}
                 />
                 {cuttedArrayOfWords.length !== 0 ? 
                 <SelectPopup 

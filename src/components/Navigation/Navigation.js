@@ -1,32 +1,39 @@
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
 import scope from '../../resources/scope.svg';
 import "./navigation.scss";
 
-const Navigation = ({setSearchedWord, setOffset, wordsPerUpload}) => {
+const Navigation = ({setSearched, setOffset, numberPerUpload}) => {
 
-    const [word, setWord] = useState('');
+    const location = useLocation();
+    const [text, setText] = useState('');
     const [active, setActive] = useState(0);
-    
+
     const links = [
         {to: '/words', text: 'Words'},
         {to: '/sentences', text: 'Sentences'},
     ]
 
-    const handleClick = (index) => {
-        setActive(index);
-    };  
+    useEffect(() => {
+        const activeTab = links.findIndex((item) => item.to === location.pathname);
+        
+        setActive(activeTab);
+    }, [location]);
 
     const handleSearch = (value) => {
-        setWord(value)
-        setSearchedWord(value)
+        setText(value)
+        setSearched(value)
     }
 
     const clearSearch = () => {
-        setWord('')
-        setSearchedWord('')
-        setOffset(wordsPerUpload)
+        setText('')
+        setSearched('')
+        setOffset(numberPerUpload)
     }
+
+    const handleTabClick = (index) => {
+        setActive(index);
+      };
 
     const tabs = links.map((item, i) => {
         return (
@@ -34,7 +41,7 @@ const Navigation = ({setSearchedWord, setOffset, wordsPerUpload}) => {
                 key={i} 
                 to={item.to} 
                 className={i === active ? `navigation__tab activeTab` : `navigation__tab`} 
-                onClick={() => handleClick(i)}>
+                onClick={() => handleTabClick(i)}>
                     {item.text}
             </Link>
         )
@@ -49,13 +56,13 @@ const Navigation = ({setSearchedWord, setOffset, wordsPerUpload}) => {
                 </div>
                 <div className="navigation__wrapper">
                     <input 
-                        value={word}
+                        value={text}
                         className="navigation__search"
                         placeholder="Search"
                         onChange={(e) => handleSearch(e.target.value.replace(/[^a-z, а-я]/g, ''))}
                     />
                     <img src={scope} className="navigation__search-scope" alt="scope"/>
-                    {word.length > 0 ? 
+                    {text.length > 0 ? 
                     <div
                         className="navigation__searchclear"
                         onClick={() => clearSearch('')}

@@ -26,7 +26,7 @@
         width: 42%;
         padding-left: 5px;
         text-align: left;
-        //filter: blur(5px);
+        transition: 0.7s all;
     }
     &__wordHeader {
         width: 42%;
@@ -80,15 +80,19 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        &-middle {
+            display: flex;
+            align-items: center;
+        }
     }
-    &__btn-date, &__btn-ticks {
+    &__btn-date, &__btn-ticks, &__btn-blur {
         background-color: #0d6efd;
         border: none;
         border-radius: 3px;
         cursor: pointer;
         color: white;
         text-align: center;
-        padding: 5px;
+        padding: 5px 15px;
         text-decoration: none;
         margin: 3px 0;
         &:hover {
@@ -124,4 +128,9 @@
 .word-exit-active {
     opacity: 0;
     transition: opacity 500ms ease-in;
+}
+
+.blur {
+    filter: blur(5px);
+    transition: 0.7s all;
 }

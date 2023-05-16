@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { CSSTransition, TransitionGroup} from 'react-transition-group';
 import ReverseArrows from '../ReverseArrows/ReverseArrow';
@@ -14,7 +14,9 @@ const Table = ({searchedWord, cuttedArrayOfWords, selectedLetter, setSelectedWor
     const [isShowTicks, setIsShowTicks] = useState(false);
     const [reverseWords, setReverseWords] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
-
+    const [isBlured, setIsBlured] = useState(false);
+    const [unbluredWord, setUnbluredWord] = useState('');
+    
     const handleClick = (word) => {
         setSelectedWord(word)
         setIdForCompare(word.id);
@@ -22,11 +24,13 @@ const Table = ({searchedWord, cuttedArrayOfWords, selectedLetter, setSelectedWor
 
     const handleSelectAllClick = (event) => {
         setIsChecked(event.target.checked);
+        
         if (event.target.checked) {
             const newSelected = cuttedArrayOfWords.map((n) => n.id);
             setSelectedWords(newSelected);
             return;
         }
+
         setSelectedWords([]);
     };
 
@@ -55,15 +59,15 @@ const Table = ({searchedWord, cuttedArrayOfWords, selectedLetter, setSelectedWor
     const onFormattedDate = (date) => {
         let normalDate = new Date(date)
         const formattedDate = `${normalDate.toLocaleTimeString()} ${normalDate.toLocaleDateString()}`;
+        
         return formattedDate
     }
 
-    const handleShowDate = () => {
-        setIsShowDate(!isShowDate);
-    }
-
-    const handleShowTicks = () => {
-        setIsShowTicks(!isShowTicks);
+    const handleUnblur = (word) => {
+        setUnbluredWord(word);
+        setTimeout(() => {
+            setUnbluredWord('')
+        }, 2000);
     }
     
     const elements = (array) => {
@@ -82,7 +86,6 @@ const Table = ({searchedWord, cuttedArrayOfWords, selectedLetter, setSelectedWor
                     }}
                 >
                     <tr 
-                        role="checkbox"
                         className={idForCompare !== item.id ? 'word' : 'word activeWord'} 
                         onClick={() => handleClick(item)}
                     >
@@ -102,7 +105,10 @@ const Table = ({searchedWord, cuttedArrayOfWords, selectedLetter, setSelectedWor
                                 <td className='table__word'>
                                     {item.russian}
                                 </td> 
-                                <td className='table__translate'>
+                                <td 
+                                    onClick={() => handleUnblur(item.id)}
+                                    className={isBlured ? `table__translate ${unbluredWord === item.id ? '' : 'blur'}` : 'table__translate'}
+                                >
                                     {item.english}
                                 </td>
                             </>
@@ -111,17 +117,14 @@ const Table = ({searchedWord, cuttedArrayOfWords, selectedLetter, setSelectedWor
                                 <td className='table__word'>
                                     {item.english}
                                 </td> 
-                                <td className='table__translate'>
+                                <td 
+                                    onClick={() => handleUnblur(item.id)}
+                                    className={isBlured ? `table__translate ${unbluredWord === item.id ? '' : 'blur'}` : 'table__translate'}
+                                >
                                     {item.russian}
                                 </td>
                             </>
                         }
-                        {/* <td className='table__word'>
-                            {reverseWords ? item.russian : item.english}
-                        </td>
-                        <td className='table__translate'>
-                            {reverseWords ? item.english : item.russian}
-                        </td> */}
                         {isShowDate ? 
                             <td className='table__date'>
                                 {onFormattedDate(item.date)}
@@ -143,18 +146,21 @@ const Table = ({searchedWord, cuttedArrayOfWords, selectedLetter, setSelectedWor
                     <div className='table__wrapper'>
                         <div className='table__settings'>
                             {isShowTicks ? 
-                                <button onClick={() => handleShowTicks()} className='table__btn-ticks'>Ticks &#8592;</button>
+                                <button onClick={() => setIsShowTicks(!isShowTicks)} className='table__btn-ticks'>Ticks &#8592;</button>
                                 :
-                                <button onClick={() => handleShowTicks()} className='table__btn-ticks'>Ticks &#8594;</button>
+                                <button onClick={() => setIsShowTicks(!isShowTicks)} className='table__btn-ticks'>Ticks &#8594;</button>
                             }
-                            <ReverseArrows 
-                                setReverseWords={setReverseWords} 
-                                reverseWords={reverseWords}
-                            />
+                            <div className='table__settings-middle'>
+                                <ReverseArrows 
+                                    setReverseWords={setReverseWords} 
+                                    reverseWords={reverseWords}
+                                />
+                                <button onClick={() => setIsBlured(!isBlured)} className='table__btn-blur'>Blur</button>
+                            </div>
                             {isShowDate ? 
-                                <button onClick={() => handleShowDate()} className='table__btn-date'>&#8594; Date</button> 
+                                <button onClick={() => setIsShowDate(!isShowDate)} className='table__btn-date'>&#8594; Date</button> 
                                 : 
-                                <button onClick={() => handleShowDate()} className='table__btn-date'>&#8592; Date</button>
+                                <button onClick={() => setIsShowDate(!isShowDate)} className='table__btn-date'>&#8592; Date</button>
                             }
                         </div>
                         <table className='table'>
@@ -190,12 +196,6 @@ const Table = ({searchedWord, cuttedArrayOfWords, selectedLetter, setSelectedWor
                                             </th>
                                         </>
                                     }
-                                    {/* <th className='table__word'>
-                                        {reverseWords ? 'Russian words' : 'English words'}
-                                    </th>
-                                    <th className='table__translate'>
-                                        {reverseWords ? 'English words' : 'Russian words'}
-                                    </th> */}
                                     {isShowDate ? 
                                         <th className='table__date'>
                                             Date of adding

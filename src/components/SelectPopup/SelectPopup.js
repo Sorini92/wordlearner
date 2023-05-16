@@ -13,13 +13,14 @@ const SelectPopup = ({items, active, text, dispatchFunction, activeTypeChanged})
 
     const handleOutsideClick = (event) => {
         const path = event.path || (event.composedPath && event.composedPath());
+        
         if (!path.includes(selectRef.current)) {
           setVisiblePopup(false);
         }
     };
 
     const onSelectItem = (name) => {
-        console.log(!!activeTypeChanged)
+
         if (!!activeTypeChanged) {
             dispatch(activeTypeChanged(name))  
             dispatch(dispatchFunction(name))
