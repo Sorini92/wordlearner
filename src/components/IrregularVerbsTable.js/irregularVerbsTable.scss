@@ -1,0 +1,71 @@
+.irregularVerbsTable {
+    position: relative;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    &__wrapper {
+        min-height: 658px;
+        margin-bottom: 10px;
+        margin-top: 15px;
+    }
+    tbody {
+        cursor: pointer;
+    }
+    td, th {
+        border: 1px solid #9999;
+        padding-left: 5px;
+        font-size: 14px;
+        height: 18px;
+        width: 25%;
+    }
+    th {
+        padding-top: 5px;
+        padding-bottom: 5px;
+        text-align: left;
+        background-color: #708871;
+        color: white;
+    }
+    tr:hover {
+        background-color: #bbb4b4;
+    }
+    tr:nth-child(even){
+        background-color: #f2f2f2;
+        &:hover {
+            background-color: #bbb4b4;
+        }
+    }
+    &__nowords {
+        position: absolute;
+        top: 50px;
+        left: 330px;
+    }
+}
+
+.activeVerb {
+    background-color: palegoldenrod !important;
+    border: 1px solid #2222 !important;
+}
+
+.emptyTable {
+    margin-top: 200px;
+    text-align: center;
+    font-size: 50px;
+} 
+
+.verb-enter {
+    opacity: 0;
+}
+
+.verb-enter-active {
+    opacity: 1;
+    transition: opacity 500ms ease-in;
+}
+
+.verb-exit {
+    opacity: 1;
+}
+
+.verb-exit-active {
+    opacity: 0;
+    transition: opacity 500ms ease-in;
+}

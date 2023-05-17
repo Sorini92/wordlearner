@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { CSSTransition, TransitionGroup} from 'react-transition-group';
 import ReverseArrows from '../ReverseArrows/ReverseArrow';
 import Spinner from '../Spinner/Spinner';
-import './table.scss';
+import './wordsTable.scss';
 
-const Table = ({searchedWord, cuttedArrayOfWords, selectedLetter, setSelectedWord, selectedWords, setSelectedWords}) => {
+const WordsTable = ({searchedWord, cuttedArrayOfWords, selectedLetter, setSelectedWord, selectedWords, setSelectedWords}) => {
     
     const {wordsLoadingStatus, words} = useSelector(state => state.words)
 
@@ -16,6 +16,19 @@ const Table = ({searchedWord, cuttedArrayOfWords, selectedLetter, setSelectedWor
     const [isChecked, setIsChecked] = useState(false);
     const [isBlured, setIsBlured] = useState(false);
     const [unbluredWord, setUnbluredWord] = useState('');
+    
+    const timerRef = useRef(null)
+
+    const handleUnblur = (word) => {
+        setUnbluredWord(word);
+
+        timerRef.current = setTimeout(() => {
+            setUnbluredWord('')
+        }, 2000);
+   
+    }
+
+    useEffect(() => () => clearTimeout(timerRef.current), [unbluredWord])
     
     const handleClick = (word) => {
         setSelectedWord(word)
@@ -30,7 +43,7 @@ const Table = ({searchedWord, cuttedArrayOfWords, selectedLetter, setSelectedWor
             setSelectedWords(newSelected);
             return;
         }
-
+        
         setSelectedWords([]);
     };
 
@@ -62,16 +75,6 @@ const Table = ({searchedWord, cuttedArrayOfWords, selectedLetter, setSelectedWor
         
         return formattedDate
     }
-
-    const handleUnblur = (word) => {
-        setUnbluredWord(word);
-
-        let timer = setTimeout(() => {
-            setUnbluredWord('')
-        }, 2000);
-
-        //clearTimeout(timer)        
-    }
     
     const elements = (array) => {
         return array.map((item) => {
@@ -93,7 +96,7 @@ const Table = ({searchedWord, cuttedArrayOfWords, selectedLetter, setSelectedWor
                         onClick={() => handleClick(item)}
                     >
                         {isShowTicks ? 
-                            <td className='table__ticks'>
+                            <td className='wordsTable__ticks'>
                                 <input 
                                     checked={selectedWords.includes(item.id) || isChecked} 
                                     onChange={(e) => handleSelect(item.id)} 
@@ -105,31 +108,31 @@ const Table = ({searchedWord, cuttedArrayOfWords, selectedLetter, setSelectedWor
                         }
                         {reverseWords ? 
                             <>
-                                <td className='table__word'>
+                                <td className='wordsTable__word'>
                                     {item.russian}
                                 </td> 
                                 <td 
                                     onClick={() => handleUnblur(item.id)}
-                                    className={isBlured ? `table__translate ${unbluredWord === item.id ? '' : 'blur'}` : 'table__translate'}
+                                    className={isBlured ? `wordsTable__translate ${unbluredWord === item.id ? '' : 'blur'}` : 'wordsTable__translate'}
                                 >
                                     {item.english}
                                 </td>
                             </>
                             : 
                             <>
-                                <td className='table__word'>
+                                <td className='wordsTable__word'>
                                     {item.english}
                                 </td> 
                                 <td 
                                     onClick={() => handleUnblur(item.id)}
-                                    className={isBlured ? `table__translate ${unbluredWord === item.id ? '' : 'blur'}` : 'table__translate'}
+                                    className={isBlured ? `wordsTable__translate ${unbluredWord === item.id ? '' : 'blur'}` : 'wordsTable__translate'}
                                 >
                                     {item.russian}
                                 </td>
                             </>
                         }
                         {isShowDate ? 
-                            <td className='table__date'>
+                            <td className='wordsTable__date'>
                                 {onFormattedDate(item.date)}
                             </td> 
                             : 
@@ -146,33 +149,33 @@ const Table = ({searchedWord, cuttedArrayOfWords, selectedLetter, setSelectedWor
                 {words.length === 0 || (cuttedArrayOfWords.length === 0 && searchedWord.length > 0) || (cuttedArrayOfWords.length === 0 && selectedLetter.length > 0)? 
                     <div className='emptyTable'>There are no words!</div> 
                     : 
-                    <div className='table__wrapper'>
-                        <div className='table__settings'>
+                    <div className='wordsTable__wrapper'>
+                        <div className='wordsTable__settings'>
                             {isShowTicks ? 
-                                <button onClick={() => setIsShowTicks(!isShowTicks)} className='table__btn-ticks'>Ticks &#8592;</button>
+                                <button onClick={() => setIsShowTicks(!isShowTicks)} className='wordsTable__btn-ticks'>Ticks &#8592;</button>
                                 :
-                                <button onClick={() => setIsShowTicks(!isShowTicks)} className='table__btn-ticks'>Ticks &#8594;</button>
+                                <button onClick={() => setIsShowTicks(!isShowTicks)} className='wordsTable__btn-ticks'>Ticks &#8594;</button>
                             }
-                            <div className='table__settings-middle'>
+                            <div className='wordsTable__settings-middle'>
                                 <ReverseArrows 
                                     setReverseWords={setReverseWords} 
                                     reverseWords={reverseWords}
                                 />
-                                <button onClick={() => setIsBlured(!isBlured)} className='table__btn-blur'>Blur</button>
+                                <button onClick={() => setIsBlured(!isBlured)} className='wordsTable__btn-blur'>Blur</button>
                             </div>
                             {isShowDate ? 
-                                <button onClick={() => setIsShowDate(!isShowDate)} className='table__btn-date'>&#8594; Date</button> 
+                                <button onClick={() => setIsShowDate(!isShowDate)} className='wordsTable__btn-date'>&#8594; Date</button> 
                                 : 
-                                <button onClick={() => setIsShowDate(!isShowDate)} className='table__btn-date'>&#8592; Date</button>
+                                <button onClick={() => setIsShowDate(!isShowDate)} className='wordsTable__btn-date'>&#8592; Date</button>
                             }
                         </div>
-                        <table className='table'>
+                        <table className='wordsTable'>
                             <thead>
                                 <tr>
                                     {isShowTicks ? 
                                         <th 
                                             onChange={handleSelectAllClick}  
-                                            className='table__ticks'
+                                            className='wordsTable__ticks'
                                             checked={isChecked}
                                         >
                                             <input type='checkbox'/>
@@ -182,25 +185,25 @@ const Table = ({searchedWord, cuttedArrayOfWords, selectedLetter, setSelectedWor
                                     }
                                     {reverseWords ? 
                                         <>
-                                            <th className='table__wordHeader'>
+                                            <th className='wordsTable__wordHeader'>
                                                 Russian words
                                             </th> 
-                                            <th className='table__translateHeader'>
+                                            <th className='wordsTable__translateHeader'>
                                                 English words
                                             </th>
                                         </>
                                         : 
                                         <>
-                                            <th className='table__wordHeader'>
+                                            <th className='wordsTable__wordHeader'>
                                                 English words
                                             </th>
-                                            <th className='table__translateHeader'>
+                                            <th className='wordsTable__translateHeader'>
                                                 Russian words
                                             </th>
                                         </>
                                     }
                                     {isShowDate ? 
-                                        <th className='table__date'>
+                                        <th className='wordsTable__date'>
                                             Date of adding
                                         </th> 
                                         : 
@@ -229,4 +232,4 @@ const Table = ({searchedWord, cuttedArrayOfWords, selectedLetter, setSelectedWor
     )
 }
 
-export default Table;
+export default WordsTable;

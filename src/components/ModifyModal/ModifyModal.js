@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
 import './modifyModal.scss';
 
-const ModifyModal = ({active, setActive, address, func, data,  selected, setMessage, setShowMessage}) => {
+const ModifyModal = ({width, height, active, setActive, address, func, data,  selected, setMessage, setShowMessage}) => {
     
     const dataForModify = data.find(item => item.id === selected.id);
 
@@ -55,12 +55,16 @@ const ModifyModal = ({active, setActive, address, func, data,  selected, setMess
     }
 
     return (
-        <div className={active ? "modal active" : "modal"} onClick={() => setActive(false)}>
-            <div className={active ? "modal__content active" : "modal__content"} onClick={e => e.stopPropagation()}>
-                <form className='modal__form' onSubmit={handleSubmit}>
-                    <div className='modal__title'>Modify word</div>
+        <div className={active ? "modifymodal active" : "modifymodal"} onClick={() => setActive(false)}>
+            <div 
+                style={{width: `${width}px`, height: `${height}px`}}
+                className={active ? "modifymodal__content active" : "modifymodal__content"} 
+                onClick={e => e.stopPropagation()}
+            >
+                <form className='modifymodal__form' onSubmit={handleSubmit}>
+                    <div className='modifymodal__title'>Modify word</div>
 
-                    <label htmlFor="english">English word</label>
+                    <label htmlFor="english">English</label>
                     <input 
                         value={english}
                         maxLength={30}
@@ -70,26 +74,26 @@ const ModifyModal = ({active, setActive, address, func, data,  selected, setMess
                         placeholder='Write here' 
                         required/>
 
-                    <label htmlFor="russian">Russian word</label>
+                    <label htmlFor="russian">Russian</label>
                     <input 
                         value={russian}
                         maxLength={30}
-                        onChange={(e) => setRussian(e.target.value.replace(/[^а-я]/g, ''))}
+                        onChange={(e) => setRussian(e.target.value.replace(/[^а-я], /g, ''))}
                         type="text" 
                         id='russian' 
                         placeholder='Write here' 
                         required/>
 
-                    <div className='modal__btns'>
+                    <div className='modifymodal__btns'>
                         <button 
-                            className='modal__btn' 
+                            className='modifymodal__btn' 
                             onClick={(e) => {
                                 e.preventDefault();
                                 setActive(false);
                             }}    
                         >Close
                         </button>
-                        <button className='modal__btn' type='submit'>Modify</button>
+                        <button className='modifymodal__btn' type='submit'>Modify</button>
                     </div>
                 </form>
             </div>

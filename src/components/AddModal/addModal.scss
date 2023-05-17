@@ -1,4 +1,4 @@
-.modal {
+.addmodal {
     height: 100vh;
     width: 100vw;
     background-color: rgba(0,0,0, 0.5);
@@ -12,15 +12,14 @@
     pointer-events: none;
     transition: 0.5s;
     z-index: 2;
-    //transform: scale(0);
     &__content {
         padding: 20px;
         border-radius: 12px;
         background-color: white;
         transform: scale(0.5);
         transition: 0.4s all;
-        width: 30vh;
-        height: 25vh;
+        min-width: 290px;
+        min-height: 230px;
     }
     &__form {
         display: flex;
@@ -32,7 +31,7 @@
             color: #555;
         }
         input {
-            width: 97%;
+            width: 95%;
             margin: 5px auto;
             border-radius: 3px;
             height: 25px;
@@ -74,12 +73,12 @@
     }
 }
 
-.modal.active {
+.addmodal.active {
     opacity: 1;
     pointer-events: all;
     //transform: scale(1);
 }
 
-.modal__content.active {
+.addmodal__content.active {
     transform: scale(1);
 }

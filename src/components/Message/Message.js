@@ -1,16 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import './message.scss';
 
 const Message = ({showMessage, message, setShowMessage, color}) => {
 
     useEffect(() => {
         let timer;
+        
         if (showMessage) {
             timer = setTimeout(() => {
                 setShowMessage(false)
             }, 2000);
         }
+
         return () => clearTimeout(timer);
+        // eslint-disable-next-line
     }, [showMessage]);
 
     return (

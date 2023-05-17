@@ -12,12 +12,15 @@ const Navigation = ({setSearched, setOffset, numberPerUpload}) => {
     const links = [
         {to: '/words', text: 'Words'},
         {to: '/sentences', text: 'Sentences'},
+        {to: '/rules', text: 'Rules'},
+        {to: '/irregular', text: 'Irregular Verbs'},
     ]
 
     useEffect(() => {
         const activeTab = links.findIndex((item) => item.to === location.pathname);
         
         setActive(activeTab);
+        // eslint-disable-next-line
     }, [location]);
 
     const handleSearch = (value) => {

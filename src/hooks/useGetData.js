@@ -9,7 +9,14 @@ export const useGetData = () => {
             console.log("Network disabled!"); */
 
             try {
-                const dataRef = await collection(database, url.firstUrl, url.secondUrl, url.thirdUrl);
+                let dataRef;
+
+                if (url.firstUrl !== 'users') {
+                    dataRef = await collection(database, url.firstUrl);
+                } else {
+                    dataRef = await collection(database, url.firstUrl, url.secondUrl, url.thirdUrl);
+                }
+                
                 const data = await getDocs(dataRef);
 
                 const fileredData = data.docs.map((doc) => {

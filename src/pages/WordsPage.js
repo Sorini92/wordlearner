@@ -7,7 +7,7 @@ import {deleteWord, deleteWords, addWord, modifyWord, setTotalPages, fetchWords,
 import useAuth from '../hooks/use-auth';
 import Header from "../components/Header/Header";
 import Navigation from "../components/Navigation/Navigation";
-import Table from "../components/Table/Table";
+import WordsTable from "../components/WordsTable/WordsTable";
 import SelectPopup from "../components/SelectPopup/SelectPopup";
 import Modification from "../components/Modification/Modification";
 import AddModal from "../components/AddModal/AddModal";
@@ -22,16 +22,16 @@ const HomePage = () => {
     const {words, wordsPerUpload, sortType, currentPage, totalPages} = useSelector(state => state.words);
 
     const [addModalActive, setAddModalActive] = useState(false);
-    const [showMessage, setShowMessage] = useState(false);
-    const [message, setMessage] = useState({});
     const [modifyModalActive, setModifyModalActive] = useState(false);
     const [selectedWord, setSelectedWord] = useState({});
-    const [selectedWords, setSelectedWords] = useState([]);
     const [selectedLetter, setSelectedLetter] = useState('');
+    const [selectedWords, setSelectedWords] = useState([]);
     const [searchedWord, setSearchedWord] = useState([]);
     const [cuttedArrayOfWords, setCuttedArrayOfWords] = useState([]);
     const [filteredArreyLength, setFilteredArreyLength] = useState(0);
 	const [offset, setOffset] = useState(30);
+    const [message, setMessage] = useState({});
+    const [showMessage, setShowMessage] = useState(false);
 
     const dispatch = useDispatch();
     const {isAuth} = useAuth();
@@ -59,6 +59,16 @@ const HomePage = () => {
     }
 
     useEffect(() => {
+        dispatch(fetchWords());
+        // eslint-disable-next-line
+    }, []);
+
+    useEffect(() => {
+        dispatch(setPage(1))
+        // eslint-disable-next-line
+    }, [wordsPerUpload, words, filteredArreyLength]);
+
+    useEffect(() => {
         if (selectedLetter.length !== 0 || searchedWord.length > 0) {
             if (!(filteredArreyLength % wordsPerUpload)) {
                 setOffset(wordsPerUpload);
@@ -78,16 +88,6 @@ const HomePage = () => {
         }
         // eslint-disable-next-line
     }, [words, wordsPerUpload, selectedLetter, searchedWord.length, filteredArreyLength, totalPages])
-
-    useEffect(() => {
-        dispatch(fetchWords());
-        // eslint-disable-next-line
-    }, []);
-
-    useEffect(() => {
-        dispatch(setPage(1))
-        // eslint-disable-next-line
-    }, [wordsPerUpload, words, filteredArreyLength]);
 
     useEffect(() => {
         let lastIndex = currentPage * wordsPerUpload;
@@ -328,7 +328,7 @@ const HomePage = () => {
                 setOffset={setOffset}
                 wordsPerUpload={wordsPerUpload}
             />
-            <Table 
+            <WordsTable 
                 searchedWord={searchedWord}
                 cuttedArrayOfWords={cuttedArrayOfWords}
                 selectedLetter={selectedLetter}
@@ -349,6 +349,7 @@ const HomePage = () => {
                     numberPerUpload={wordsPerUpload}
                     currentPage={currentPage}
                     totalPages={totalPages}
+                    setPage={setPage}
                 />
                 {cuttedArrayOfWords.length !== 0 ? 
                 <SelectPopup 
@@ -359,6 +360,8 @@ const HomePage = () => {
                 /> : null}
             </div>
             <AddModal 
+                width={290}
+                height={230}
                 active={addModalActive} 
                 setActive={setAddModalActive} 
                 address={linkToWords}
@@ -368,6 +371,8 @@ const HomePage = () => {
                 setMessage={setMessage}
             />
             <ModifyModal
+                width={290}
+                height={230}
                 active={modifyModalActive} 
                 setActive={setModifyModalActive} 
                 address={linkToWords}

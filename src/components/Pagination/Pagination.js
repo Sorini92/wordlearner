@@ -1,9 +1,8 @@
 import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { setPage } from '../../store/slices/wordSlice';
 import './pagination.scss';
 
-const Pagination = ({addNew, items, cuttedArray, filteredArreyLength, numberPerUpload, currentPage, totalPages}) => {
+const Pagination = ({addNew, items, cuttedArray, filteredArreyLength, numberPerUpload, currentPage, totalPages, setPage}) => {
 
     const [arrOfCurrPages, setArrOfCurrPages] = useState([])
 

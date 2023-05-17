@@ -8,6 +8,8 @@ const Page404 = lazy(() => import("./pages/404"))
 const SentencesPage = lazy(() => import("./pages/SentencesPage"))
 const LoginPage = lazy(() => import("./pages/LoginPage"))
 const RegisterPage = lazy(() => import("./pages/RegisterPage"))
+const IrregularVerbsPage = lazy(() => import("./pages/IrregularVerbsPage"))
+const RulesPage = lazy(() => import("./pages/RulesPage"))
 
 function App() {
 	return (
@@ -22,6 +24,14 @@ function App() {
 					<Route 
 						path="/sentences" 
 						element={<Suspense fallback={<Spinner/>}><SentencesPage/></Suspense>}
+					/>
+					<Route 
+						path="/rules" 
+						element={<Suspense fallback={<Spinner/>}><RulesPage/></Suspense>}
+					/>
+					<Route 
+						path="/irregular" 
+						element={<Suspense fallback={<Spinner/>}><IrregularVerbsPage/></Suspense>}
 					/>
 					<Route 
 						path="/login" 
