@@ -16,6 +16,7 @@ import Pagination from '../components/Pagination/Pagination';
 import AlpabetFilter from '../components/AlphabetFilter/AlphabetFilter';
 import Message from '../components/Message/Message';
 import ArrowScrollUp from '../components/ArrowScrollUp/ArrowScrollUp';
+import QuizModal from '../components/QuizModal/QuizModal';
 
 const HomePage = () => {
 
@@ -389,6 +390,7 @@ const HomePage = () => {
                 color={message.color}
             />
             <ArrowScrollUp/>
+            <QuizModal/>
         </>
     )
 }

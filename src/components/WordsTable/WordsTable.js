@@ -157,6 +157,7 @@ const WordsTable = ({searchedWord, cuttedArrayOfWords, selectedLetter, setSelect
                                 <button onClick={() => setIsShowTicks(!isShowTicks)} className='wordsTable__btn-ticks'>Ticks &#8594;</button>
                             }
                             <div className='wordsTable__settings-middle'>
+                                <button className='wordsTable__btn-blur'>Test</button>
                                 <ReverseArrows 
                                     setReverseWords={setReverseWords} 
                                     reverseWords={reverseWords}
