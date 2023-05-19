@@ -1,28 +1,33 @@
 import { useState } from 'react';
 import FleshCards from '../FlashCards/FlashCards';
+import WordsQuiz from '../WordsQuiz/WordsQuiz';
 import cards from '../../resources/cards.jpg';
 import quiz from '../../resources/quiz.png';
 import './quizModal.scss';
 
-const QuizModal = () => {
+const QuizModal = ({setActive, active}) => {
 
     const variantsArray = [
         {img: quiz, name: 'Quiz'},
         {img: cards, name: 'Cards'},
     ]
 
-    const [active, setActive] = useState(true);
-    const [variant, setVariant] = useState(''); 
+    const [selection, setSelection] = useState('');
+    const [variant, setVariant] = useState('');
 
     const handleClick = (index) => {
-        setVariant(index)
+        setSelection(index)
+    }
+
+    const handleNext = () => {
+        setVariant(selection)
     }
     
     const variants = variantsArray.map((item, i) => {
         return (
             <div 
                 key={i} 
-                className={variant === i ? 'quiz__variant activeVariant' : 'quiz__variant'} 
+                className={selection === i ? 'quiz__variant activeVariant' : 'quiz__variant'} 
                 onClick={() => handleClick(i)}
             >
                 <img src={item.img} alt={item.name}/>
@@ -31,15 +36,7 @@ const QuizModal = () => {
         )
     })
 
-    return (
-        <>
-            <div className={active ? "quiz active" : "quiz"}>
-                <div 
-                    className={active ? "quiz__content active" : "quiz__content"} 
-                    onClick={e => e.stopPropagation()}
-                >
-                    <FleshCards/>
-                    {/* <div className='quiz__form'>
+    const mainForm = <div className='quiz__form'>
                         <div className='quiz__title'>Choose an Option</div>
 
                         <div className='quiz__variants'>
@@ -55,9 +52,20 @@ const QuizModal = () => {
                                 }}    
                             >Close
                             </button>
-                            <button className='quiz__btn'>Next</button>
+                            <button className='quiz__btn' onClick={() => handleNext()}>Next</button>
                         </div>
-                    </div> */}
+                    </div>
+
+    return (
+        <>
+            <div className={active ? "quiz active" : "quiz"}>
+                <div 
+                    className={active ? "quiz__content active" : "quiz__content"} 
+                    onClick={e => e.stopPropagation()}
+                >
+                    {variant === '' ? mainForm : null}
+                    {variant === 0 ? <WordsQuiz setVariant={setVariant} setActive={setActive}/> : null}
+                    {variant === 1 ? <FleshCards setVariant={setVariant} setActive={setActive}/> : null}
                 </div>
             </div>
         </>        

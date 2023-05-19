@@ -2,7 +2,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useNavigate} from "react-router-dom";
 import {useState, useEffect} from "react";
 import database from "../firebase";
-import { deleteDoc, collection, doc } from "firebase/firestore"; 
+import {deleteDoc, collection, doc} from "firebase/firestore"; 
 import {deleteWord, deleteWords, addWord, modifyWord, setTotalPages, fetchWords, sortBy, activeSortTypeChanged, setWordsPerUpload, setPage} from '../store/slices/wordSlice';
 import useAuth from '../hooks/use-auth';
 import Header from "../components/Header/Header";
@@ -24,6 +24,7 @@ const HomePage = () => {
 
     const [addModalActive, setAddModalActive] = useState(false);
     const [modifyModalActive, setModifyModalActive] = useState(false);
+    const [quizModalActive, setQuizModalActive] = useState(false);
     const [selectedWord, setSelectedWord] = useState({});
     const [selectedLetter, setSelectedLetter] = useState('');
     const [selectedWords, setSelectedWords] = useState([]);
@@ -336,6 +337,7 @@ const HomePage = () => {
                 setSelectedWord={setSelectedWord}
                 selectedWords={selectedWords}
                 setSelectedWords={setSelectedWords}
+                setQuizModalActive={setQuizModalActive}
             />
             <div className='footer'>
                 <div className='footer__numberOfWords'>
@@ -383,6 +385,10 @@ const HomePage = () => {
                 setShowMessage={setShowMessage}
                 setMessage={setMessage}
             />
+            <QuizModal 
+                active={quizModalActive}
+                setActive={setQuizModalActive}
+            />
             <Message 
                 message={message.text} 
                 showMessage={showMessage} 
@@ -390,7 +396,6 @@ const HomePage = () => {
                 color={message.color}
             />
             <ArrowScrollUp/>
-            <QuizModal/>
         </>
     )
 }

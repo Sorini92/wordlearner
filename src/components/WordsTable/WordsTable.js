@@ -5,7 +5,7 @@ import ReverseArrows from '../ReverseArrows/ReverseArrow';
 import Spinner from '../Spinner/Spinner';
 import './wordsTable.scss';
 
-const WordsTable = ({searchedWord, cuttedArrayOfWords, selectedLetter, setSelectedWord, selectedWords, setSelectedWords}) => {
+const WordsTable = ({setQuizModalActive, searchedWord, cuttedArrayOfWords, selectedLetter, setSelectedWord, selectedWords, setSelectedWords}) => {
     
     const {wordsLoadingStatus, words} = useSelector(state => state.words)
 
@@ -157,12 +157,22 @@ const WordsTable = ({searchedWord, cuttedArrayOfWords, selectedLetter, setSelect
                                 <button onClick={() => setIsShowTicks(!isShowTicks)} className='wordsTable__btn-ticks'>Ticks &#8594;</button>
                             }
                             <div className='wordsTable__settings-middle'>
-                                <button className='wordsTable__btn-blur'>Test</button>
+                                <button 
+                                    className='wordsTable__btn-blur' 
+                                    onClick={() => setQuizModalActive(true)}
+                                >
+                                    Games
+                                </button>
                                 <ReverseArrows 
                                     setReverseWords={setReverseWords} 
                                     reverseWords={reverseWords}
                                 />
-                                <button onClick={() => setIsBlured(!isBlured)} className='wordsTable__btn-blur'>Blur</button>
+                                <button 
+                                    onClick={() => setIsBlured(!isBlured)} 
+                                    className='wordsTable__btn-blur'
+                                >
+                                    Blur right
+                                </button>
                             </div>
                             {isShowDate ? 
                                 <button onClick={() => setIsShowDate(!isShowDate)} className='wordsTable__btn-date'>&#8594; Date</button> 
