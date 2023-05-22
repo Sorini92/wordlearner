@@ -12,21 +12,23 @@ const WordsQuiz = ({setVariant, setActive}) => {
     const [correct, setCorrect] = useState('');
     const [answer, setAnswer] = useState('');
     const [index, setIndex] = useState('');
+    const [isTrue, setIsTrue] = useState(false);
+    const [isFalse, setIsFalse] = useState(false);
 
     useEffect(() => {
-        showQuiz();        
+        nextQuestion();        
         // eslint-disable-next-line
     }, [words.length])
 
-    const showQuiz = () => {
+    const nextQuestion = () => {
         let copiedArray = [...words];
         const randomIndex = getRandomInt(copiedArray.length);
-        const correctAnswer = copiedArray[randomIndex].russian;
+        const correctAnswer = copiedArray[randomIndex];
         const variantsOfAnswers = [];
         
         for (let i = 0; i < 3; i++) {
             if (randomIndex !== getRandomInt(copiedArray.length)) {
-                variantsOfAnswers.push(copiedArray[getRandomInt(copiedArray.length)].russian);
+                variantsOfAnswers.push(copiedArray[getRandomInt(copiedArray.length)]);
             } else {
                 i = i - 1;
             }          
@@ -34,22 +36,38 @@ const WordsQuiz = ({setVariant, setActive}) => {
 
         variantsOfAnswers.push(correctAnswer);
         
-        setVariants(variantsOfAnswers);
+        setVariants(shuffle(variantsOfAnswers));
         setCorrect(correctAnswer);
         setOneQuestion([copiedArray[randomIndex].english]);
         setAnswer('');
         setIndex('');
+        setIsFalse(false);
+        setIsTrue(false);
     }
 
     const getRandomInt = (max) => {
         return Math.floor(Math.random() * Math.floor(max));
     };
 
+    const shuffle = (arr) => {
+        return arr.sort(() => Math.round(Math.random() * 100) - 50);
+    }
+
     const handleClick = (answer, i) => {
         setIndex(i)
         setAnswer(answer)
     }
 
+    const handleCheckAnswer = () => {
+        if (answer.id === correct.id) {
+            setIsFalse(false)
+            setIsTrue(true)
+        } else {
+            setIsFalse(true)
+            setIsTrue(false)
+        }
+    }
+    console.log(answer)
     const elements = oneQuestion.map((question, i) => {
         return (
             <Fragment key={i}>
@@ -62,7 +80,7 @@ const WordsQuiz = ({setVariant, setActive}) => {
                                 key={i} 
                                 className={index === i ? 'wordsquiz__variant activeAnswer' : 'wordsquiz__variant'}
                             >
-                                {item}
+                                {item.russian}
                             </li>
                         )
                     })}
@@ -79,10 +97,12 @@ const WordsQuiz = ({setVariant, setActive}) => {
                 <div className='wordsquiz__wrapper'>
                     {wordsLoadingStatus === 'loading' ? <Spinner/> : elements}
                 </div>
-
+                {isTrue ? <div>true</div> : null}
+                {isFalse ? <div>false</div> : null}
                 <div className='wordsquiz__btns'>
                     <button className='wordsquiz__btn' onClick={() => setVariant('')}>To main page</button>
-                    <button className='wordsquiz__btn' onClick={() => showQuiz()}>Next quistion</button>
+                    <button className='wordsquiz__btn' onClick={() => handleCheckAnswer()}>Check</button>
+                    <button className='wordsquiz__btn' onClick={() => nextQuestion()}>Next quistion</button>
                 </div>
             </div>
         </div>

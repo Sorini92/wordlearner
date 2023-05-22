@@ -25,8 +25,8 @@
         margin-top: 40px;
         width: 100%;
         min-height: 100px;
-        border: 1px solid rgb(170, 201, 185);
-        background-color: rgb(207, 243, 225);
+        border: 1px solid rgb(182, 196, 218);
+        background-color: rgb(182, 196, 218);
         border-radius: 5px;
         font-size: 30px;
     }
@@ -41,9 +41,9 @@
         column-gap: 20px;
     }
     &__variant {
-        border: 1px solid rgb(170, 201, 185);
+        border: 1px solid rgb(182, 196, 218);
         border-radius: 5px;
-        padding: 18px 10px;
+        padding: 14px 10px;
         font-size: 20px;
         list-style-type: none;
         cursor: pointer;
@@ -72,5 +72,15 @@
 }
 
 .activeAnswer {
-    background-color: #f5c3b0;
+    background-color: #f3e1d9;
+}
+
+.rightAnswer {
+    background-color: #59af76;
+    color: white;
+}
+
+.wrongAnswer {
+    background-color: #f15550;
+    color: white;
 }
