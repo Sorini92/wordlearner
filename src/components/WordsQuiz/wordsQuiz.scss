@@ -16,13 +16,14 @@
         display: flex;
         align-items: center;
         flex-direction: column;
+        height: 350px;
     }
     &__question {
         display: flex;
         justify-content: center;
         align-items: center;
         text-align: center;
-        margin-top: 40px;
+        margin-top: 30px;
         width: 100%;
         min-height: 100px;
         border: 1px solid rgb(182, 196, 218);
@@ -33,6 +34,7 @@
     &__variants {
         width: 100%;
         padding: 30px 0;
+        padding-bottom: 5px;
         margin: 0;
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -41,9 +43,11 @@
         column-gap: 20px;
     }
     &__variant {
+        display: flex;
+        align-items: center;
         border: 1px solid rgb(182, 196, 218);
         border-radius: 5px;
-        padding: 14px 10px;
+        padding: 10px;
         font-size: 20px;
         list-style-type: none;
         cursor: pointer;
@@ -69,18 +73,50 @@
             opacity: 0.9;
         }
     }
+    &__success {
+        width: 100%;
+        font-size: 20px;
+        text-align: center;
+        color: #59af76;
+        margin: 5px 0;
+    }
+    &__wrong {
+        width: 100%;
+        font-size: 20px;
+        text-align: center;
+        color: #f15550;
+        margin: 5px 0;
+    }
 }
 
 .activeAnswer {
     background-color: #f3e1d9;
+    border: 1px solid #fe5f1e;
+    transition: .2s all;
 }
 
 .rightAnswer {
     background-color: #59af76;
     color: white;
+    border: inherit;
+    transition: .5s all;
 }
 
 .wrongAnswer {
     background-color: #f15550;
     color: white;
+    transition: .5s all;
+}
+
+.answerAnimate {
+    animation: blink-animation 1s 2;
+}
+
+@keyframes blink-animation {
+    0%, 50%, 100% {
+        opacity: 1;
+    }
+    25%, 75% {
+        opacity: 0;
+    }
 }

@@ -14,6 +14,7 @@ const WordsQuiz = ({setVariant, setActive}) => {
     const [index, setIndex] = useState('');
     const [isTrue, setIsTrue] = useState(false);
     const [isFalse, setIsFalse] = useState(false);
+    const [isChecked, setIsChecked] = useState(false);
 
     useEffect(() => {
         nextQuestion();        
@@ -43,6 +44,7 @@ const WordsQuiz = ({setVariant, setActive}) => {
         setIndex('');
         setIsFalse(false);
         setIsTrue(false);
+        setIsChecked(false);
     }
 
     const getRandomInt = (max) => {
@@ -56,29 +58,54 @@ const WordsQuiz = ({setVariant, setActive}) => {
     const handleClick = (answer, i) => {
         setIndex(i)
         setAnswer(answer)
+        setIsChecked(false);
     }
 
     const handleCheckAnswer = () => {
-        if (answer.id === correct.id) {
-            setIsFalse(false)
-            setIsTrue(true)
+        setIsChecked(true);
+        if (answer !== '') {
+            if (answer.id === correct.id) {
+                setIsFalse(false)
+                setIsTrue(true)
+            } else {
+                setIsFalse(true)
+                setIsTrue(false)
+            }
         } else {
-            setIsFalse(true)
+            setIsFalse(false)
             setIsTrue(false)
         }
     }
-    console.log(answer)
+
     const elements = oneQuestion.map((question, i) => {
         return (
             <Fragment key={i}>
                 <div className="wordsquiz__question">{question}</div>
                 <ul className='wordsquiz__variants'>
                     {variants.map((item, i) => {
+                        let classList;
+
+                        if (index === i) {
+                            if (isChecked) {
+                                if (answer.id === correct.id) {
+                                    classList = 'wordsquiz__variant rightAnswer activeAnswer';
+                                } else {
+                                    classList = 'wordsquiz__variant wrongAnswer activeAnswer';
+                                }
+                            } else {
+                                classList = 'wordsquiz__variant activeAnswer';
+                            }
+                        } else if (isChecked && item.id === correct.id && answer !== '') {
+                            classList = 'wordsquiz__variant rightAnswer answerAnimate';
+                        } else {
+                            classList = 'wordsquiz__variant';
+                        }
+
                         return (
                             <li 
-                                onClick={() => handleClick(item, i)} 
+                                onClick={() => isChecked && answer !== '' ? null : handleClick(item, i)} 
                                 key={i} 
-                                className={index === i ? 'wordsquiz__variant activeAnswer' : 'wordsquiz__variant'}
+                                className={classList}
                             >
                                 {item.russian}
                             </li>
@@ -96,9 +123,11 @@ const WordsQuiz = ({setVariant, setActive}) => {
 
                 <div className='wordsquiz__wrapper'>
                     {wordsLoadingStatus === 'loading' ? <Spinner/> : elements}
+                    {isTrue && isChecked ? <div className='wordsquiz__success'>Correct answer</div> : null}
+                    {isFalse && isChecked ? <div className='wordsquiz__wrong'>Incorrect answer</div> : null}
+                    {isChecked && !isFalse && !isTrue ? <div className='wordsquiz__wrong'>Choose the variant</div> : null}
                 </div>
-                {isTrue ? <div>true</div> : null}
-                {isFalse ? <div>false</div> : null}
+                
                 <div className='wordsquiz__btns'>
                     <button className='wordsquiz__btn' onClick={() => setVariant('')}>To main page</button>
                     <button className='wordsquiz__btn' onClick={() => handleCheckAnswer()}>Check</button>
