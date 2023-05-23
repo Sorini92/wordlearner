@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from 'react-redux';
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {useState, useEffect} from "react";
 import database from "../firebase";
 import {deleteDoc, collection, doc} from "firebase/firestore"; 
@@ -36,8 +36,9 @@ const HomePage = () => {
     const [showMessage, setShowMessage] = useState(false);
 
     const dispatch = useDispatch();
-    const {isAuth} = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
+    const {isAuth} = useAuth();
 
     const sortItems = [
         { name: 'from new'},
@@ -100,6 +101,7 @@ const HomePage = () => {
         } else {
             setCuttedArrayOfWords(words.slice(firstIndex, lastIndex));
         }
+
         // eslint-disable-next-line
     }, [currentPage, wordsPerUpload, offset]);
     
