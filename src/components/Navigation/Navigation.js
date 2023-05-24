@@ -11,8 +11,8 @@ const Navigation = ({setSearched, setOffset, numberPerUpload}) => {
 
     const links = [
         {to: '/words', text: 'Words'},
+        {to: '/favorite', text: 'Favorite'},
         {to: '/sentences', text: 'Sentences'},
-        {to: '/rules', text: 'Rules'},
         {to: '/irregular', text: 'Irregular Verbs'},
     ]
 

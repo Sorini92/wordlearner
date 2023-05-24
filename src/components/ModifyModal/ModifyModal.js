@@ -1,5 +1,5 @@
 import database from "../../firebase";
-import { setDoc, collection, doc } from "firebase/firestore"; 
+import { setDoc, collection, doc, getDoc } from "firebase/firestore"; 
 import { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
 import './modifyModal.scss';
@@ -26,17 +26,18 @@ const ModifyModal = ({width, height, active, setActive, address, func, data,  se
         const index = data.findIndex(e => e.english === english.toLocaleLowerCase());
         
         if (index === -1) {
-
+            
             const obj = {
+                favorite : dataForModify.favorite,
                 english: english.toLocaleLowerCase(),
                 russian: russian.toLocaleLowerCase(),
-                id: selected.id,
+                id: dataForModify.id,
                 date: Date.now()
             }
             
             dispatch(func(obj));
             setActive(false);
-
+            
             const colRef = collection(database, address.firstUrl, address.secondUrl, address.thirdUrl)
             setDoc(doc(colRef, obj.id), obj);
 

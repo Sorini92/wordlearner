@@ -27,6 +27,19 @@
         padding-left: 5px;
         text-align: left;
         transition: 0.7s all;
+        &-inner {
+            position: relative;
+            display: flex;
+            justify-content: space-between; 
+            &-star {
+                position: absolute;
+                right: 0;
+                font-size: 25px;
+                top: -6px;
+                bottom: 0;
+                cursor: pointer;
+            }
+        }
     }
     &__wordHeader {
         width: 42%;

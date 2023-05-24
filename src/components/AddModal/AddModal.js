@@ -22,6 +22,7 @@ const AddModal = ({width, height, active, setActive, address, func, data, setMes
                 english: english.toLocaleLowerCase(),
                 russian: russian.toLocaleLowerCase(),
                 date: Date.now(),
+                favorite: false,
                 id: uuidv4()
             }
             

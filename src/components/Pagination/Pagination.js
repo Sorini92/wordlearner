@@ -124,7 +124,7 @@ const Pagination = ({addNew, items, cuttedArray, filteredArreyLength, numberPerU
     return (
         <div className='pagination'>
             {(items.length === cuttedArray.length) || items.length < numberPerUpload || cuttedArray.length < numberPerUpload || cuttedArray.length === filteredArreyLength || currentPage === totalPages ? null : <button className='pagination__btn' onClick={() => addNew()}>More</button>}
-            {(items.length < numberPerUpload || cuttedArray.length < numberPerUpload || cuttedArray.length === filteredArreyLength) && (currentPage === 1 && totalPages < 2) ? null : elements()}
+            {(items.length <= numberPerUpload || cuttedArray.length < numberPerUpload || cuttedArray.length === filteredArreyLength) && (currentPage === 1 && totalPages < 2) ? null : elements()}
         </div>
     )
 }

@@ -5,7 +5,7 @@ import ReverseArrows from '../ReverseArrows/ReverseArrow';
 import Spinner from '../Spinner/Spinner';
 import './wordsTable.scss';
 
-const WordsTable = ({setQuizModalActive, searchedWord, cuttedArrayOfWords, selectedLetter, setSelectedWord, selectedWords, setSelectedWords}) => {
+const WordsTable = ({setQuizModalActive, searchedWord, cuttedArrayOfWords, selectedLetter, setSelectedWord, selectedWords, setSelectedWords, onAddToFavorite}) => {
     
     const {wordsLoadingStatus, words} = useSelector(state => state.words)
 
@@ -20,15 +20,16 @@ const WordsTable = ({setQuizModalActive, searchedWord, cuttedArrayOfWords, selec
     const timerRef = useRef(null)
 
     const handleUnblur = (word) => {
+
+        clearTimeout(timerRef.current);
         setUnbluredWord(word);
 
         timerRef.current = setTimeout(() => {
             setUnbluredWord('')
         }, 2000);
-   
     }
-
-    useEffect(() => () => clearTimeout(timerRef.current), [unbluredWord])
+    
+    useEffect(() => () => clearTimeout(timerRef.current), [])
     
     const handleClick = (word) => {
         setSelectedWord(word)
@@ -37,13 +38,13 @@ const WordsTable = ({setQuizModalActive, searchedWord, cuttedArrayOfWords, selec
 
     const handleSelectAllClick = (event) => {
         setIsChecked(event.target.checked);
-        
+
         if (event.target.checked) {
             const newSelected = cuttedArrayOfWords.map((n) => n.id);
             setSelectedWords(newSelected);
             return;
         }
-        
+
         setSelectedWords([]);
     };
 
@@ -75,9 +76,25 @@ const WordsTable = ({setQuizModalActive, searchedWord, cuttedArrayOfWords, selec
         
         return formattedDate
     }
-    
+
+    const handleStarClick = (word) => {
+        onAddToFavorite(word)
+    }
+
+    const handleShowTicksClick = () => {
+        if (isShowTicks) {
+            setIsChecked(false)
+            setSelectedWords([]);
+        }
+
+        setIsShowTicks(!isShowTicks)
+    }
+
     const elements = (array) => {
         return array.map((item) => {
+
+            const isItemBlurred = isBlured && unbluredWord !== item.id;
+
             return (
                 <CSSTransition 
                     timeout={500}
@@ -106,34 +123,29 @@ const WordsTable = ({setQuizModalActive, searchedWord, cuttedArrayOfWords, selec
                             :
                             null
                         }
-                        {reverseWords ? 
-                            <>
-                                <td className='wordsTable__word'>
-                                    {item.russian}
-                                </td> 
-                                <td 
-                                    onClick={() => handleUnblur(item.id)}
-                                    className={isBlured ? `wordsTable__translate ${unbluredWord === item.id ? '' : 'blur'}` : 'wordsTable__translate'}
-                                >
-                                    {item.english}
-                                </td>
-                            </>
-                            : 
-                            <>
-                                <td className='wordsTable__word'>
-                                    {item.english}
-                                </td> 
-                                <td 
-                                    onClick={() => handleUnblur(item.id)}
-                                    className={isBlured ? `wordsTable__translate ${unbluredWord === item.id ? '' : 'blur'}` : 'wordsTable__translate'}
-                                >
-                                    {item.russian}
-                                </td>
-                            </>
-                        }
+                        <td className='wordsTable__word'>
+                            {reverseWords ? item.russian : item.english}
+                        </td> 
+                        <td 
+                            className='wordsTable__translate'
+                        >
+                            <div className='wordsTable__translate-inner'>
+                                <div
+                                    onClick={() => handleUnblur(item.id)} 
+                                    className={isItemBlurred ? 'blur' : ''}
+                                    >
+                                    {reverseWords ? item.english : item.russian}
+                                </div> 
+                                <div 
+                                    onClick={() => handleStarClick(item)} 
+                                    className='wordsTable__translate-inner-star'>
+                                    {item.favorite ? <>&#9733;</> : <>&#9734;</>}
+                                </div> 
+                            </div>
+                        </td>
                         {isShowDate ? 
                             <td className='wordsTable__date'>
-                                {onFormattedDate(item.date)}
+                                {isShowDate ? onFormattedDate(item.date) : null}
                             </td> 
                             : 
                         null}
@@ -151,11 +163,11 @@ const WordsTable = ({setQuizModalActive, searchedWord, cuttedArrayOfWords, selec
                     : 
                     <div className='wordsTable__wrapper'>
                         <div className='wordsTable__settings'>
-                            {isShowTicks ? 
-                                <button onClick={() => setIsShowTicks(!isShowTicks)} className='wordsTable__btn-ticks'>Ticks &#8592;</button>
-                                :
-                                <button onClick={() => setIsShowTicks(!isShowTicks)} className='wordsTable__btn-ticks'>Ticks &#8594;</button>
-                            }
+
+                            <button onClick={() => handleShowTicksClick()} className='wordsTable__btn-ticks'>
+                                Ticks {isShowTicks ?<>&#8592;</> : <>&#8594;</>}
+                            </button>
+                            
                             <div className='wordsTable__settings-middle'>
                                 <button 
                                     className='wordsTable__btn-blur' 
@@ -163,10 +175,12 @@ const WordsTable = ({setQuizModalActive, searchedWord, cuttedArrayOfWords, selec
                                 >
                                     Games
                                 </button>
+
                                 <ReverseArrows 
                                     setReverseWords={setReverseWords} 
                                     reverseWords={reverseWords}
                                 />
+                                
                                 <button 
                                     onClick={() => setIsBlured(!isBlured)} 
                                     className='wordsTable__btn-blur'
@@ -174,45 +188,27 @@ const WordsTable = ({setQuizModalActive, searchedWord, cuttedArrayOfWords, selec
                                     Blur right
                                 </button>
                             </div>
-                            {isShowDate ? 
-                                <button onClick={() => setIsShowDate(!isShowDate)} className='wordsTable__btn-date'>&#8594; Date</button> 
-                                : 
-                                <button onClick={() => setIsShowDate(!isShowDate)} className='wordsTable__btn-date'>&#8592; Date</button>
-                            }
+                            
+                            <button onClick={() => setIsShowDate(!isShowDate)} className='wordsTable__btn-date'>
+                                {isShowDate ? <>&#8594;</> : <>&#8592;</>} Date
+                            </button> 
                         </div>
                         <table className='wordsTable'>
                             <thead>
                                 <tr>
                                     {isShowTicks ? 
-                                        <th 
-                                            onChange={handleSelectAllClick}  
-                                            className='wordsTable__ticks'
-                                            checked={isChecked}
-                                        >
-                                            <input type='checkbox'/>
+                                        <th className='wordsTable__ticks'>
+                                            <input type='checkbox' checked={isChecked} onChange={handleSelectAllClick}/>
                                         </th> 
                                         :
                                         null
                                     }
-                                    {reverseWords ? 
-                                        <>
-                                            <th className='wordsTable__wordHeader'>
-                                                Russian words
-                                            </th> 
-                                            <th className='wordsTable__translateHeader'>
-                                                English words
-                                            </th>
-                                        </>
-                                        : 
-                                        <>
-                                            <th className='wordsTable__wordHeader'>
-                                                English words
-                                            </th>
-                                            <th className='wordsTable__translateHeader'>
-                                                Russian words
-                                            </th>
-                                        </>
-                                    }
+                                    <th className='wordsTable__wordHeader'>
+                                        {reverseWords ? 'Russian words' : 'English words'}
+                                    </th> 
+                                    <th className='wordsTable__translateHeader'>
+                                        {reverseWords ? 'English words' : 'Russian words'}
+                                    </th>
                                     {isShowDate ? 
                                         <th className='wordsTable__date'>
                                             Date of adding

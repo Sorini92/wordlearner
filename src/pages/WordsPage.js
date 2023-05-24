@@ -2,7 +2,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useLocation, useNavigate} from "react-router-dom";
 import {useState, useEffect} from "react";
 import database from "../firebase";
-import {deleteDoc, collection, doc} from "firebase/firestore"; 
+import {deleteDoc, collection, doc, getDoc, setDoc} from "firebase/firestore"; 
 import {deleteWord, deleteWords, addWord, modifyWord, setTotalPages, fetchWords, sortBy, activeSortTypeChanged, setWordsPerUpload, setPage} from '../store/slices/wordSlice';
 import useAuth from '../hooks/use-auth';
 import Header from "../components/Header/Header";
@@ -26,8 +26,8 @@ const HomePage = () => {
     const [modifyModalActive, setModifyModalActive] = useState(false);
     const [quizModalActive, setQuizModalActive] = useState(false);
     const [selectedWord, setSelectedWord] = useState({});
-    const [selectedLetter, setSelectedLetter] = useState('');
     const [selectedWords, setSelectedWords] = useState([]);
+    const [selectedLetter, setSelectedLetter] = useState('');
     const [searchedWord, setSearchedWord] = useState([]);
     const [cuttedArrayOfWords, setCuttedArrayOfWords] = useState([]);
     const [filteredArreyLength, setFilteredArreyLength] = useState(0);
@@ -70,6 +70,12 @@ const HomePage = () => {
         dispatch(setPage(1))
         // eslint-disable-next-line
     }, [wordsPerUpload, words, filteredArreyLength]);
+
+    useEffect(() => {
+        setSelectedWord({});
+        setSelectedWords([]);
+        // eslint-disable-next-line
+    }, [selectedLetter]);
 
     useEffect(() => {
         if (selectedLetter.length !== 0 || searchedWord.length > 0) {
@@ -157,9 +163,38 @@ const HomePage = () => {
     const handleModifyModal = () => {
         setModifyModalActive(!modifyModalActive);
     }
+
+    const onAddToFavorite = (word) => {
+        const favoriteColRef = collection(database, linkToWords.firstUrl, linkToWords.secondUrl, 'favoriteWords')
+        const wordsColRef = collection(database, linkToWords.firstUrl, linkToWords.secondUrl, linkToWords.thirdUrl)
+        
+        const obj = {
+            ...word,
+            favorite : !word.favorite,
+        }
+        
+        if (obj.favorite) {
+            setDoc(doc(favoriteColRef, obj.id), obj);
+            setShowMessage(true);
+            setMessage({
+                text: "Added to favorite!",
+                color: 'green'
+            })
+        } else {
+            deleteDoc(doc(favoriteColRef, obj.id));
+            setShowMessage(true);
+            setMessage({
+                text: "Deleted from favorite!",
+                color: 'green'
+            })
+        }
+        
+        dispatch(modifyWord(obj));
+        setDoc(doc(wordsColRef, obj.id), obj);
+    }
     
     const onDeleteWord = () => {
-        if (selectedWord.id !== undefined) {
+        if (selectedWord.id !== undefined || selectedWords.length > 0) {
             if (selectedWords.length === 0) {
                 if (window.confirm('Are you sure?')) {
                     dispatch(deleteWord(selectedWord.id));
@@ -183,6 +218,7 @@ const HomePage = () => {
                     selectedWords.forEach(item => deleteDoc(doc(colRef, item)))
     
                     setSelectedWords([]);
+                    
                     setShowMessage(true)
                     setMessage({
                         text: "The word was successfully deleted!",
@@ -340,6 +376,7 @@ const HomePage = () => {
                 selectedWords={selectedWords}
                 setSelectedWords={setSelectedWords}
                 setQuizModalActive={setQuizModalActive}
+                onAddToFavorite={onAddToFavorite}
             />
             <div className='footer'>
                 <div className='footer__numberOfWords'>
