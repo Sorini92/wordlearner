@@ -1,5 +1,5 @@
 import database from "../../firebase";
-import { setDoc, collection, doc, getDoc } from "firebase/firestore"; 
+import { setDoc, collection, doc } from "firebase/firestore"; 
 import { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
 import './modifyModal.scss';
@@ -22,6 +22,9 @@ const ModifyModal = ({width, height, active, setActive, address, func, data,  se
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        const favoriteColRef = collection(database, address.firstUrl, address.secondUrl, 'favoriteWords')
+        const wordsColRef = collection(database, address.firstUrl, address.secondUrl, 'words')
         
         const index = data.findIndex(e => e.english === english.toLocaleLowerCase());
         
@@ -37,9 +40,10 @@ const ModifyModal = ({width, height, active, setActive, address, func, data,  se
             
             dispatch(func(obj));
             setActive(false);
+
             
-            const colRef = collection(database, address.firstUrl, address.secondUrl, address.thirdUrl)
-            setDoc(doc(colRef, obj.id), obj);
+            setDoc(doc(favoriteColRef, obj.id), obj);
+            setDoc(doc(wordsColRef, obj.id), obj);
 
             setShowMessage(true);
             setMessage({

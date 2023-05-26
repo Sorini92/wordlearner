@@ -3,26 +3,23 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {useState, useEffect} from "react";
 import database from "../firebase";
 import {deleteDoc, collection, doc, setDoc} from "firebase/firestore"; 
-import {deleteWord, deleteWords, addWord, modifyWord, setTotalPages, fetchWords, sortBy, activeSortTypeChanged, setWordsPerUpload, setPage} from '../store/slices/wordSlice';
+import {modifyWord, deleteWord, setTotalPages, fetchFavorites, sortBy, activeSortTypeChanged, setWordsPerUpload, setPage} from '../store/slices/favoritesSlice';
 import useAuth from '../hooks/use-auth';
 import Header from "../components/Header/Header";
 import Navigation from "../components/Navigation/Navigation";
-import WordsTable from "../components/WordsTable/WordsTable";
 import SelectPopup from "../components/SelectPopup/SelectPopup";
-import Modification from "../components/Modification/Modification";
-import AddModal from "../components/AddModal/AddModal";
 import ModifyModal from "../components/ModifyModal/ModifyModal";
 import Pagination from '../components/Pagination/Pagination';
 import AlpabetFilter from '../components/AlphabetFilter/AlphabetFilter';
 import Message from '../components/Message/Message';
 import ArrowScrollUp from '../components/ArrowScrollUp/ArrowScrollUp';
 import QuizModal from '../components/QuizModal/QuizModal';
+import WordsTable from '../components/WordsTable/WordsTable';
 
-const WordsPage = () => {
+const FavoritesPage = () => {
 
-    const {wordsLoadingStatus, words, wordsPerUpload, sortType, currentPage, totalPages} = useSelector(state => state.words);
+    const {favorites, wordsLoadingStatus,  wordsPerUpload, sortType, currentPage, totalPages} = useSelector(state => state.favorites);
 
-    const [addModalActive, setAddModalActive] = useState(false);
     const [modifyModalActive, setModifyModalActive] = useState(false);
     const [quizModalActive, setQuizModalActive] = useState(false);
     const [selectedWord, setSelectedWord] = useState({});
@@ -58,18 +55,18 @@ const WordsPage = () => {
     const linkToWords = {
         firstUrl: 'users',
         secondUrl: 'user1',
-        thirdUrl: 'words'
+        thirdUrl: 'favoriteWords'
     }
 
     useEffect(() => {
-        dispatch(fetchWords());
+        dispatch(fetchFavorites());
         // eslint-disable-next-line
     }, []);
 
     useEffect(() => {
         dispatch(setPage(1))
         // eslint-disable-next-line
-    }, [wordsPerUpload, words, filteredArreyLength]);
+    }, [wordsPerUpload, favorites, filteredArreyLength]);
 
     useEffect(() => {
         setSelectedWord({});
@@ -87,25 +84,25 @@ const WordsPage = () => {
                 dispatch(setTotalPages(Math.ceil((filteredArreyLength/wordsPerUpload))))
             }
         } else {
-            if (!(words.length % wordsPerUpload)) {
+            if (!(favorites.length % wordsPerUpload)) {
                 setOffset(wordsPerUpload);
-                dispatch(setTotalPages(words.length/wordsPerUpload))
+                dispatch(setTotalPages(favorites.length/wordsPerUpload))
             } else {
                 setOffset(wordsPerUpload);
-                dispatch(setTotalPages(Math.ceil((words.length/wordsPerUpload))))
+                dispatch(setTotalPages(Math.ceil((favorites.length/wordsPerUpload))))
             }
         }
         // eslint-disable-next-line
-    }, [words, wordsPerUpload, selectedLetter, searchedWord.length, filteredArreyLength, totalPages])
+    }, [favorites, wordsPerUpload, selectedLetter, searchedWord.length, filteredArreyLength, totalPages])
 
     useEffect(() => {
         let lastIndex = currentPage * wordsPerUpload;
         let firstIndex = lastIndex - wordsPerUpload;
 
         if (selectedLetter.length !== 0 || searchedWord.length > 0) {
-            setCuttedArrayOfWords(filteredElements(words).slice(firstIndex, lastIndex));
+            setCuttedArrayOfWords(filteredElements(favorites).slice(firstIndex, lastIndex));
         } else {
-            setCuttedArrayOfWords(words.slice(firstIndex, lastIndex));
+            setCuttedArrayOfWords(favorites.slice(firstIndex, lastIndex));
         }
 
         // eslint-disable-next-line
@@ -113,13 +110,13 @@ const WordsPage = () => {
 
     useEffect(() => {
         if (selectedLetter.length !== 0 || searchedWord.length > 0) {
-            setCuttedArrayOfWords(filteredElements(words).slice(0, offset));
+            setCuttedArrayOfWords(filteredElements(favorites).slice(0, offset));
         } else {
             setFilteredArreyLength(0)
-            setCuttedArrayOfWords(words.slice(0, offset));
+            setCuttedArrayOfWords(favorites.slice(0, offset));
         }
         // eslint-disable-next-line
-    }, [words, offset, selectedLetter, searchedWord.length, wordsPerUpload]);
+    }, [favorites, offset, selectedLetter, searchedWord.length, wordsPerUpload]);
     
     const filteredElements = (array) => {
         let data = [];
@@ -148,16 +145,24 @@ const WordsPage = () => {
 		if (selectedLetter.length !== 0 || searchedWord.length > 0) {
             dispatch(setPage(currentPage + 1))
             setOffset(offset + wordsPerUpload);
-		    setCuttedArrayOfWords([...cuttedArrayOfWords, ...filteredElements(words).slice(offset, offset + wordsPerUpload)]);
+		    setCuttedArrayOfWords([...cuttedArrayOfWords, ...filteredElements(favorites).slice(offset, offset + wordsPerUpload)]);
         } else {
             dispatch(setPage(currentPage + 1))
             setOffset(offset + wordsPerUpload);
-		    setCuttedArrayOfWords([...cuttedArrayOfWords, ...words.slice(offset, offset + wordsPerUpload)]);
+		    setCuttedArrayOfWords([...cuttedArrayOfWords, ...favorites.slice(offset, offset + wordsPerUpload)]);
         }
 	}
 
-    const handleAddModal = () => {
-        setAddModalActive(!addModalActive);
+    const handleQuizModal = () => {
+        if (favorites.length > 20) {
+            setQuizModalActive(true)
+        } else {
+            setShowMessage(true)
+            setMessage({
+                text: "Must be at least 20 words!",
+                color: 'red'
+            })
+        }
     }
 
     const handleModifyModal = () => {
@@ -172,100 +177,29 @@ const WordsPage = () => {
         }
     }
 
-    const handleQuizModal = () => {
-        if (words.length > 20) {
-            setQuizModalActive(true)
-        } else {
-            setShowMessage(true)
-            setMessage({
-                text: "Must be at least 20 words!",
-                color: 'red'
-            })
-        }
-    }
-
     const onAddToFavorite = (word) => {
         const favoriteColRef = collection(database, linkToWords.firstUrl, linkToWords.secondUrl, 'favoriteWords')
-        const wordsColRef = collection(database, linkToWords.firstUrl, linkToWords.secondUrl, linkToWords.thirdUrl)
+        const wordsColRef = collection(database, linkToWords.firstUrl, linkToWords.secondUrl, 'words')
         
         const obj = {
             ...word,
             favorite : !word.favorite,
         }
+
+        if (window.confirm('Are you sure?')) {
+            dispatch(deleteWord(obj.id));
         
-        if (obj.favorite) {
-            setDoc(doc(favoriteColRef, obj.id), obj);
-            setShowMessage(true);
-            setMessage({
-                text: "Added to favorite!",
-                color: 'green'
-            })
-        } else {
             deleteDoc(doc(favoriteColRef, obj.id));
+            setDoc(doc(wordsColRef, obj.id), obj);        
+    
             setShowMessage(true);
             setMessage({
                 text: "Deleted from favorite!",
                 color: 'green'
             })
         }
-        
-        dispatch(modifyWord(obj));
-        setDoc(doc(wordsColRef, obj.id), obj);
     }
     
-    const onDeleteWord = () => {
-        const favoriteColRef = collection(database, linkToWords.firstUrl, linkToWords.secondUrl, 'favoriteWords')
-        const wordsColRef = collection(database, linkToWords.firstUrl, linkToWords.secondUrl, linkToWords.thirdUrl)
-        
-        if (selectedWord.id !== undefined || selectedWords.length > 0) {
-            if (selectedWords.length === 0) {
-                if (window.confirm('Are you sure?')) {
-                    dispatch(deleteWord(selectedWord.id));
-        
-                    if (selectedWord.favorite) {
-                        deleteDoc(doc(favoriteColRef, selectedWord.id));
-                        deleteDoc(doc(wordsColRef, selectedWord.id));
-                    } else {
-                        deleteDoc(doc(wordsColRef, selectedWord.id));
-                    }                    
-    
-                    setSelectedWord({})
-
-                    setShowMessage(true)
-                    setMessage({
-                        text: "The word was successfully deleted!",
-                        color: 'green'
-                    })
-                }
-            } else {
-                if (window.confirm('Are you sure?')) {
-                    dispatch(deleteWords(selectedWords));
-
-                    if (selectedWord.favorite) {
-                        selectedWords.forEach(item => deleteDoc(doc(favoriteColRef, item)))
-                        selectedWords.forEach(item => deleteDoc(doc(wordsColRef, item)))
-                    } else {
-                        selectedWords.forEach(item => deleteDoc(doc(wordsColRef, item)))
-                    }
-        
-                    setSelectedWords([]);
-                    
-                    setShowMessage(true)
-                    setMessage({
-                        text: "The word was successfully deleted!",
-                        color: 'green'
-                    })
-                }
-            }
-
-        } else {
-            setShowMessage(true)
-            setMessage({
-                text: "Choose the word!",
-                color: 'red'
-            })
-        }
-    }
 
     /* useEffect(() => {
         if(!isAuth) {
@@ -374,11 +308,7 @@ const WordsPage = () => {
                 setOffset={setOffset}
                 numberPerUpload={wordsPerUpload}
             />
-            <div className="modifying">
-                <Modification 
-                    handleAddModal={handleAddModal} 
-                    onDelete={onDeleteWord}
-                />
+            <div className="modifyingFavoritesWords">
                 {filteredArreyLength === 0 ? 
                 <SelectPopup 
                     items={sortItems} 
@@ -405,16 +335,16 @@ const WordsPage = () => {
                 handleModifyModal={handleModifyModal}
                 handleQuizModal={handleQuizModal}
                 loadingStatus={wordsLoadingStatus}
-                items={words}
+                items={favorites}
             />
             <div className='footer'>
                 <div className='footer__numberOfWords'>
-                    {cuttedArrayOfWords.length !== 0 ? <div className='footer__numberOfWords'>Total words: {words.length}</div> : null}
-                    {cuttedArrayOfWords.length !== 0 ? <div className='footer__numberOfWords'>Current words: {filteredArreyLength === 0 ? words.length : filteredArreyLength}</div> : null}
+                    {cuttedArrayOfWords.length !== 0 ? <div className='footer__numberOfWords'>Total words: {favorites.length}</div> : null}
+                    {cuttedArrayOfWords.length !== 0 ? <div className='footer__numberOfWords'>Current words: {filteredArreyLength === 0 ? favorites.length : filteredArreyLength}</div> : null}
                 </div>
                 <Pagination 
                     addNew={addNewWords} 
-                    items={words}
+                    items={favorites}
                     cuttedArray={cuttedArrayOfWords}
                     filteredArreyLength={filteredArreyLength}
                     numberPerUpload={wordsPerUpload}
@@ -430,17 +360,6 @@ const WordsPage = () => {
                     dispatchFunction={setWordsPerUpload}
                 /> : null}
             </div>
-            <AddModal 
-                width={290}
-                height={230}
-                active={addModalActive} 
-                setActive={setAddModalActive} 
-                address={linkToWords}
-                func={addWord}
-                data={words}
-                setShowMessage={setShowMessage}
-                setMessage={setMessage}
-            />
             <ModifyModal
                 width={290}
                 height={230}
@@ -448,7 +367,7 @@ const WordsPage = () => {
                 setActive={setModifyModalActive} 
                 address={linkToWords}
                 func={modifyWord}
-                data={words}
+                data={favorites}
                 selected={selectedWord}
                 setShowMessage={setShowMessage}
                 setMessage={setMessage}
@@ -456,7 +375,7 @@ const WordsPage = () => {
             <QuizModal 
                 active={quizModalActive}
                 setActive={setQuizModalActive}
-                items={words}
+                items={favorites}
                 loadingStatus={wordsLoadingStatus}
             />
             <Message 
@@ -470,4 +389,4 @@ const WordsPage = () => {
     )
 }
 
-export default WordsPage;
+export default FavoritesPage;

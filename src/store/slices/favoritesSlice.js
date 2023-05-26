@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {useGetData} from '../../hooks/useGetData';
 
 const initialState = {
-    words: [],
+    favorites: [],
     sortType: 'from new',
     wordsLoadingStatus: 'loading',
     currentPage: 1,
@@ -10,40 +10,34 @@ const initialState = {
     wordsPerUpload: 30
 }
 
-export const fetchWords = createAsyncThunk(
-    'words/fetchWords',
+export const fetchFavorites = createAsyncThunk(
+    'favorites/fetchWords',
     async () => {
         const {request} = useGetData();
         const linkToWords = {
             firstUrl: 'users',
             secondUrl: 'user1',
-            thirdUrl: 'words'
+            thirdUrl: 'favoriteWords'
         }
         return await request(linkToWords);
     }
 );
 
-const wordsSlice = createSlice({
-    name: 'words',
+const favoritesSlice = createSlice({
+    name: 'favorites',
     initialState,
     reducers: {
-        addWord: (state, action) => {
-            state.words.unshift(action.payload)
-        },
         modifyWord: (state, action) => {
-            state.words = state.words.map((item) => {
+            state.favorites = state.favorites.map((item) => {
                 if (item.id === action.payload.id) {
-                    item = action.payload;
+                    item = action.payload
                     return item
                 }
                 return item
             })
         },
         deleteWord: (state, action) => {
-            state.words = state.words.filter(item => item.id !== action.payload)
-        },
-        deleteWords: (state, action) => {
-            state.words = state.words.filter(item => !action.payload.includes(item.id));
+            state.favorites = state.favorites.filter(item => item.id !== action.payload)
         },
         setPage: (state, action) => {
             state.currentPage = action.payload;
@@ -58,13 +52,13 @@ const wordsSlice = createSlice({
         sortBy: (state, action) => {
             switch(action.payload) {
                 case 'from new': 
-                    state.words = state.words.sort((a, b) => b.date - a.date);
+                    state.favorites = state.favorites.sort((a, b) => b.date - a.date);
                     break
                 case 'from old': 
-                    state.words = state.words.sort((a, b) => a.date - b.date);
+                    state.favorites = state.favorites.sort((a, b) => a.date - b.date);
                     break
                 case 'a to z': 
-                    state.words = state.words.sort((a, b) => {
+                    state.favorites = state.favorites.sort((a, b) => {
                         if (a.english > b.english) {
                             return 1;
                         }
@@ -75,7 +69,7 @@ const wordsSlice = createSlice({
                     });
                     break
                 case 'z to a': 
-                    state.words = state.words.sort((a, b) => {
+                    state.favorites = state.favorites.sort((a, b) => {
                         if (b.english > a.english) {
                             return 1;
                         }
@@ -86,7 +80,7 @@ const wordsSlice = createSlice({
                     });
                     break
                 case 'а to я': 
-                    state.words = state.words.sort((a, b) => {
+                    state.favorites = state.favorites.sort((a, b) => {
                         if (a.russian > b.russian) {
                             return 1;
                         }
@@ -97,7 +91,7 @@ const wordsSlice = createSlice({
                     });
                     break
                 case 'я to а': 
-                    state.words = state.words.sort((a, b) => {
+                    state.favorites = state.favorites.sort((a, b) => {
                         if (b.russian > a.russian) {
                             return 1;
                         }
@@ -108,37 +102,35 @@ const wordsSlice = createSlice({
                     });
                     break
                 default:
-                    state.words = state.words.sort((a, b) => b.date - a.date);
+                    state.favorites = state.favorites.sort((a, b) => b.date - a.date);
             }
         },
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchWords.pending, state => {
+            .addCase(fetchFavorites.pending, state => {
                 state.wordsLoadingStatus = 'loading'
             })
-            .addCase(fetchWords.fulfilled, (state, action) => {
+            .addCase(fetchFavorites.fulfilled, (state, action) => {
                 state.wordsLoadingStatus = 'idle';
-                state.words = action.payload.sort((a, b) => b.date - a.date);
+                state.favorites = action.payload.sort((a, b) => b.date - a.date);
             })
-            .addCase(fetchWords.rejected, state => {
+            .addCase(fetchFavorites.rejected, state => {
                 state.wordsLoadingStatus = 'error';
             })
             .addDefaultCase(() => {})
     }
 });
 
-const {actions, reducer} = wordsSlice;
+const {actions, reducer} = favoritesSlice;
 
 export default reducer;
 export const {
-    wordsFetching,
-    wordsFetched,
-    wordsFetchingError,
-    addWord,
+    favoritesFetching,
+    favoritesFetched,
+    favoritesFetchingError,
     modifyWord,
     deleteWord,
-    deleteWords,
     setPage,
     setWordsPerUpload,
     setTotalPages,

@@ -1,14 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { CSSTransition, TransitionGroup} from 'react-transition-group';
 import ReverseArrows from '../ReverseArrows/ReverseArrow';
 import Spinner from '../Spinner/Spinner';
+import pencil from '../../resources/pencil.png';
 import './wordsTable.scss';
 
-const WordsTable = ({setQuizModalActive, searchedWord, cuttedArrayOfWords, selectedLetter, setSelectedWord, selectedWords, setSelectedWords, onAddToFavorite}) => {
+const WordsTable = ({handleModifyModal, handleQuizModal, searchedWord, cuttedArrayOfWords, selectedLetter, setSelectedWord, selectedWords, setSelectedWords, onAddToFavorite, loadingStatus, items}) => {
     
-    const {wordsLoadingStatus, words} = useSelector(state => state.words)
-
     const [idForCompare, setIdForCompare] = useState('');
     const [isShowDate, setIsShowDate] = useState(false);
     const [isShowTicks, setIsShowTicks] = useState(false);
@@ -27,6 +25,7 @@ const WordsTable = ({setQuizModalActive, searchedWord, cuttedArrayOfWords, selec
         timerRef.current = setTimeout(() => {
             setUnbluredWord('')
         }, 2000);
+
     }
     
     useEffect(() => () => clearTimeout(timerRef.current), [])
@@ -72,9 +71,8 @@ const WordsTable = ({setQuizModalActive, searchedWord, cuttedArrayOfWords, selec
 
     const onFormattedDate = (date) => {
         let normalDate = new Date(date)
-        const formattedDate = `${normalDate.toLocaleTimeString()} ${normalDate.toLocaleDateString()}`;
         
-        return formattedDate
+        return `${normalDate.toLocaleTimeString()} ${normalDate.toLocaleDateString()}`;
     }
 
     const handleStarClick = (word) => {
@@ -136,6 +134,10 @@ const WordsTable = ({setQuizModalActive, searchedWord, cuttedArrayOfWords, selec
                                     >
                                     {reverseWords ? item.english : item.russian}
                                 </div> 
+                                <div onClick={() => handleModifyModal()} className='wordsTable__translate-inner-pencil'>
+                                    {/* {idForCompare !== item.id ? null : <img src={pencil} alt='modify pencil'/>} */}
+                                    <img src={pencil} alt='modify pencil'/>
+                                </div> 
                                 <div 
                                     onClick={() => handleStarClick(item)} 
                                     className='wordsTable__translate-inner-star'>
@@ -158,7 +160,7 @@ const WordsTable = ({setQuizModalActive, searchedWord, cuttedArrayOfWords, selec
     const table = () => {
         return (
             <>
-                {words.length === 0 || (cuttedArrayOfWords.length === 0 && searchedWord.length > 0) || (cuttedArrayOfWords.length === 0 && selectedLetter.length > 0)? 
+                {items.length === 0 || (cuttedArrayOfWords.length === 0 && searchedWord.length > 0) || (cuttedArrayOfWords.length === 0 && selectedLetter.length > 0)? 
                     <div className='emptyTable'>There are no words!</div> 
                     : 
                     <div className='wordsTable__wrapper'>
@@ -171,7 +173,7 @@ const WordsTable = ({setQuizModalActive, searchedWord, cuttedArrayOfWords, selec
                             <div className='wordsTable__settings-middle'>
                                 <button 
                                     className='wordsTable__btn-blur' 
-                                    onClick={() => setQuizModalActive(true)}
+                                    onClick={() => handleQuizModal()}
                                 >
                                     Games
                                 </button>
@@ -230,10 +232,10 @@ const WordsTable = ({setQuizModalActive, searchedWord, cuttedArrayOfWords, selec
 
     return (
         <>
-            {wordsLoadingStatus === "loading" ? 
+            {loadingStatus === "loading" ? 
             <Spinner/>
             :
-            wordsLoadingStatus === "error" ? <div className='error'>Something went wrong, error from server</div> : table()
+            loadingStatus === "error" ? <div className='error'>Something went wrong, error from server</div> : table()
             }
         </>
     )

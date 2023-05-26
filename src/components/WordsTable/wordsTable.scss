@@ -31,6 +31,17 @@
             position: relative;
             display: flex;
             justify-content: space-between; 
+            &-pencil {
+                position: absolute;
+                height: 18px;
+                width: 18px;
+                right: 25px;
+                cursor: pointer;
+                img {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
             &-star {
                 position: absolute;
                 right: 0;

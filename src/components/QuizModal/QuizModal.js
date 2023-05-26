@@ -5,7 +5,7 @@ import cards from '../../resources/cards.jpg';
 import quiz from '../../resources/quiz.png';
 import './quizModal.scss';
 
-const QuizModal = ({setActive, active}) => {
+const QuizModal = ({setActive, active, items, loadingStatus}) => {
 
     const variantsArray = [
         {img: quiz, name: 'Quiz'},
@@ -64,8 +64,8 @@ const QuizModal = ({setActive, active}) => {
                     onClick={e => e.stopPropagation()}
                 >
                     {variant === '' ? mainForm : null}
-                    {variant === 0 ? <WordsQuiz setVariant={setVariant} setActive={setActive}/> : null}
-                    {variant === 1 ? <FleshCards setVariant={setVariant} setActive={setActive}/> : null}
+                    {variant === 0 ? <WordsQuiz items={items} loadingStatus={loadingStatus} setVariant={setVariant} setActive={setActive}/> : null}
+                    {variant === 1 ? <FleshCards items={items} loadingStatus={loadingStatus} setVariant={setVariant} setActive={setActive}/> : null}
                 </div>
             </div>
         </>        

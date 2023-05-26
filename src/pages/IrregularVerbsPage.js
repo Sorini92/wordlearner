@@ -12,7 +12,7 @@ import Pagination from '../components/Pagination/Pagination';
 
 const IrregularVerbsPage = () => {
 
-    const {words, wordsPerUpload, sortType, currentPage, totalPages} = useSelector(state => state.irregularVerbs);
+    const {verbs, wordsPerUpload, sortType, currentPage, totalPages} = useSelector(state => state.irregularVerbs);
 
     const [searchedWord, setSearchedWord] = useState([]);
     const [cuttedArrayOfWords, setCuttedArrayOfWords] = useState([]);
@@ -41,11 +41,11 @@ const IrregularVerbsPage = () => {
         dispatch(fetchIrregularVerbs());
         // eslint-disable-next-line
     }, []);
-
+    
     useEffect(() => {
         dispatch(setPage(1))
         // eslint-disable-next-line
-    }, [wordsPerUpload, words, filteredArreyLength]);
+    }, [wordsPerUpload, verbs, filteredArreyLength]);
 
     useEffect(() => {
         if (selectedLetter.length !== 0 || searchedWord.length > 0) {
@@ -57,25 +57,25 @@ const IrregularVerbsPage = () => {
                 dispatch(setTotalPages(Math.ceil((filteredArreyLength/wordsPerUpload))))
             }
         } else {
-            if (!(words.length % wordsPerUpload)) {
+            if (!(verbs.length % wordsPerUpload)) {
                 setOffset(wordsPerUpload);
-                dispatch(setTotalPages(words.length/wordsPerUpload))
+                dispatch(setTotalPages(verbs.length/wordsPerUpload))
             } else {
                 setOffset(wordsPerUpload);
-                dispatch(setTotalPages(Math.ceil((words.length/wordsPerUpload))))
+                dispatch(setTotalPages(Math.ceil((verbs.length/wordsPerUpload))))
             }
         }
         // eslint-disable-next-line
-    }, [words, wordsPerUpload, selectedLetter, searchedWord.length, filteredArreyLength, totalPages])
+    }, [verbs, wordsPerUpload, selectedLetter, searchedWord.length, filteredArreyLength, totalPages])
 
     useEffect(() => {
         let lastIndex = currentPage * wordsPerUpload;
         let firstIndex = lastIndex - wordsPerUpload;
 
         if (selectedLetter.length !== 0 || searchedWord.length > 0) {
-            setCuttedArrayOfWords(filteredElements(words).slice(firstIndex, lastIndex));
+            setCuttedArrayOfWords(filteredElements(verbs).slice(firstIndex, lastIndex));
         } else {
-            setCuttedArrayOfWords(words.slice(firstIndex, lastIndex));
+            setCuttedArrayOfWords(verbs.slice(firstIndex, lastIndex));
         }
         // eslint-disable-next-line
     }, [currentPage, wordsPerUpload, offset]);
@@ -108,32 +108,32 @@ const IrregularVerbsPage = () => {
         let firstIndex = lastIndex - wordsPerUpload;
 
         if (selectedLetter.length !== 0 || searchedWord.length > 0) {
-            setCuttedArrayOfWords(filteredElements(words).slice(firstIndex, lastIndex));
+            setCuttedArrayOfWords(filteredElements(verbs).slice(firstIndex, lastIndex));
         } else {
-            setCuttedArrayOfWords(words.slice(firstIndex, lastIndex));
+            setCuttedArrayOfWords(verbs.slice(firstIndex, lastIndex));
         }
         // eslint-disable-next-line
     }, [currentPage, wordsPerUpload, offset]);
 
     useEffect(() => {
         if (selectedLetter.length !== 0 || searchedWord.length > 0) {
-            setCuttedArrayOfWords(filteredElements(words).slice(0, offset));
+            setCuttedArrayOfWords(filteredElements(verbs).slice(0, offset));
         } else {
             setFilteredArreyLength(0)
-            setCuttedArrayOfWords(words.slice(0, offset));
+            setCuttedArrayOfWords(verbs.slice(0, offset));
         }
         // eslint-disable-next-line
-    }, [words, offset, selectedLetter, searchedWord.length, wordsPerUpload]);
+    }, [verbs, offset, selectedLetter, searchedWord.length, wordsPerUpload]);
 
     const addNewWords = () => {
 		if (selectedLetter.length !== 0 || searchedWord.length > 0) {
             dispatch(setPage(currentPage + 1))
             setOffset(offset + wordsPerUpload);
-		    setCuttedArrayOfWords([...cuttedArrayOfWords, ...filteredElements(words).slice(offset, offset + wordsPerUpload)]);
+		    setCuttedArrayOfWords([...cuttedArrayOfWords, ...filteredElements(verbs).slice(offset, offset + wordsPerUpload)]);
         } else {
             dispatch(setPage(currentPage + 1))
             setOffset(offset + wordsPerUpload);
-		    setCuttedArrayOfWords([...cuttedArrayOfWords, ...words.slice(offset, offset + wordsPerUpload)]);
+		    setCuttedArrayOfWords([...cuttedArrayOfWords, ...verbs.slice(offset, offset + wordsPerUpload)]);
         }
 	}
 
@@ -168,12 +168,12 @@ const IrregularVerbsPage = () => {
             />
             <div className='footer'>
                 <div className='footer__numberOfWords'>
-                    {cuttedArrayOfWords.length !== 0 ? <div className='footer__numberOfWords'>Total verbs: {words.length}</div> : null}
-                    {cuttedArrayOfWords.length !== 0 ? <div className='footer__numberOfWords'>Current verbs: {filteredArreyLength === 0 ? words.length : filteredArreyLength}</div> : null}
+                    {cuttedArrayOfWords.length !== 0 ? <div className='footer__numberOfWords'>Total verbs: {verbs.length}</div> : null}
+                    {cuttedArrayOfWords.length !== 0 ? <div className='footer__numberOfWords'>Current verbs: {filteredArreyLength === 0 ? verbs.length : filteredArreyLength}</div> : null}
                 </div>
                 <Pagination 
                     addNew={addNewWords} 
-                    items={words}
+                    items={verbs}
                     cuttedArray={cuttedArrayOfWords}
                     filteredArreyLength={filteredArreyLength}
                     numberPerUpload={wordsPerUpload}

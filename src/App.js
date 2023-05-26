@@ -4,6 +4,7 @@ import Spinner from "./components/Spinner/Spinner";
 import './styles/style.scss';
 
 const WordsPage = lazy(() => import("./pages/WordsPage"))
+const FavoritesPage = lazy(() => import("./pages/FavoritesPage"))
 const Page404 = lazy(() => import("./pages/404"))
 const SentencesPage = lazy(() => import("./pages/SentencesPage"))
 const LoginPage = lazy(() => import("./pages/LoginPage"))
@@ -19,6 +20,10 @@ function App() {
 					<Route 
 						path="/words" 
 						element={<Suspense fallback={<Spinner/>}><WordsPage/></Suspense>}
+					/>
+					<Route 
+						path="/favorites" 
+						element={<Suspense fallback={<Spinner/>}><FavoritesPage/></Suspense>}
 					/>
 					<Route 
 						path="/sentences" 

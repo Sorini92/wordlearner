@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {useGetData} from '../../hooks/useGetData';
 
 const initialState = {
-    words: [],
+    verbs: [],
     sortType: 'a to z',
     wordsLoadingStatus: 'loading',
     currentPage: 1,
@@ -38,7 +38,7 @@ const irregularVerbsSlice = createSlice({
         sortBy: (state, action) => {
             switch(action.payload) {
                 case 'a to z': 
-                    state.words = state.words.sort((a, b) => {
+                    state.verbs = state.verbs.sort((a, b) => {
                         if (a.baseForm > b.baseForm) {
                             return 1;
                         }
@@ -49,7 +49,7 @@ const irregularVerbsSlice = createSlice({
                     });
                     break
                 case 'z to a': 
-                    state.words = state.words.sort((a, b) => {
+                    state.verbs = state.verbs.sort((a, b) => {
                         if (b.baseForm > a.baseForm) {
                             return 1;
                         }
@@ -60,7 +60,7 @@ const irregularVerbsSlice = createSlice({
                     });
                     break
                 case 'а to я': 
-                    state.words = state.words.sort((a, b) => {
+                    state.verbs = state.verbs.sort((a, b) => {
                         if (a.translation > b.translation) {
                             return 1;
                         }
@@ -71,7 +71,7 @@ const irregularVerbsSlice = createSlice({
                     });
                     break
                 case 'я to а': 
-                    state.words = state.words.sort((a, b) => {
+                    state.verbs = state.verbs.sort((a, b) => {
                         if (b.translation > a.translation) {
                             return 1;
                         }
@@ -82,7 +82,7 @@ const irregularVerbsSlice = createSlice({
                     });
                     break
                 default:
-                    state.words = state.words.sort((a, b) => b.baseForm - a.baseForm);
+                    state.verbs = state.verbs.sort((a, b) => b.baseForm - a.baseForm);
             }
         },
     },
@@ -93,7 +93,7 @@ const irregularVerbsSlice = createSlice({
             })
             .addCase(fetchIrregularVerbs.fulfilled, (state, action) => {
                 state.wordsLoadingStatus = 'idle';
-                state.words = action.payload.sort((a, b) => {
+                state.verbs = action.payload.sort((a, b) => {
                     if (a.baseForm > b.baseForm) {
                         return 1;
                     }

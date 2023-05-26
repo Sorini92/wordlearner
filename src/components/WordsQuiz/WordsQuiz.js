@@ -1,11 +1,8 @@
 import { useEffect, useState, Fragment } from 'react';
 import './wordsQuiz.scss';
-import { useSelector } from 'react-redux';
 import Spinner from '../Spinner/Spinner';
 
-const WordsQuiz = ({setVariant, setActive}) => {
-
-    const {words, wordsLoadingStatus} = useSelector(state => state.words);
+const WordsQuiz = ({setVariant, setActive, items, loadingStatus}) => {
 
     const [oneQuestion, setOneQuestion] = useState([]);
     const [variants, setVariants] = useState([]);
@@ -19,10 +16,10 @@ const WordsQuiz = ({setVariant, setActive}) => {
     useEffect(() => {
         nextQuestion();        
         // eslint-disable-next-line
-    }, [words.length])
+    }, [items.length])
 
     const nextQuestion = () => {
-        let copiedArray = [...words];
+        let copiedArray = [...items];
         const randomIndex = getRandomInt(copiedArray.length);
         const correctAnswer = copiedArray[randomIndex];
         const variantsOfAnswers = [];
@@ -122,7 +119,7 @@ const WordsQuiz = ({setVariant, setActive}) => {
                 <div onClick={() => setActive(false)} className='wordsquiz__close'>&times;</div>
 
                 <div className='wordsquiz__wrapper'>
-                    {wordsLoadingStatus === 'loading' ? <Spinner/> : elements}
+                    {loadingStatus === 'loading' ? <Spinner/> : elements}
                     {isTrue && isChecked ? <div className='wordsquiz__success'>Correct answer</div> : null}
                     {isFalse && isChecked ? <div className='wordsquiz__wrong'>Incorrect answer</div> : null}
                     {isChecked && !isFalse && !isTrue ? <div className='wordsquiz__wrong'>Choose the variant</div> : null}

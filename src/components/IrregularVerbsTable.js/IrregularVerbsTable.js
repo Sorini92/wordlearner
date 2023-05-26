@@ -6,7 +6,7 @@ import './irregularVerbsTable.scss';
 
 const IrregularVerbsTable = ({searchedWord, cuttedArrayOfWords, selectedLetter}) => {
     
-    const {wordsLoadingStatus, words} = useSelector(state => state.irregularVerbs)
+    const {wordsLoadingStatus, verbs} = useSelector(state => state.irregularVerbs)
 
     const [idForCompare, setIdForCompare] = useState('');
     
@@ -54,7 +54,7 @@ const IrregularVerbsTable = ({searchedWord, cuttedArrayOfWords, selectedLetter})
     const table = () => {
         return (
             <>
-                {words.length === 0 || (cuttedArrayOfWords.length === 0 && searchedWord.length > 0) || (cuttedArrayOfWords.length === 0 && selectedLetter.length > 0)? 
+                {verbs.length === 0 || (cuttedArrayOfWords.length === 0 && searchedWord.length > 0) || (cuttedArrayOfWords.length === 0 && selectedLetter.length > 0)? 
                     <div className='emptyTable'>There are no words!</div> 
                     : 
                     <div className='irregularVerbsTable__wrapper'>

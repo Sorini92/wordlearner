@@ -1,14 +1,10 @@
 import { useEffect, useState, Fragment, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import rightArrow from '../../resources/rightarrow.png';
 import leftArrow from '../../resources/leftarrow.png';
 import './flashCards.scss';
 import Spinner from '../Spinner/Spinner';
 
-
-const FleshCards = ({setActive, setVariant}) => {
-
-    const {words, wordsLoadingStatus} = useSelector(state => state.words);
+const FleshCards = ({setActive, setVariant, items, loadingStatus}) => {
 
     const [isFlipped, setIsFlipped] = useState(false);
     const [isReversedCard, setIsReversedCard] = useState(false);
@@ -17,7 +13,7 @@ const FleshCards = ({setActive, setVariant}) => {
     const timerRef = useRef(null)
 
     useEffect(() => {
-        let copiedArray = [...words];
+        let copiedArray = [...items];
 
         for (let i = copiedArray.length - 1; i > 0; i--) {
             let randomIndex = getRandomIndex(0, i);
@@ -28,7 +24,7 @@ const FleshCards = ({setActive, setVariant}) => {
 
         setArrayOfCards(copiedArray);
         // eslint-disable-next-line
-    }, [words.length])
+    }, [items.length])
 
     useEffect(() => () => clearTimeout(timerRef.current), [indexOfCard])
     
@@ -91,7 +87,7 @@ const FleshCards = ({setActive, setVariant}) => {
                 }
 
                 <div className={isFlipped ? 'flashcards__cards flipped' : 'flashcards__cards'} onClick={handleCardClick}>
-                    {wordsLoadingStatus === 'loading' ? <Spinner/> : cards(arrayOfCards)}
+                    {loadingStatus === 'loading' ? <Spinner/> : cards(arrayOfCards)}
                 </div>
 
                 {indexOfCard === arrayOfCards.length ? 
