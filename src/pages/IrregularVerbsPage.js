@@ -22,7 +22,6 @@ const IrregularVerbsPage = () => {
     
     const dispatch = useDispatch();
     const {isAuth} = useAuth();
-    const navigate = useNavigate();
 
     const sortItems = [        
         { name: 'a to z'},
@@ -137,7 +136,7 @@ const IrregularVerbsPage = () => {
         }
 	}
 
-    return (
+    return isAuth ? (
         <>
             <Header/>
             <Navigation 
@@ -190,7 +189,7 @@ const IrregularVerbsPage = () => {
                 /> : null}
             </div>
         </>
-    )
+    ) : null
 }
 
 export default IrregularVerbsPage;

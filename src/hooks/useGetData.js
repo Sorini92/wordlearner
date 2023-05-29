@@ -2,12 +2,11 @@ import database from "../firebase";
 import { getDocs, collection, disableNetwork } from 'firebase/firestore';
 
 export const useGetData = () => {
-        
-        const request = async (url) => {
 
+        const request = async (url) => {
             /* await disableNetwork(database);
             console.log("Network disabled!"); */
-
+            
             try {
                 let dataRef;
 

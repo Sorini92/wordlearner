@@ -33,9 +33,7 @@ const FavoritesPage = () => {
     const [showMessage, setShowMessage] = useState(false);
 
     const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const location = useLocation();
-    const {isAuth} = useAuth();
+    const {isAuth, id} = useAuth();
 
     const sortItems = [
         { name: 'from new'},
@@ -54,14 +52,16 @@ const FavoritesPage = () => {
 
     const linkToWords = {
         firstUrl: 'users',
-        secondUrl: 'user1',
+        secondUrl: id,
         thirdUrl: 'favoriteWords'
     }
-
+    
     useEffect(() => {
-        dispatch(fetchFavorites());
+        if (id !== null) {
+            dispatch(fetchFavorites(id));
+        }
         // eslint-disable-next-line
-    }, []);
+    }, [id]);
 
     useEffect(() => {
         dispatch(setPage(1))
@@ -199,108 +199,8 @@ const FavoritesPage = () => {
             })
         }
     }
-    
-
-    /* useEffect(() => {
-        if(!isAuth) {
-            navigate('/login')
-        }
-    })
 
     return isAuth ? (
-        <>
-            <Header/>
-            <Navigation 
-                setSearched={setSearchedWord}
-                setOffset={setOffset}
-                numberPerUpload={wordsPerUpload}
-            />
-            <div className="modifying">
-                <Modification 
-                    handleModifyModal={handleModifyModal}
-                    handleAddModal={handleAddModal} 
-                    onDeleteWord={onDeleteWord}
-                    selectedItem={selectedWord.id}
-                    selectedItems={selectedWords}
-                    setShowMessage={setShowMessage}
-                    setMessage={setMessage}
-                />
-                {filteredArreyLength === 0 ? 
-                <SelectPopup 
-                    items={sortItems} 
-                    active={sortType}
-                    text={"Sort by:"}
-                    dispatchFunction={sortBy}
-                    activeTypeChanged={activeSortTypeChanged}
-                /> : 
-                null}
-            </div>
-            <AlpabetFilter 
-                setSelectedLetter={setSelectedLetter} 
-                setOffset={setOffset}
-                wordsPerUpload={wordsPerUpload}
-            />
-            <Table 
-                searchedWord={searchedWord}
-                cuttedArrayOfWords={cuttedArrayOfWords}
-                selectedLetter={selectedLetter}
-                setSelectedWord={setSelectedWord}
-                selectedWords={selectedWords}
-                setSelectedWords={setSelectedWords}
-            />
-            <div className='footer'>
-                <div className='footer__numberOfWords'>
-                    {cuttedArrayOfWords.length !== 0 ? <div className='footer__numberOfWords'>Total words: {words.length}</div> : null}
-                    {cuttedArrayOfWords.length !== 0 ? <div className='footer__numberOfWords'>Current words: {filteredArreyLength === 0 ? words.length : filteredArreyLength}</div> : null}
-                </div>
-                <Pagination 
-                    addNewWords={addNewWords} 
-                    words={words}
-                    cuttedArrayOfWords={cuttedArrayOfWords}
-                    filteredArreyLength={filteredArreyLength}
-                    wordsPerUpload={wordsPerUpload}
-                />
-                {cuttedArrayOfWords.length !== 0 ? 
-                <SelectPopup 
-                    items={numberOfWordsPerPage} 
-                    active={wordsPerUpload}
-                    text={"On the page:"}
-                    dispatchFunction={setWordsPerUpload}
-                /> : null}
-            </div>
-            <AddModal 
-                active={addModalActive} 
-                setActive={setAddModalActive} 
-                address={linkToWords}
-                func={addWord}
-                data={words}
-                setShowMessage={setShowMessage}
-                setMessage={setMessage}
-            />
-            <ModifyModal
-                active={modifyModalActive} 
-                setActive={setModifyModalActive} 
-                address={linkToWords}
-                func={modifyWord}
-                data={words}
-                selected={selectedWord}
-                setShowMessage={setShowMessage}
-                setMessage={setMessage}
-            />
-            <Message 
-                message={message.text} 
-                showMessage={showMessage} 
-                setShowMessage={setShowMessage}
-                color={message.color}
-            />
-            <ArrowScrollUp/>
-        </>
-    ) : (
-        <>
-            {navigate('/login')}
-        </>
-    ) */
-    return (
         <>
             <Header/>
             <Navigation 
@@ -386,7 +286,7 @@ const FavoritesPage = () => {
             />
             <ArrowScrollUp/>
         </>
-    )
+    ) : null
 }
 
 export default FavoritesPage;

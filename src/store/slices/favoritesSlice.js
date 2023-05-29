@@ -12,13 +12,15 @@ const initialState = {
 
 export const fetchFavorites = createAsyncThunk(
     'favorites/fetchWords',
-    async () => {
+    async (id) => {
         const {request} = useGetData();
+        
         const linkToWords = {
             firstUrl: 'users',
-            secondUrl: 'user1',
+            secondUrl: id,
             thirdUrl: 'favoriteWords'
         }
+
         return await request(linkToWords);
     }
 );

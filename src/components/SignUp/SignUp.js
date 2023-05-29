@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import {setUser} from '../../store/slices/userSlice';
+import useAuth from '../../hooks/use-auth';
 
 const SignUp = () => {
     const dispatch = useDispatch();
-
     const navigate = useNavigate();
     
     const handleRegister = (email, password) => {
@@ -14,7 +14,6 @@ const SignUp = () => {
         
         createUserWithEmailAndPassword(auth, email, password)
             .then(({user}) => {
-                console.log(user)
                 dispatch(setUser({
                     email: user.email,
                     id: user.uid,

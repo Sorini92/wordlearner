@@ -12,13 +12,15 @@ const initialState = {
 
 export const fetchWords = createAsyncThunk(
     'words/fetchWords',
-    async () => {
+    async (id) => {
         const {request} = useGetData();
+        
         const linkToWords = {
             firstUrl: 'users',
-            secondUrl: 'user1',
+            secondUrl: id,
             thirdUrl: 'words'
         }
+
         return await request(linkToWords);
     }
 );
