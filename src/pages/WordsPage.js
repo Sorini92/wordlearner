@@ -102,28 +102,20 @@ const WordsPage = () => {
         let firstIndex = lastIndex - wordsPerUpload;
 
         if (selectedLetter.length !== 0 || searchedWord.length > 0) {
+            setOffset(wordsPerUpload);
             setCuttedArrayOfWords(filteredElements(words).slice(firstIndex, lastIndex));
         } else {
+            setOffset(wordsPerUpload);
             setCuttedArrayOfWords(words.slice(firstIndex, lastIndex));
         }
         // eslint-disable-next-line
-    }, [currentPage, wordsPerUpload, offset]);
+    }, [currentPage, wordsPerUpload]);
 
     useEffect(() => {
         if (selectedLetter.length !== 0 || searchedWord.length > 0) {
-            if (currentPage > 1) {
-                setCuttedArrayOfWords(filteredElements(words).slice(offset * (currentPage - 1), offset * currentPage));
-            } else {
-                setCuttedArrayOfWords(filteredElements(words).slice(0, offset));
-            }
-            
+            setCuttedArrayOfWords(filteredElements(words).slice(offset * (currentPage - 1), offset * currentPage));
         } else {
-            if (currentPage > 1) {
-                setCuttedArrayOfWords(words.slice(offset * (currentPage - 1), offset * currentPage));
-            } else {
-                setFilteredArreyLength(0)
-                setCuttedArrayOfWords(words.slice(0, offset));
-            }
+            setCuttedArrayOfWords(words.slice(offset * (currentPage - 1), offset * currentPage));
         }
         // eslint-disable-next-line
     }, [words, offset, selectedLetter, searchedWord.length, wordsPerUpload]);
@@ -146,13 +138,13 @@ const WordsPage = () => {
                 }
             } 
         }
-
+        console.log(data);
         setFilteredArreyLength(data.length)
         return data;
     }
-    console.log(offset, 'offset');
+    /* console.log(offset, 'offset');
     console.log(cuttedArrayOfWords, 'cutted');
-    console.log(currentPage, 'page');
+    console.log(currentPage, 'page'); */
 
     const addNewWords = () => {
 		if (selectedLetter.length !== 0 || searchedWord.length > 0) {
@@ -284,6 +276,7 @@ const WordsPage = () => {
                 setSearched={setSearchedWord}
                 setOffset={setOffset}
                 numberPerUpload={wordsPerUpload}
+                setFilteredArreyLength={setFilteredArreyLength}
             />
             <div className="modifying">
                 <Modification 
@@ -304,6 +297,7 @@ const WordsPage = () => {
                 setSelectedLetter={setSelectedLetter} 
                 setOffset={setOffset}
                 wordsPerUpload={wordsPerUpload}
+                setFilteredArreyLength={setFilteredArreyLength}
             />
             <WordsTable 
                 searchedWord={searchedWord}
