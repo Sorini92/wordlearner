@@ -1,5 +1,4 @@
 import {useDispatch, useSelector} from 'react-redux';
-import {useLocation, useNavigate} from "react-router-dom";
 import {useState, useEffect} from "react";
 import database from "../firebase";
 import {deleteDoc, collection, doc, setDoc} from "firebase/firestore"; 
@@ -69,7 +68,7 @@ const WordsPage = () => {
     useEffect(() => {
         dispatch(setPage(1))
         // eslint-disable-next-line
-    }, [wordsPerUpload, words, filteredArreyLength]);
+    }, [wordsPerUpload, filteredArreyLength]);
 
     useEffect(() => {
         setSelectedWord({});
@@ -107,16 +106,24 @@ const WordsPage = () => {
         } else {
             setCuttedArrayOfWords(words.slice(firstIndex, lastIndex));
         }
-
         // eslint-disable-next-line
     }, [currentPage, wordsPerUpload, offset]);
 
     useEffect(() => {
         if (selectedLetter.length !== 0 || searchedWord.length > 0) {
-            setCuttedArrayOfWords(filteredElements(words).slice(0, offset));
+            if (currentPage > 1) {
+                setCuttedArrayOfWords(filteredElements(words).slice(offset * (currentPage - 1), offset * currentPage));
+            } else {
+                setCuttedArrayOfWords(filteredElements(words).slice(0, offset));
+            }
+            
         } else {
-            setFilteredArreyLength(0)
-            setCuttedArrayOfWords(words.slice(0, offset));
+            if (currentPage > 1) {
+                setCuttedArrayOfWords(words.slice(offset * (currentPage - 1), offset * currentPage));
+            } else {
+                setFilteredArreyLength(0)
+                setCuttedArrayOfWords(words.slice(0, offset));
+            }
         }
         // eslint-disable-next-line
     }, [words, offset, selectedLetter, searchedWord.length, wordsPerUpload]);
@@ -143,14 +150,17 @@ const WordsPage = () => {
         setFilteredArreyLength(data.length)
         return data;
     }
+    console.log(offset, 'offset');
+    console.log(cuttedArrayOfWords, 'cutted');
+    console.log(currentPage, 'page');
 
     const addNewWords = () => {
 		if (selectedLetter.length !== 0 || searchedWord.length > 0) {
-            dispatch(setPage(currentPage + 1))
+            //dispatch(setPage(currentPage + 1))
             setOffset(offset + wordsPerUpload);
 		    setCuttedArrayOfWords([...cuttedArrayOfWords, ...filteredElements(words).slice(offset, offset + wordsPerUpload)]);
         } else {
-            dispatch(setPage(currentPage + 1))
+            //dispatch(setPage(currentPage + 1))
             setOffset(offset + wordsPerUpload);
 		    setCuttedArrayOfWords([...cuttedArrayOfWords, ...words.slice(offset, offset + wordsPerUpload)]);
         }

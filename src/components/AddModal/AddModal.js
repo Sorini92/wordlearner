@@ -15,12 +15,13 @@ const AddModal = ({width, height, active, setActive, address, func, data, setMes
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const index = data.findIndex(e => e.english === english.toLocaleLowerCase());
+        const index = data.findIndex(e => e.english === english.toLowerCase());
 
         if (index === -1) {
+
             const newObj = {
-                english: english.toLocaleLowerCase(),
-                russian: russian.toLocaleLowerCase(),
+                english: english.toLowerCase(),
+                russian: russian.toLowerCase(),
                 date: Date.now(),
                 favorite: false,
                 id: uuidv4()
@@ -46,6 +47,7 @@ const AddModal = ({width, height, active, setActive, address, func, data, setMes
                 text: "It's already there!",
                 color: 'red'
             })
+
             setEnglish('');
             setRussian('');
         }
@@ -77,7 +79,7 @@ const AddModal = ({width, height, active, setActive, address, func, data, setMes
                         <input 
                             value={russian}
                             maxLength={30}
-                            onChange={(e) => setRussian(e.target.value.replace(/[^а-я], /g, ''))}
+                            onChange={(e) => setRussian(e.target.value.replace(/[^а-я]/g, ''))}
                             type="text" 
                             id='russian' 
                             placeholder='Write here' 
@@ -91,7 +93,8 @@ const AddModal = ({width, height, active, setActive, address, func, data, setMes
                                     e.preventDefault();
                                     setActive(false);
                                 }}    
-                            >Close
+                            >
+                                Close
                             </button>
                             <button className='addmodal__btn' type='submit'>Add</button>
                         </div>

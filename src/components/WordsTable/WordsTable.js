@@ -87,7 +87,7 @@ const WordsTable = ({handleModifyModal, handleQuizModal, searchedWord, cuttedArr
 
         setIsShowTicks(!isShowTicks)
     }
-
+    
     const elements = (array) => {
         return array.map((item) => {
 
@@ -124,9 +124,7 @@ const WordsTable = ({handleModifyModal, handleQuizModal, searchedWord, cuttedArr
                         <td className='wordsTable__word'>
                             {reverseWords ? item.russian : item.english}
                         </td> 
-                        <td 
-                            className='wordsTable__translate'
-                        >
+                        <td className='wordsTable__translate'>
                             <div className='wordsTable__translate-inner'>
                                 <div
                                     onClick={() => handleUnblur(item.id)} 
@@ -135,7 +133,6 @@ const WordsTable = ({handleModifyModal, handleQuizModal, searchedWord, cuttedArr
                                     {reverseWords ? item.english : item.russian}
                                 </div> 
                                 <div onClick={() => handleModifyModal()} className='wordsTable__translate-inner-pencil'>
-                                    {/* {idForCompare !== item.id ? null : <img src={pencil} alt='modify pencil'/>} */}
                                     <img src={pencil} alt='modify pencil'/>
                                 </div> 
                                 <div 
@@ -195,6 +192,7 @@ const WordsTable = ({handleModifyModal, handleQuizModal, searchedWord, cuttedArr
                                 {isShowDate ? <>&#8594;</> : <>&#8592;</>} Date
                             </button> 
                         </div>
+
                         <table className='wordsTable'>
                             <thead>
                                 <tr>

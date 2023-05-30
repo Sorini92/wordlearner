@@ -26,24 +26,27 @@ const ModifyModal = ({width, height, active, setActive, address, func, data,  se
         const favoriteColRef = collection(database, address.firstUrl, address.secondUrl, 'favoriteWords')
         const wordsColRef = collection(database, address.firstUrl, address.secondUrl, 'words')
         
-        const index = data.findIndex(e => e.english === english.toLocaleLowerCase());
+        const index = data.findIndex(e => e.english === english.toLowerCase());
         
         if (index === -1) {
             
             const obj = {
                 favorite : dataForModify.favorite,
-                english: english.toLocaleLowerCase(),
-                russian: russian.toLocaleLowerCase(),
+                english: english.toLowerCase(),
+                russian: russian.toLowerCase(),
                 id: dataForModify.id,
-                date: Date.now()
+                date: dataForModify.date
             }
             
             dispatch(func(obj));
             setActive(false);
 
-            
-            setDoc(doc(favoriteColRef, obj.id), obj);
-            setDoc(doc(wordsColRef, obj.id), obj);
+            if (dataForModify.favorite) {
+                setDoc(doc(favoriteColRef, obj.id), obj);
+                setDoc(doc(wordsColRef, obj.id), obj);
+            } else {
+                setDoc(doc(wordsColRef, obj.id), obj);
+            }
 
             setShowMessage(true);
             setMessage({
@@ -83,7 +86,7 @@ const ModifyModal = ({width, height, active, setActive, address, func, data,  se
                     <input 
                         value={russian}
                         maxLength={30}
-                        onChange={(e) => setRussian(e.target.value.replace(/[^а-я], /g, ''))}
+                        onChange={(e) => setRussian(e.target.value.replace(/[^а-я]/g, ''))}
                         type="text" 
                         id='russian' 
                         placeholder='Write here' 
@@ -96,7 +99,8 @@ const ModifyModal = ({width, height, active, setActive, address, func, data,  se
                                 e.preventDefault();
                                 setActive(false);
                             }}    
-                        >Close
+                        >
+                            Close
                         </button>
                         <button className='modifymodal__btn' type='submit'>Modify</button>
                     </div>

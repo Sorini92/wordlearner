@@ -1,5 +1,4 @@
 import {useDispatch, useSelector} from 'react-redux';
-import {useNavigate} from "react-router-dom";
 import {useState, useEffect} from "react";
 import {setTotalPages, fetchIrregularVerbs, sortBy, activeSortTypeChanged, setWordsPerUpload, setPage} from '../store/slices/irregularVerbsSlice';
 import useAuth from '../hooks/use-auth';
