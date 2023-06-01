@@ -5,9 +5,8 @@ import Spinner from '../Spinner/Spinner';
 import pencil from '../../resources/pencil.png';
 import './wordsTable.scss';
 
-const WordsTable = ({handleModifyModal, handleQuizModal, searchedWord, cuttedArrayOfWords, selectedLetter, setSelectedWord, selectedWords, setSelectedWords, onAddToFavorite, loadingStatus, items}) => {
+const WordsTable = ({handleModifyModal, handleQuizModal, searchedWord, cuttedArrayOfWords, selectedLetter, setSelectedWord, selectedWords, selectedWord, setSelectedWords, onAddToFavorite, loadingStatus, items}) => {
     
-    const [idForCompare, setIdForCompare] = useState('');
     const [isShowDate, setIsShowDate] = useState(false);
     const [isShowTicks, setIsShowTicks] = useState(false);
     const [reverseWords, setReverseWords] = useState(false);
@@ -29,10 +28,15 @@ const WordsTable = ({handleModifyModal, handleQuizModal, searchedWord, cuttedArr
     }
     
     useEffect(() => () => clearTimeout(timerRef.current), [])
+
+    useEffect(()=> {
+        if (selectedWords.length === 0) {
+            setIsChecked(false);
+        }
+    }, [selectedWords.length]);
     
     const handleClick = (word) => {
         setSelectedWord(word)
-        setIdForCompare(word.id);
     }
 
     const handleSelectAllClick = (event) => {
@@ -43,7 +47,7 @@ const WordsTable = ({handleModifyModal, handleQuizModal, searchedWord, cuttedArr
             setSelectedWords(newSelected);
             return;
         }
-
+        
         setSelectedWords([]);
     };
 
@@ -107,7 +111,7 @@ const WordsTable = ({handleModifyModal, handleQuizModal, searchedWord, cuttedArr
                     }}
                 >
                     <tr 
-                        className={idForCompare !== item.id ? 'word' : 'word activeWord'} 
+                        className={selectedWord.id !== item.id ? 'word' : 'word activeWord'} 
                         onClick={() => handleClick(item)}
                     >
                         {isShowTicks ? 

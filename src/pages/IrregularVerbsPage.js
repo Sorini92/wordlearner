@@ -8,6 +8,7 @@ import SelectPopup from "../components/SelectPopup/SelectPopup";
 import AlpabetFilter from '../components/AlphabetFilter/AlphabetFilter';
 import IrregularVerbsTable from '../components/IrregularVerbsTable.js/IrregularVerbsTable';
 import Pagination from '../components/Pagination/Pagination';
+import ArrowScrollUp from '../components/ArrowScrollUp/ArrowScrollUp';
 
 const IrregularVerbsPage = () => {
 
@@ -16,7 +17,7 @@ const IrregularVerbsPage = () => {
     const [searchedWord, setSearchedWord] = useState([]);
     const [cuttedArrayOfWords, setCuttedArrayOfWords] = useState([]);
     const [selectedLetter, setSelectedLetter] = useState('');
-    const [filteredArreyLength, setFilteredArreyLength] = useState(0);
+    const [filteredArrayLength, setFilteredArrayLength] = useState(0);
     const [offset, setOffset] = useState(30);
     
     const dispatch = useDispatch();
@@ -43,28 +44,30 @@ const IrregularVerbsPage = () => {
     useEffect(() => {
         dispatch(setPage(1))
         // eslint-disable-next-line
-    }, [wordsPerUpload, verbs, filteredArreyLength]);
+    }, [wordsPerUpload, filteredArrayLength]);
+
+
+    useEffect(() => {
+        setOffset(wordsPerUpload * currentPage)
+        // eslint-disable-next-line
+    }, [currentPage]);
 
     useEffect(() => {
         if (selectedLetter.length !== 0 || searchedWord.length > 0) {
-            if (!(filteredArreyLength % wordsPerUpload)) {
-                setOffset(wordsPerUpload);
-                dispatch(setTotalPages(filteredArreyLength/wordsPerUpload))
+            if (!(filteredArrayLength % wordsPerUpload)) {
+                dispatch(setTotalPages(filteredArrayLength/wordsPerUpload))
             } else {
-                setOffset(wordsPerUpload);
-                dispatch(setTotalPages(Math.ceil((filteredArreyLength/wordsPerUpload))))
+                dispatch(setTotalPages(Math.ceil((filteredArrayLength/wordsPerUpload))))
             }
         } else {
             if (!(verbs.length % wordsPerUpload)) {
-                setOffset(wordsPerUpload);
                 dispatch(setTotalPages(verbs.length/wordsPerUpload))
             } else {
-                setOffset(wordsPerUpload);
                 dispatch(setTotalPages(Math.ceil((verbs.length/wordsPerUpload))))
             }
         }
         // eslint-disable-next-line
-    }, [verbs, wordsPerUpload, selectedLetter, searchedWord.length, filteredArreyLength, totalPages])
+    }, [verbs, wordsPerUpload, selectedLetter, searchedWord.length, filteredArrayLength, totalPages])
 
     useEffect(() => {
         let lastIndex = currentPage * wordsPerUpload;
@@ -76,7 +79,7 @@ const IrregularVerbsPage = () => {
             setCuttedArrayOfWords(verbs.slice(firstIndex, lastIndex));
         }
         // eslint-disable-next-line
-    }, [currentPage, wordsPerUpload, offset]);
+    }, [verbs, offset, selectedLetter, searchedWord.length, wordsPerUpload, currentPage]);
 
     const filteredElements = (array) => {
         let data = [];
@@ -97,43 +100,9 @@ const IrregularVerbsPage = () => {
             } 
         }
 
-        setFilteredArreyLength(data.length)
+        setFilteredArrayLength(data.length)
         return data;
     }
-
-    useEffect(() => {
-        let lastIndex = currentPage * wordsPerUpload;
-        let firstIndex = lastIndex - wordsPerUpload;
-
-        if (selectedLetter.length !== 0 || searchedWord.length > 0) {
-            setCuttedArrayOfWords(filteredElements(verbs).slice(firstIndex, lastIndex));
-        } else {
-            setCuttedArrayOfWords(verbs.slice(firstIndex, lastIndex));
-        }
-        // eslint-disable-next-line
-    }, [currentPage, wordsPerUpload, offset]);
-
-    useEffect(() => {
-        if (selectedLetter.length !== 0 || searchedWord.length > 0) {
-            setCuttedArrayOfWords(filteredElements(verbs).slice(0, offset));
-        } else {
-            setFilteredArreyLength(0)
-            setCuttedArrayOfWords(verbs.slice(0, offset));
-        }
-        // eslint-disable-next-line
-    }, [verbs, offset, selectedLetter, searchedWord.length, wordsPerUpload]);
-
-    const addNewWords = () => {
-		if (selectedLetter.length !== 0 || searchedWord.length > 0) {
-            dispatch(setPage(currentPage + 1))
-            setOffset(offset + wordsPerUpload);
-		    setCuttedArrayOfWords([...cuttedArrayOfWords, ...filteredElements(verbs).slice(offset, offset + wordsPerUpload)]);
-        } else {
-            dispatch(setPage(currentPage + 1))
-            setOffset(offset + wordsPerUpload);
-		    setCuttedArrayOfWords([...cuttedArrayOfWords, ...verbs.slice(offset, offset + wordsPerUpload)]);
-        }
-	}
 
     return isAuth ? (
         <>
@@ -144,7 +113,7 @@ const IrregularVerbsPage = () => {
                 numberPerUpload={wordsPerUpload}
             />
             <div className="modifyingIrregularVerbs">
-                {filteredArreyLength === 0 ? 
+                {filteredArrayLength === 0 ? 
                 <SelectPopup 
                     items={sortItems} 
                     active={sortType}
@@ -158,6 +127,7 @@ const IrregularVerbsPage = () => {
                 setSelectedLetter={setSelectedLetter} 
                 setOffset={setOffset}
                 wordsPerUpload={wordsPerUpload}
+                setFilteredArrayLength={setFilteredArrayLength}
             />
             <IrregularVerbsTable
                 searchedWord={searchedWord}
@@ -167,13 +137,12 @@ const IrregularVerbsPage = () => {
             <div className='footer'>
                 <div className='footer__numberOfWords'>
                     {cuttedArrayOfWords.length !== 0 ? <div className='footer__numberOfWords'>Total verbs: {verbs.length}</div> : null}
-                    {cuttedArrayOfWords.length !== 0 ? <div className='footer__numberOfWords'>Current verbs: {filteredArreyLength === 0 ? verbs.length : filteredArreyLength}</div> : null}
+                    {cuttedArrayOfWords.length !== 0 ? <div className='footer__numberOfWords'>Current verbs: {filteredArrayLength === 0 ? verbs.length : filteredArrayLength}</div> : null}
                 </div>
                 <Pagination 
-                    addNew={addNewWords} 
                     items={verbs}
                     cuttedArray={cuttedArrayOfWords}
-                    filteredArreyLength={filteredArreyLength}
+                    filteredArrayLength={filteredArrayLength}
                     numberPerUpload={wordsPerUpload}
                     currentPage={currentPage}
                     totalPages={totalPages}
@@ -187,6 +156,7 @@ const IrregularVerbsPage = () => {
                     dispatchFunction={setWordsPerUpload}
                 /> : null}
             </div>
+            <ArrowScrollUp/>
         </>
     ) : null
 }

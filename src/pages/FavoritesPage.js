@@ -14,6 +14,7 @@ import Message from '../components/Message/Message';
 import ArrowScrollUp from '../components/ArrowScrollUp/ArrowScrollUp';
 import QuizModal from '../components/QuizModal/QuizModal';
 import WordsTable from '../components/WordsTable/WordsTable';
+import useFilteredArray from '../hooks/useFilteredArray';
 
 const FavoritesPage = () => {
 
@@ -26,13 +27,15 @@ const FavoritesPage = () => {
     const [selectedLetter, setSelectedLetter] = useState('');
     const [searchedWord, setSearchedWord] = useState([]);
     const [cuttedArrayOfWords, setCuttedArrayOfWords] = useState([]);
-    const [filteredArreyLength, setFilteredArreyLength] = useState(0);
+    const [filteredArrayLength, setFilteredArrayLength] = useState(0);
 	const [offset, setOffset] = useState(30);
     const [message, setMessage] = useState({});
     const [showMessage, setShowMessage] = useState(false);
 
     const dispatch = useDispatch();
     const {isAuth, id} = useAuth();
+    
+    const {filtered, filteredLength} = useFilteredArray(favorites, selectedLetter, searchedWord) 
 
     const sortItems = [
         { name: 'from new'},
@@ -65,7 +68,12 @@ const FavoritesPage = () => {
     useEffect(() => {
         dispatch(setPage(1))
         // eslint-disable-next-line
-    }, [wordsPerUpload, filteredArreyLength]);
+    }, [wordsPerUpload, filteredArrayLength]);
+
+    useEffect(() => {
+        setFilteredArrayLength(filteredLength)
+        // eslint-disable-next-line
+    }, [filteredLength]);
 
     useEffect(() => {
         setSelectedWord({});
@@ -74,92 +82,38 @@ const FavoritesPage = () => {
     }, [selectedLetter]);
 
     useEffect(() => {
+        setOffset(wordsPerUpload * currentPage)
+        // eslint-disable-next-line
+    }, [currentPage]);
+
+    useEffect(() => {
         if (selectedLetter.length !== 0 || searchedWord.length > 0) {
-            if (!(filteredArreyLength % wordsPerUpload)) {
-                setOffset(wordsPerUpload);
-                dispatch(setTotalPages(filteredArreyLength/wordsPerUpload))
+            if (!(filteredArrayLength % wordsPerUpload)) {
+                dispatch(setTotalPages(filteredArrayLength/wordsPerUpload))
             } else {
-                setOffset(wordsPerUpload);
-                dispatch(setTotalPages(Math.ceil((filteredArreyLength/wordsPerUpload))))
+                dispatch(setTotalPages(Math.ceil((filteredArrayLength/wordsPerUpload))))
             }
         } else {
             if (!(favorites.length % wordsPerUpload)) {
-                setOffset(wordsPerUpload);
                 dispatch(setTotalPages(favorites.length/wordsPerUpload))
             } else {
-                setOffset(wordsPerUpload);
                 dispatch(setTotalPages(Math.ceil((favorites.length/wordsPerUpload))))
             }
         }
         // eslint-disable-next-line
-    }, [favorites, wordsPerUpload, selectedLetter, searchedWord.length, filteredArreyLength, totalPages])
+    }, [favorites, wordsPerUpload, selectedLetter, searchedWord.length, filteredArrayLength, totalPages])
 
     useEffect(() => {
         let lastIndex = currentPage * wordsPerUpload;
         let firstIndex = lastIndex - wordsPerUpload;
 
         if (selectedLetter.length !== 0 || searchedWord.length > 0) {
-            setCuttedArrayOfWords(filteredElements(favorites).slice(firstIndex, lastIndex));
+            setCuttedArrayOfWords(filtered.slice(firstIndex, lastIndex));
         } else {
             setCuttedArrayOfWords(favorites.slice(firstIndex, lastIndex));
         }
-
         // eslint-disable-next-line
-    }, [currentPage, wordsPerUpload, offset]);
-
-    useEffect(() => {
-        if (selectedLetter.length !== 0 || searchedWord.length > 0) {
-            if (currentPage > 1) {
-                setCuttedArrayOfWords(filteredElements(favorites).slice(offset * (currentPage - 1), offset * currentPage));
-            } else {
-                setCuttedArrayOfWords(filteredElements(favorites).slice(0, offset));
-            }
-            
-        } else {
-            if (currentPage > 1) {
-                setCuttedArrayOfWords(favorites.slice(offset * (currentPage - 1), offset * currentPage));
-            } else {
-                setFilteredArreyLength(0)
-                setCuttedArrayOfWords(favorites.slice(0, offset));
-            }
-        }
-        // eslint-disable-next-line
-    }, [favorites, offset, selectedLetter, searchedWord.length, wordsPerUpload]);
-    
-    const filteredElements = (array) => {
-        let data = [];
-
-        if (searchedWord.length > 0) {
-            if (!!searchedWord.match(/[^а-я]/g)) {
-                data = array.filter(item => item.english.toLowerCase().includes(searchedWord))
-            } else {
-                data = array.filter(item => item.russian.toLowerCase().includes(searchedWord))
-            }
-        } else {
-            if (selectedLetter.length !== 0) {
-                if (!!selectedLetter.match(/[^а-я]/g)) {
-                    data = array.filter(item => item.english.toLowerCase().slice(0, 1) === selectedLetter)
-                } else {
-                    data = array.filter(item => item.russian.toLowerCase().slice(0, 1) === selectedLetter)
-                }
-            } 
-        }
-
-        setFilteredArreyLength(data.length)
-        return data;
-    }
-
-    const addNewWords = () => {
-		if (selectedLetter.length !== 0 || searchedWord.length > 0) {
-            dispatch(setPage(currentPage + 1))
-            setOffset(offset + wordsPerUpload);
-		    setCuttedArrayOfWords([...cuttedArrayOfWords, ...filteredElements(favorites).slice(offset, offset + wordsPerUpload)]);
-        } else {
-            dispatch(setPage(currentPage + 1))
-            setOffset(offset + wordsPerUpload);
-		    setCuttedArrayOfWords([...cuttedArrayOfWords, ...favorites.slice(offset, offset + wordsPerUpload)]);
-        }
-	}
+    }, [favorites, offset, selectedLetter, searchedWord.length, wordsPerUpload, filtered, currentPage]);
 
     const handleQuizModal = () => {
         if (favorites.length > 20) {
@@ -217,7 +171,7 @@ const FavoritesPage = () => {
                 numberPerUpload={wordsPerUpload}
             />
             <div className="modifyingFavoritesWords">
-                {filteredArreyLength === 0 ? 
+                {filteredArrayLength === 0 ? 
                 <SelectPopup 
                     items={sortItems} 
                     active={sortType}
@@ -228,6 +182,7 @@ const FavoritesPage = () => {
                 null}
             </div>
             <AlpabetFilter 
+                setFilteredArrayLength={setFilteredArrayLength}
                 setSelectedLetter={setSelectedLetter} 
                 setOffset={setOffset}
                 wordsPerUpload={wordsPerUpload}
@@ -236,6 +191,7 @@ const FavoritesPage = () => {
                 searchedWord={searchedWord}
                 cuttedArrayOfWords={cuttedArrayOfWords}
                 selectedLetter={selectedLetter}
+                selectedWord={selectedWord}
                 setSelectedWord={setSelectedWord}
                 selectedWords={selectedWords}
                 setSelectedWords={setSelectedWords}
@@ -248,13 +204,12 @@ const FavoritesPage = () => {
             <div className='footer'>
                 <div className='footer__numberOfWords'>
                     {cuttedArrayOfWords.length !== 0 ? <div className='footer__numberOfWords'>Total words: {favorites.length}</div> : null}
-                    {cuttedArrayOfWords.length !== 0 ? <div className='footer__numberOfWords'>Current words: {filteredArreyLength === 0 ? favorites.length : filteredArreyLength}</div> : null}
+                    {cuttedArrayOfWords.length !== 0 ? <div className='footer__numberOfWords'>Current words: {filteredArrayLength === 0 ? favorites.length : filteredArrayLength}</div> : null}
                 </div>
                 <Pagination 
-                    addNew={addNewWords} 
                     items={favorites}
                     cuttedArray={cuttedArrayOfWords}
-                    filteredArreyLength={filteredArreyLength}
+                    filteredArrayLength={filteredArrayLength}
                     numberPerUpload={wordsPerUpload}
                     currentPage={currentPage}
                     totalPages={totalPages}

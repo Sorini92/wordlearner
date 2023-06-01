@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import scope from '../../resources/scope.svg';
 import "./navigation.scss";
 
-const Navigation = ({setSearched, setOffset, numberPerUpload, setFilteredArreyLength}) => {
+const Navigation = ({setSearched, setOffset, numberPerUpload, setFilteredArrayLength}) => {
 
     const location = useLocation();
     const [text, setText] = useState('');
@@ -31,7 +31,7 @@ const Navigation = ({setSearched, setOffset, numberPerUpload, setFilteredArreyLe
     const clearSearch = () => {
         setText('')
         setSearched('')
-        setFilteredArreyLength(0)
+        setFilteredArrayLength(0)
         setOffset(numberPerUpload)
     }
 

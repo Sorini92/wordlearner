@@ -1,7 +1,7 @@
 import { Fragment, useState } from 'react';
 import './alphabetFilter.scss';
 
-const AlpabetFilter = ({setSelectedLetter, setOffset, wordsPerUpload, setFilteredArreyLength}) => {
+const AlpabetFilter = ({setSelectedLetter, setOffset, wordsPerUpload, setFilteredArrayLength}) => {
 
     const [switcher, setSwitcher] = useState(true);
     const [active, setActive] = useState('');
@@ -12,7 +12,7 @@ const AlpabetFilter = ({setSelectedLetter, setOffset, wordsPerUpload, setFiltere
     const handleClearLetter = () => {
         setActive('');
         setSelectedLetter('');
-        setFilteredArreyLength(0);
+        setFilteredArrayLength(0);
         setOffset(wordsPerUpload);
     }
 

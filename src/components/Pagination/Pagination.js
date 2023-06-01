@@ -2,7 +2,7 @@ import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import './pagination.scss';
 
-const Pagination = ({addNew, items, cuttedArray, filteredArreyLength, numberPerUpload, currentPage, totalPages, setPage}) => {
+const Pagination = ({items, cuttedArray, filteredArrayLength, numberPerUpload, currentPage, totalPages, setPage}) => {
 
     const [arrOfCurrPages, setArrOfCurrPages] = useState([])
 
@@ -105,7 +105,8 @@ const Pagination = ({addNew, items, cuttedArray, filteredArreyLength, numberPerU
         return (
             <div className="pagination__pages">
                 {prevBtns()}
-               {arrOfCurrPages.map(((item, i) => {
+                
+                {arrOfCurrPages.map(((item, i) => {
                     return (
                         <div
                             key={i}
@@ -116,6 +117,7 @@ const Pagination = ({addNew, items, cuttedArray, filteredArreyLength, numberPerU
                         </div>
                     )
                 }))}
+
                 {nextBtns()}
             </div>
         )
@@ -123,8 +125,7 @@ const Pagination = ({addNew, items, cuttedArray, filteredArreyLength, numberPerU
 
     return (
         <div className='pagination'>
-            {(items.length === cuttedArray.length) || items.length < numberPerUpload || cuttedArray.length < numberPerUpload || cuttedArray.length === filteredArreyLength || currentPage === totalPages ? null : <button className='pagination__btn' onClick={() => addNew()}>More</button>}
-            {(items.length <= numberPerUpload || cuttedArray.length < numberPerUpload || cuttedArray.length === filteredArreyLength) && (currentPage === 1 && totalPages < 2) ? null : elements()}
+            {(items.length <= numberPerUpload || cuttedArray.length < numberPerUpload || cuttedArray.length === filteredArrayLength) && (currentPage === 1 && totalPages < 2) ? null : elements()}
         </div>
     )
 }
