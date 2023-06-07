@@ -1,48 +1,11 @@
 .app {
     min-height: 100vh;
-}
-
-.modifying {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 15px;
-    align-items: center;
-}
-
-.modifyingIrregularVerbs {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 15px;
-    align-items: center;
-    height: 30px;
-}
-
-.modifyingFavoritesWords {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 15px;
-    align-items: center;
-    height: 30px;
+    margin: 0 auto;
+    width: 65%;
 }
 
 .end {
     justify-content: flex-end;
-}
-
-.footer {
-    //position: absolute;
-    width: 100%;
-    height: 40px;
-    //bottom: 20px;
-    margin-top: 15px;
-    margin-bottom: 60px;
-    display: flex;
-    justify-content: space-between;
-    //align-items: center;
-    &__numberOfWords {
-        font-size: 17px;
-        font-weight: 700;
-    }
 }
 
 .error {

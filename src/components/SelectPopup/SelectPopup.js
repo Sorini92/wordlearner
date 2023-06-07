@@ -3,8 +3,11 @@ import {  useDispatch } from 'react-redux';
 import './selectPopup.scss';
 
 const SelectPopup = ({items, active, text, dispatchFunction, activeTypeChanged}) => {
+    
     const [visiblePopup, setVisiblePopup] = useState(false);
+    
     const selectRef = useRef();
+    
     const dispatch = useDispatch();
     
     const toggleVisiblePopup = () => {

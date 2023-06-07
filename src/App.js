@@ -22,16 +22,16 @@ function App() {
 						element={<Suspense fallback={<Spinner/>}><WordsPage/></Suspense>}
 					/>
 					<Route 
-						path="/favorites" 
+						path="/words/favorites" 
 						element={<Suspense fallback={<Spinner/>}><FavoritesPage/></Suspense>}
+					/>
+					<Route 
+						path="/words/irregular" 
+						element={<Suspense fallback={<Spinner/>}><IrregularVerbsPage/></Suspense>}
 					/>
 					<Route 
 						path="/sentences" 
 						element={<Suspense fallback={<Spinner/>}><SentencesPage/></Suspense>}
-					/>
-					<Route 
-						path="/irregular" 
-						element={<Suspense fallback={<Spinner/>}><IrregularVerbsPage/></Suspense>}
 					/>
 					<Route 
 						path="/login" 

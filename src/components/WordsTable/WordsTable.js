@@ -1,17 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { CSSTransition, TransitionGroup} from 'react-transition-group';
-import ReverseArrows from '../ReverseArrows/ReverseArrow';
 import Spinner from '../Spinner/Spinner';
 import pencil from '../../resources/pencil.png';
 import './wordsTable.scss';
 
-const WordsTable = ({handleModifyModal, handleQuizModal, searchedWord, cuttedArrayOfWords, selectedLetter, setSelectedWord, selectedWords, selectedWord, setSelectedWords, onAddToFavorite, loadingStatus, items}) => {
-    
-    const [isShowDate, setIsShowDate] = useState(false);
-    const [isShowTicks, setIsShowTicks] = useState(false);
-    const [reverseWords, setReverseWords] = useState(false);
+const WordsTable = ({handleModifyModal, searchedWord, cuttedArrayOfWords, selectedLetter, setSelectedWord, selectedWords, selectedWord, setSelectedWords, onAddToFavorite, loadingStatus, isShowDate, isShowTicks, reverseWords, isBlured, items}) => {
+
     const [isChecked, setIsChecked] = useState(false);
-    const [isBlured, setIsBlured] = useState(false);
     const [unbluredWord, setUnbluredWord] = useState('');
     
     const timerRef = useRef(null)
@@ -28,6 +23,14 @@ const WordsTable = ({handleModifyModal, handleQuizModal, searchedWord, cuttedArr
     }
     
     useEffect(() => () => clearTimeout(timerRef.current), [])
+    
+    useEffect(() => {
+        if (!isShowTicks) {
+            setIsChecked(false)
+            setSelectedWords([]);
+        }
+        // eslint-disable-next-line
+    }, [isShowTicks])
 
     useEffect(()=> {
         if (selectedWords.length === 0) {
@@ -83,15 +86,6 @@ const WordsTable = ({handleModifyModal, handleQuizModal, searchedWord, cuttedArr
         onAddToFavorite(word)
     }
 
-    const handleShowTicksClick = () => {
-        if (isShowTicks) {
-            setIsChecked(false)
-            setSelectedWords([]);
-        }
-
-        setIsShowTicks(!isShowTicks)
-    }
-    
     const elements = (array) => {
         return array.map((item) => {
 
@@ -165,38 +159,6 @@ const WordsTable = ({handleModifyModal, handleQuizModal, searchedWord, cuttedArr
                     <div className='emptyTable'>There are no words!</div> 
                     : 
                     <div className='wordsTable__wrapper'>
-                        <div className='wordsTable__settings'>
-
-                            <button onClick={() => handleShowTicksClick()} className='wordsTable__btn-ticks'>
-                                Ticks {isShowTicks ?<>&#8592;</> : <>&#8594;</>}
-                            </button>
-                            
-                            <div className='wordsTable__settings-middle'>
-                                <button 
-                                    className='wordsTable__btn-blur' 
-                                    onClick={() => handleQuizModal()}
-                                >
-                                    Games
-                                </button>
-
-                                <ReverseArrows 
-                                    setReverseWords={setReverseWords} 
-                                    reverseWords={reverseWords}
-                                />
-                                
-                                <button 
-                                    onClick={() => setIsBlured(!isBlured)} 
-                                    className='wordsTable__btn-blur'
-                                >
-                                    Blur right
-                                </button>
-                            </div>
-                            
-                            <button onClick={() => setIsShowDate(!isShowDate)} className='wordsTable__btn-date'>
-                                {isShowDate ? <>&#8594;</> : <>&#8592;</>} Date
-                            </button> 
-                        </div>
-
                         <table className='wordsTable'>
                             <thead>
                                 <tr>

@@ -6,15 +6,16 @@ import {modifyWord, deleteWord, setTotalPages, fetchFavorites, sortBy, activeSor
 import useAuth from '../hooks/use-auth';
 import Header from "../components/Header/Header";
 import Navigation from "../components/Navigation/Navigation";
-import SelectPopup from "../components/SelectPopup/SelectPopup";
 import ModifyModal from "../components/ModifyModal/ModifyModal";
-import Pagination from '../components/Pagination/Pagination';
 import AlpabetFilter from '../components/AlphabetFilter/AlphabetFilter';
 import Message from '../components/Message/Message';
 import ArrowScrollUp from '../components/ArrowScrollUp/ArrowScrollUp';
 import QuizModal from '../components/QuizModal/QuizModal';
 import WordsTable from '../components/WordsTable/WordsTable';
 import useFilteredArray from '../hooks/useFilteredArray';
+import WordsNavigation from '../components/WordsNavigation/WordsNavigation';
+import Footer from '../components/Footer/Footer';
+import SortAndActions from '../components/SortAndActions/SortAndActions';
 
 const FavoritesPage = () => {
 
@@ -22,15 +23,22 @@ const FavoritesPage = () => {
 
     const [modifyModalActive, setModifyModalActive] = useState(false);
     const [quizModalActive, setQuizModalActive] = useState(false);
+
     const [selectedWord, setSelectedWord] = useState({});
     const [selectedWords, setSelectedWords] = useState([]);
     const [selectedLetter, setSelectedLetter] = useState('');
     const [searchedWord, setSearchedWord] = useState([]);
     const [cuttedArrayOfWords, setCuttedArrayOfWords] = useState([]);
     const [filteredArrayLength, setFilteredArrayLength] = useState(0);
+
 	const [offset, setOffset] = useState(30);
     const [message, setMessage] = useState({});
     const [showMessage, setShowMessage] = useState(false);
+
+    const [isShowDate, setIsShowDate] = useState(false);
+    const [isShowTicks, setIsShowTicks] = useState(false);
+    const [isBlured, setIsBlured] = useState(false);
+    const [reverseWords, setReverseWords] = useState(false);
 
     const dispatch = useDispatch();
     const {isAuth, id} = useAuth();
@@ -170,17 +178,25 @@ const FavoritesPage = () => {
                 setOffset={setOffset}
                 numberPerUpload={wordsPerUpload}
             />
-            <div className="modifyingFavoritesWords">
-                {filteredArrayLength === 0 ? 
-                <SelectPopup 
-                    items={sortItems} 
-                    active={sortType}
-                    text={"Sort by:"}
-                    dispatchFunction={sortBy}
-                    activeTypeChanged={activeSortTypeChanged}
-                /> : 
-                null}
-            </div>
+            <WordsNavigation
+                showSetting={true}
+                setIsShowDate={setIsShowDate}
+                setIsShowTicks={setIsShowTicks}
+                setReverseWords={setReverseWords}
+                setIsBlured={setIsBlured}
+                isShowDate={isShowDate}
+                reverseWords={reverseWords}
+                isBlured={isBlured}
+            />
+            <SortAndActions
+                filteredArrayLength={filteredArrayLength}
+                sortItems={sortItems}
+                active={sortType}
+                text={"Sort by:"}
+                dispatchFunction={sortBy}
+                activeTypeChanged={activeSortTypeChanged}
+                handleQuizModal={handleQuizModal}
+            />
             <AlpabetFilter 
                 setFilteredArrayLength={setFilteredArrayLength}
                 setSelectedLetter={setSelectedLetter} 
@@ -197,32 +213,26 @@ const FavoritesPage = () => {
                 setSelectedWords={setSelectedWords}
                 onAddToFavorite={onAddToFavorite}
                 handleModifyModal={handleModifyModal}
-                handleQuizModal={handleQuizModal}
                 loadingStatus={wordsLoadingStatus}
+                isShowDate={isShowDate}
+                isBlured={isBlured}
+                isShowTicks={isShowTicks}
+                reverseWords={reverseWords}
                 items={favorites}
             />
-            <div className='footer'>
-                <div className='footer__numberOfWords'>
-                    {cuttedArrayOfWords.length !== 0 ? <div className='footer__numberOfWords'>Total words: {favorites.length}</div> : null}
-                    {cuttedArrayOfWords.length !== 0 ? <div className='footer__numberOfWords'>Current words: {filteredArrayLength === 0 ? favorites.length : filteredArrayLength}</div> : null}
-                </div>
-                <Pagination 
-                    items={favorites}
-                    cuttedArray={cuttedArrayOfWords}
-                    filteredArrayLength={filteredArrayLength}
-                    numberPerUpload={wordsPerUpload}
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    setPage={setPage}
-                />
-                {cuttedArrayOfWords.length !== 0 ? 
-                <SelectPopup 
-                    items={numberOfWordsPerPage} 
-                    active={wordsPerUpload}
-                    text={"On the page:"}
-                    dispatchFunction={setWordsPerUpload}
-                /> : null}
-            </div>
+            <Footer
+                cuttedArray={cuttedArrayOfWords}
+                filteredArrayLength={filteredArrayLength}
+                numberPerUpload={wordsPerUpload}
+                currentPage={currentPage}
+                totalPages={totalPages}
+                setPage={setPage}
+                numberOfItemsPerPage={numberOfWordsPerPage}
+                active={wordsPerUpload}
+                text={"On the page:"}
+                dispatchFunction={setWordsPerUpload}
+                items={favorites}
+            />
             <ModifyModal
                 width={290}
                 height={230}

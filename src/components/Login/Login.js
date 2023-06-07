@@ -1,7 +1,6 @@
 import Form from '../Form/Form';
-import {useEffect} from "react";
 import { useDispatch } from 'react-redux';
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 import {setUser} from '../../store/slices/userSlice';
 

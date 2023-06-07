@@ -33,7 +33,10 @@ const ArrowScrollUp = () => {
     }
 
     return (
-        <div className={ showScroll ? 'scrollup' : 'show'} onClick={handlerScrollUp}></div>
+        <>
+            {showScroll ? <div className='scrollup' onClick={handlerScrollUp}></div> : null}
+        </>
+        
     );
 }
 

@@ -4,11 +4,12 @@ import {setTotalPages, fetchIrregularVerbs, sortBy, activeSortTypeChanged, setWo
 import useAuth from '../hooks/use-auth';
 import Header from "../components/Header/Header";
 import Navigation from "../components/Navigation/Navigation";
-import SelectPopup from "../components/SelectPopup/SelectPopup";
 import AlpabetFilter from '../components/AlphabetFilter/AlphabetFilter';
 import IrregularVerbsTable from '../components/IrregularVerbsTable.js/IrregularVerbsTable';
-import Pagination from '../components/Pagination/Pagination';
 import ArrowScrollUp from '../components/ArrowScrollUp/ArrowScrollUp';
+import WordsNavigation from '../components/WordsNavigation/WordsNavigation';
+import Footer from '../components/Footer/Footer';
+import SortAndActions from '../components/SortAndActions/SortAndActions';
 
 const IrregularVerbsPage = () => {
 
@@ -112,17 +113,17 @@ const IrregularVerbsPage = () => {
                 setOffset={setOffset}
                 numberPerUpload={wordsPerUpload}
             />
-            <div className="modifyingIrregularVerbs">
-                {filteredArrayLength === 0 ? 
-                <SelectPopup 
-                    items={sortItems} 
-                    active={sortType}
-                    text={"Sort by:"}
-                    dispatchFunction={sortBy}
-                    activeTypeChanged={activeSortTypeChanged}
-                /> : 
-                null}
-            </div>
+            <WordsNavigation
+                showSetting={false}
+            />
+            <SortAndActions
+                filteredArrayLength={filteredArrayLength}
+                sortItems={sortItems}
+                active={sortType}
+                text={"Sort by:"}
+                dispatchFunction={sortBy}
+                activeTypeChanged={activeSortTypeChanged}
+            />
             <AlpabetFilter 
                 setSelectedLetter={setSelectedLetter} 
                 setOffset={setOffset}
@@ -134,28 +135,19 @@ const IrregularVerbsPage = () => {
                 cuttedArrayOfWords={cuttedArrayOfWords}
                 selectedLetter={selectedLetter}
             />
-            <div className='footer'>
-                <div className='footer__numberOfWords'>
-                    {cuttedArrayOfWords.length !== 0 ? <div className='footer__numberOfWords'>Total verbs: {verbs.length}</div> : null}
-                    {cuttedArrayOfWords.length !== 0 ? <div className='footer__numberOfWords'>Current verbs: {filteredArrayLength === 0 ? verbs.length : filteredArrayLength}</div> : null}
-                </div>
-                <Pagination 
-                    items={verbs}
-                    cuttedArray={cuttedArrayOfWords}
-                    filteredArrayLength={filteredArrayLength}
-                    numberPerUpload={wordsPerUpload}
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    setPage={setPage}
-                />
-                {cuttedArrayOfWords.length !== 0 ? 
-                <SelectPopup 
-                    items={numberOfWordsPerPage} 
-                    active={wordsPerUpload}
-                    text={"On the page:"}
-                    dispatchFunction={setWordsPerUpload}
-                /> : null}
-            </div>
+            <Footer
+                cuttedArray={cuttedArrayOfWords}
+                filteredArrayLength={filteredArrayLength}
+                numberPerUpload={wordsPerUpload}
+                currentPage={currentPage}
+                totalPages={totalPages}
+                setPage={setPage}
+                numberOfItemsPerPage={numberOfWordsPerPage}
+                active={wordsPerUpload}
+                text={"On the page:"}
+                dispatchFunction={setWordsPerUpload}
+                items={verbs}
+            />
             <ArrowScrollUp/>
         </>
     ) : null

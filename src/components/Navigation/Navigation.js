@@ -11,14 +11,12 @@ const Navigation = ({setSearched, setOffset, numberPerUpload, setFilteredArrayLe
 
     const links = [
         {to: '/words', text: 'Words'},
-        {to: '/favorites', text: 'Favorites'},
         {to: '/sentences', text: 'Sentences'},
-        {to: '/irregular', text: 'Irregular Verbs'},
     ]
 
     useEffect(() => {
-        const activeTab = links.findIndex((item) => item.to === location.pathname);
-        
+        const activeTab = links.findIndex((item) => item.to === `/${location.pathname.split('/')[1]}`);
+
         setActive(activeTab);
         // eslint-disable-next-line
     }, [location]);
@@ -37,7 +35,7 @@ const Navigation = ({setSearched, setOffset, numberPerUpload, setFilteredArrayLe
 
     const handleTabClick = (index) => {
         setActive(index);
-      };
+    };
 
     const tabs = links.map((item, i) => {
         return (

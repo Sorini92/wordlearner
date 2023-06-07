@@ -58,8 +58,6 @@ const IrregularVerbsTable = ({searchedWord, cuttedArrayOfWords, selectedLetter})
                     <div className='emptyTable'>There are no words!</div> 
                     : 
                     <div className='irregularVerbsTable__wrapper'>
-                        <div className='irregularVerbsTable__settings'>
-                        </div>
                         <table className='irregularVerbsTable'>
                             <thead>
                                 <tr>

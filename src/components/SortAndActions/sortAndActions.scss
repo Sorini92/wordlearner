@@ -1,0 +1,30 @@
+.modifying {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    align-items: center;
+    height: 30px;
+    &__quizbtn {
+
+        background-color: #fe5f1e;
+        height: 30px;
+        width: 100px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        color: white;
+        text-align: center;
+        padding: 5px 15px;
+        text-decoration: none;
+        margin-right: 50px;
+        &:hover {
+            opacity: 0.9;
+        }
+    }
+}
+
+.alone {
+    justify-content: space-between;
+}
+
+

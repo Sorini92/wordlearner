@@ -1,0 +1,12 @@
+.footer {
+    width: 100%;
+    height: 40px;
+    margin-top: 15px;
+    margin-bottom: 60px;
+    display: flex;
+    justify-content: space-between;
+    &__numberOfWords {
+        font-size: 17px;
+        font-weight: 700;
+    }
+}

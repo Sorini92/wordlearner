@@ -7,16 +7,16 @@ import useAuth from '../hooks/use-auth';
 import Header from "../components/Header/Header";
 import Navigation from "../components/Navigation/Navigation";
 import WordsTable from "../components/WordsTable/WordsTable";
-import SelectPopup from "../components/SelectPopup/SelectPopup";
-import Modification from "../components/Modification/Modification";
 import AddModal from "../components/AddModal/AddModal";
 import ModifyModal from "../components/ModifyModal/ModifyModal";
-import Pagination from '../components/Pagination/Pagination';
 import AlpabetFilter from '../components/AlphabetFilter/AlphabetFilter';
 import Message from '../components/Message/Message';
 import ArrowScrollUp from '../components/ArrowScrollUp/ArrowScrollUp';
 import QuizModal from '../components/QuizModal/QuizModal';
 import useFilteredArray from '../hooks/useFilteredArray';
+import WordsNavigation from '../components/WordsNavigation/WordsNavigation';
+import Footer from '../components/Footer/Footer';
+import SortAndActions from '../components/SortAndActions/SortAndActions';
 
 const WordsPage = () => {
 
@@ -36,6 +36,11 @@ const WordsPage = () => {
     const [message, setMessage] = useState({});
     const [showMessage, setShowMessage] = useState(false);
 	const [offset, setOffset] = useState(30);
+
+    const [isShowDate, setIsShowDate] = useState(false);
+    const [isShowTicks, setIsShowTicks] = useState(false);
+    const [isBlured, setIsBlured] = useState(false);
+    const [reverseWords, setReverseWords] = useState(false);
 
     const dispatch = useDispatch();
     const {isAuth, id} = useAuth();
@@ -241,21 +246,28 @@ const WordsPage = () => {
                 numberPerUpload={wordsPerUpload}
                 setFilteredArrayLength={setFilteredArrayLength}
             />
-            <div className="modifying">
-                <Modification 
-                    handleAddModal={handleAddModal} 
-                    onDelete={onDeleteWord}
-                />
-                {filteredArrayLength === 0 ? 
-                <SelectPopup 
-                    items={sortItems} 
-                    active={sortType}
-                    text={"Sort by:"}
-                    dispatchFunction={sortBy}
-                    activeTypeChanged={activeSortTypeChanged}
-                /> : 
-                null}
-            </div>
+            <WordsNavigation
+                showSetting={true}
+                setIsShowDate={setIsShowDate}
+                setIsShowTicks={setIsShowTicks}
+                setReverseWords={setReverseWords}
+                setIsBlured={setIsBlured}
+                isShowDate={isShowDate}
+                isShowTicks={isShowTicks}
+                reverseWords={reverseWords}
+                isBlured={isBlured}
+            />
+            <SortAndActions
+                handleAddModal={handleAddModal}
+                onDelete={onDeleteWord}
+                filteredArrayLength={filteredArrayLength}
+                sortItems={sortItems}
+                active={sortType}
+                text={"Sort by:"}
+                dispatchFunction={sortBy}
+                activeTypeChanged={activeSortTypeChanged}
+                handleQuizModal={handleQuizModal}
+            />
             <AlpabetFilter 
                 setSelectedLetter={setSelectedLetter} 
                 setOffset={setOffset}
@@ -272,32 +284,26 @@ const WordsPage = () => {
                 setSelectedWords={setSelectedWords}
                 onAddToFavorite={onAddToFavorite}
                 handleModifyModal={handleModifyModal}
-                handleQuizModal={handleQuizModal}
                 loadingStatus={wordsLoadingStatus}
+                isShowDate={isShowDate}
+                isBlured={isBlured}
+                isShowTicks={isShowTicks}
+                reverseWords={reverseWords}
                 items={words}
             />
-            <div className='footer'>
-                <div className='footer__numberOfWords'>
-                    {cuttedArrayOfWords.length !== 0 ? <div className='footer__numberOfWords'>Total words: {words.length}</div> : null}
-                    {cuttedArrayOfWords.length !== 0 ? <div className='footer__numberOfWords'>Current words: {filteredArrayLength === 0 ? words.length : filteredArrayLength}</div> : null}
-                </div>
-                <Pagination 
-                    items={words}
-                    cuttedArray={cuttedArrayOfWords}
-                    filteredArrayLength={filteredArrayLength}
-                    numberPerUpload={wordsPerUpload}
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    setPage={setPage}
-                />
-                {cuttedArrayOfWords.length !== 0 ? 
-                <SelectPopup 
-                    items={numberOfWordsPerPage} 
-                    active={wordsPerUpload}
-                    text={"On the page:"}
-                    dispatchFunction={setWordsPerUpload}
-                /> : null}
-            </div>
+            <Footer
+                cuttedArray={cuttedArrayOfWords}
+                filteredArrayLength={filteredArrayLength}
+                numberPerUpload={wordsPerUpload}
+                currentPage={currentPage}
+                totalPages={totalPages}
+                setPage={setPage}
+                numberOfItemsPerPage={numberOfWordsPerPage}
+                active={wordsPerUpload}
+                text={"On the page:"}
+                dispatchFunction={setWordsPerUpload}
+                items={words}
+            />
             <AddModal 
                 width={290}
                 height={230}
