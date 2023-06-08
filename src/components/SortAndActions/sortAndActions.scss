@@ -1,11 +1,14 @@
 .modifying {
+    position: relative;
     display: flex;
     justify-content: space-between;
     margin-top: 15px;
     align-items: center;
     height: 30px;
     &__quizbtn {
-
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
         background-color: #fe5f1e;
         height: 30px;
         width: 100px;
@@ -24,7 +27,7 @@
 }
 
 .alone {
-    justify-content: space-between;
+    justify-content: flex-end;
 }
 
 

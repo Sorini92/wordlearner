@@ -2,7 +2,7 @@ import SelectPopup from "../SelectPopup/SelectPopup";
 import Modification from "../Modification/Modification";
 import './sortAndActions.scss';
 
-const SortAndActions = ({handleAddModal, onDelete, filteredArrayLength, sortItems, active, text, dispatchFunction, activeTypeChanged, handleQuizModal}) => {
+const SortAndActions = ({items, handleAddModal, onDelete, filteredArrayLength, sortItems, active, text, dispatchFunction, activeTypeChanged, handleQuizModal}) => {
     return (
         <div className={handleAddModal && onDelete ? "modifying" : "modifying alone"}>
             {handleAddModal && onDelete ? 
@@ -10,7 +10,7 @@ const SortAndActions = ({handleAddModal, onDelete, filteredArrayLength, sortItem
                     handleAddModal={handleAddModal} 
                     onDelete={onDelete}
                 /> : 
-                <div className="modification"/>
+                null
             }
 
             {handleQuizModal ? 
@@ -20,7 +20,7 @@ const SortAndActions = ({handleAddModal, onDelete, filteredArrayLength, sortItem
                 null
             }
 
-            {filteredArrayLength === 0 ? 
+            {filteredArrayLength === 0 && items.length !== 0 ? 
                 <SelectPopup 
                     items={sortItems} 
                     active={active}

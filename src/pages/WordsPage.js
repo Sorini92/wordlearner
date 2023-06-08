@@ -4,7 +4,6 @@ import database from "../firebase";
 import {deleteDoc, collection, doc, setDoc} from "firebase/firestore"; 
 import {deleteWord, deleteWords, addWord, modifyWord, setTotalPages, fetchWords, sortBy, activeSortTypeChanged, setWordsPerUpload, setPage} from '../store/slices/wordSlice';
 import useAuth from '../hooks/use-auth';
-import Header from "../components/Header/Header";
 import Navigation from "../components/Navigation/Navigation";
 import WordsTable from "../components/WordsTable/WordsTable";
 import AddModal from "../components/AddModal/AddModal";
@@ -239,7 +238,6 @@ const WordsPage = () => {
 
     return  isAuth ? (
         <>
-            <Header/>
             <Navigation 
                 setSearched={setSearchedWord}
                 setOffset={setOffset}
@@ -258,6 +256,7 @@ const WordsPage = () => {
                 isBlured={isBlured}
             />
             <SortAndActions
+                items={cuttedArrayOfWords}
                 handleAddModal={handleAddModal}
                 onDelete={onDeleteWord}
                 filteredArrayLength={filteredArrayLength}

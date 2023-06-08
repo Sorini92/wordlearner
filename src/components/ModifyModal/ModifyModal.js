@@ -76,7 +76,7 @@ const ModifyModal = ({width, height, active, setActive, address, func, data,  se
                     <input 
                         value={english}
                         maxLength={30}
-                        onChange={(e) => setEnglish(e.target.value.replace(/[^a-z]/g, ''))}
+                        onChange={(e) => setEnglish(e.target.value.replace(/[^a-z ]/g, ''))}
                         type="text" 
                         id='english' 
                         placeholder='Write here' 
@@ -86,7 +86,7 @@ const ModifyModal = ({width, height, active, setActive, address, func, data,  se
                     <input 
                         value={russian}
                         maxLength={30}
-                        onChange={(e) => setRussian(e.target.value.replace(/[^а-я]/g, ''))}
+                        onChange={(e) => setRussian(e.target.value.replace(/[^а-я ]/g, ''))}
                         type="text" 
                         id='russian' 
                         placeholder='Write here' 

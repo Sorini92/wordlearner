@@ -2,7 +2,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useState, useEffect} from "react";
 import {setTotalPages, fetchIrregularVerbs, sortBy, activeSortTypeChanged, setWordsPerUpload, setPage} from '../store/slices/irregularVerbsSlice';
 import useAuth from '../hooks/use-auth';
-import Header from "../components/Header/Header";
 import Navigation from "../components/Navigation/Navigation";
 import AlpabetFilter from '../components/AlphabetFilter/AlphabetFilter';
 import IrregularVerbsTable from '../components/IrregularVerbsTable.js/IrregularVerbsTable';
@@ -107,7 +106,6 @@ const IrregularVerbsPage = () => {
 
     return isAuth ? (
         <>
-            <Header/>
             <Navigation 
                 setSearched={setSearchedWord}
                 setOffset={setOffset}
@@ -117,6 +115,7 @@ const IrregularVerbsPage = () => {
                 showSetting={false}
             />
             <SortAndActions
+                items={cuttedArrayOfWords}
                 filteredArrayLength={filteredArrayLength}
                 sortItems={sortItems}
                 active={sortType}

@@ -4,7 +4,6 @@ import database from "../firebase";
 import {deleteDoc, collection, doc, setDoc} from "firebase/firestore"; 
 import {modifyWord, deleteWord, setTotalPages, fetchFavorites, sortBy, activeSortTypeChanged, setWordsPerUpload, setPage} from '../store/slices/favoritesSlice';
 import useAuth from '../hooks/use-auth';
-import Header from "../components/Header/Header";
 import Navigation from "../components/Navigation/Navigation";
 import ModifyModal from "../components/ModifyModal/ModifyModal";
 import AlpabetFilter from '../components/AlphabetFilter/AlphabetFilter';
@@ -172,7 +171,6 @@ const FavoritesPage = () => {
 
     return isAuth ? (
         <>
-            <Header/>
             <Navigation 
                 setSearched={setSearchedWord}
                 setOffset={setOffset}
@@ -189,6 +187,7 @@ const FavoritesPage = () => {
                 isBlured={isBlured}
             />
             <SortAndActions
+                items={cuttedArrayOfWords}
                 filteredArrayLength={filteredArrayLength}
                 sortItems={sortItems}
                 active={sortType}

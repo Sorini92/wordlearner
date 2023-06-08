@@ -29,8 +29,11 @@ const Navigation = ({setSearched, setOffset, numberPerUpload, setFilteredArrayLe
     const clearSearch = () => {
         setText('')
         setSearched('')
-        setFilteredArrayLength(0)
         setOffset(numberPerUpload)
+
+        if (setFilteredArrayLength !== undefined) {
+            setFilteredArrayLength(0)
+        }
     }
 
     const handleTabClick = (index) => {
@@ -56,6 +59,7 @@ const Navigation = ({setSearched, setOffset, numberPerUpload, setFilteredArrayLe
                 <div className="navigation__tabs">
                     {tabs}
                 </div>
+
                 <div className="navigation__wrapper">
                     <input 
                         value={text}
@@ -70,8 +74,7 @@ const Navigation = ({setSearched, setOffset, numberPerUpload, setFilteredArrayLe
                         onClick={() => clearSearch('')}
                     >
                         &times;
-                    </div> : 
-                    null}
+                    </div> : null}
                 </div>
             </div>
         </>
