@@ -2,10 +2,10 @@ import SelectPopup from "../SelectPopup/SelectPopup";
 import Modification from "../Modification/Modification";
 import './sortAndActions.scss';
 
-const SortAndActions = ({items, handleAddModal, onDelete, filteredArrayLength, sortItems, active, text, dispatchFunction, activeTypeChanged, handleQuizModal}) => {
+const SortAndActions = ({address, items, handleAddModal, onDelete, filteredArrayLength, sortItems, active, text, dispatchFunction, activeTypeChanged, handleQuizModal}) => {
     return (
-        <div className={handleAddModal && onDelete ? "modifying" : "modifying alone"}>
-            {handleAddModal && onDelete ? 
+        <div className={address.thirdUrl === 'words' ? "modifying" : "modifying alone"}>
+            {address.thirdUrl === 'words' ? 
                 <Modification 
                     handleAddModal={handleAddModal} 
                     onDelete={onDelete}
@@ -13,7 +13,7 @@ const SortAndActions = ({items, handleAddModal, onDelete, filteredArrayLength, s
                 null
             }
 
-            {handleQuizModal ? 
+            {handleQuizModal && (address.thirdUrl === 'words' || address.thirdUrl === 'favoriteWords') ? 
                 <button className='modifying__quizbtn' onClick={() => handleQuizModal()}>
                     Games
                 </button> : 

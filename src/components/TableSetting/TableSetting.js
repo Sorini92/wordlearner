@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, Fragment } from 'react';
 import './tableSetting.scss';
 import settingImg from '../../resources/setting.png';
 
-const TableSetting = ({setIsShowDate, setIsShowTicks, setReverseWords, setIsBlured, isShowDate, isShowTicks, reverseWords, isBlured}) => {
+const TableSetting = ({address, setIsShowDate, setIsShowTicks, setReverseWords, setIsBlured, isShowDate, isShowTicks, reverseWords, isBlured}) => {
     
     const [visiblePopup, setVisiblePopup] = useState(false);
     
@@ -11,6 +11,12 @@ const TableSetting = ({setIsShowDate, setIsShowTicks, setReverseWords, setIsBlur
     const items = [
         {name: 'Show date', switcher: isShowDate, setFunc: setIsShowDate},
         {name: 'Multiple selection', switcher: isShowTicks, setFunc: setIsShowTicks},
+        {name: 'Reverse words', switcher: reverseWords, setFunc: setReverseWords},
+        {name: 'Blur right side', switcher: isBlured, setFunc: setIsBlured},
+    ]
+
+    const favoriteItems = [
+        {name: 'Show date', switcher: isShowDate, setFunc: setIsShowDate},
         {name: 'Reverse words', switcher: reverseWords, setFunc: setReverseWords},
         {name: 'Blur right side', switcher: isBlured, setFunc: setIsBlured},
     ]
@@ -27,10 +33,6 @@ const TableSetting = ({setIsShowDate, setIsShowTicks, setReverseWords, setIsBlur
         }
     };
 
-    const onSelectItem = (name) => {
-
-    };
-
     useEffect(() => {
         document.body.addEventListener('click', handleOutsideClick);
     }, []);
@@ -40,10 +42,7 @@ const TableSetting = ({setIsShowDate, setIsShowTicks, setReverseWords, setIsBlur
         return array.map((item, index) => (
             <Fragment key={`${item.name}_${index}`}>
                 {item.switcher !== undefined ? 
-                <div 
-                    className='tableSetting__items' 
-                    onClick={() => onSelectItem(item.name)} 
-                >
+                <div className='tableSetting__items'>
                     <div className='tableSetting__name'>
                         {item.name}
                     </div>
@@ -58,18 +57,21 @@ const TableSetting = ({setIsShowDate, setIsShowTicks, setReverseWords, setIsBlur
     }
 
     return (
-        <div ref={selectRef} className="tableSetting">
-            <div className="tableSetting__label">
-                <img src={settingImg} alt='setting img' onClick={toggleVisiblePopup}/>
-            </div>
-            {visiblePopup && (
-                <div className="tableSetting__popup">
-                    <div className='tableSetting__wrapper'>
-                        {items && elements(items)}
-                    </div>
+        <>
+            {address.thirdUrl === 'words' || address.thirdUrl === 'favoriteWords' ?
+            <div ref={selectRef} className="tableSetting">
+                <div className="tableSetting__label">
+                    <img src={settingImg} alt='setting img' onClick={toggleVisiblePopup}/>
                 </div>
-            )}
-        </div>
+                {visiblePopup && (
+                    <div className="tableSetting__popup">
+                        <div className='tableSetting__wrapper'>
+                            {address.thirdUrl === 'words' ? elements(items) : elements(favoriteItems)}
+                        </div>
+                    </div>
+                )}
+            </div> : null}
+        </>
     )
 }
 

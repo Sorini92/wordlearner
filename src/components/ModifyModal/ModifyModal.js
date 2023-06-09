@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
 import './modifyModal.scss';
 
-const ModifyModal = ({width, height, active, setActive, address, func, data,  selected, setMessage, setShowMessage}) => {
+const ModifyModal = ({width, height, active, setActive, address, func, items,  selected, setMessage, setShowMessage}) => {
     
-    const dataForModify = data.find(item => item.id === selected.id);
+    const dataForModify = items.find(item => item.id === selected.id);
 
     const [english, setEnglish] = useState('');
     const [russian, setRussian] = useState('');
@@ -26,7 +26,7 @@ const ModifyModal = ({width, height, active, setActive, address, func, data,  se
         const favoriteColRef = collection(database, address.firstUrl, address.secondUrl, 'favoriteWords')
         const wordsColRef = collection(database, address.firstUrl, address.secondUrl, 'words')
         
-        const index = data.findIndex(e => e.english === english.toLowerCase());
+        const index = items.findIndex(e => e.english === english.toLowerCase());
         
         if (index === -1) {
             

@@ -1,6 +1,6 @@
 import './modification.scss';
 
-const Modification = ({handleAddModal, onDelete}) => {
+const Modification = ({handleAddModal, onDelete, add}) => {
 
     return (
         <div className='modification'>

@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useDispatch } from "react-redux";
 import './addModal.scss';
 
-const AddModal = ({width, height, active, setActive, address, func, data, setMessage, setShowMessage}) => {
+const AddModal = ({width, height, active, setActive, address, func, items, setMessage, setShowMessage}) => {
 
     const [english, setEnglish] = useState('');
     const [russian, setRussian] = useState('');
@@ -15,7 +15,7 @@ const AddModal = ({width, height, active, setActive, address, func, data, setMes
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const index = data.findIndex(e => e.english === english.toLowerCase());
+        const index = items.findIndex(e => e.english === english.toLowerCase());
 
         if (index === -1) {
 

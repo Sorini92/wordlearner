@@ -10,16 +10,40 @@ const useFilteredArray = (array, selectedLetter, searchedWord) => {
 
         if (searchedWord.length > 0) {
             if (!!searchedWord.match(/[^а-я]/g)) {
-                data = array.filter(item => item.english.toLowerCase().includes(searchedWord))
+                data = array.filter(item => {
+                    if (item.english !== undefined) {
+                        return item.english.toLowerCase().includes(searchedWord)
+                    } else {
+                        return item.baseForm.toLowerCase().includes(searchedWord)
+                    }
+                })
             } else {
-                data = array.filter(item => item.russian.toLowerCase().includes(searchedWord))
+                data = array.filter(item => {
+                    if (item.russian !== undefined) {
+                        return item.russian.toLowerCase().includes(searchedWord)
+                    } else {
+                        return item.translation.toLowerCase().includes(searchedWord)
+                    }
+                })
             }
         } else {
             if (selectedLetter.length !== 0) {
                 if (!!selectedLetter.match(/[^а-я]/g)) {
-                    data = array.filter(item => item.english.toLowerCase().slice(0, 1) === selectedLetter)
+                    data = array.filter(item => {
+                        if (item.english !== undefined) {
+                            return item.english.toLowerCase().slice(0, 1) === selectedLetter
+                        } else {
+                            return item.baseForm.toLowerCase().slice(0, 1) === selectedLetter
+                        }
+                    })
                 } else {
-                    data = array.filter(item => item.russian.toLowerCase().slice(0, 1) === selectedLetter)
+                    data = array.filter(item => {
+                        if (item.russian !== undefined) {
+                            return item.russian.toLowerCase().slice(0, 1) === selectedLetter
+                        } else {
+                            return item.translation.toLowerCase().slice(0, 1) === selectedLetter
+                        }
+                    })
                 }
             } 
         }
