@@ -1,4 +1,4 @@
-.addmodal {
+.addSentenceModal {
     height: 100vh;
     width: 100vw;
     background-color: rgba(0,0,0, 0.5);
@@ -30,17 +30,18 @@
             font-size: 15px;
             color: #555;
         }
-        input {
-            width: 95%;
+        textarea {
+            box-sizing: border-box;
+            width: 100%;
             margin: 5px auto;
-            border-radius: 3px;
-            height: 25px;
+            height: 80px;
             padding: 5px;
             border: 2px solid #ccc;
             border-radius: 5px;
-            font-size: 16px;
+            font-size: 15px;
             color: #555;
             outline: none;
+            resize: none;
             &:focus {
                 border-color: #007bff;
                 box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
@@ -73,12 +74,12 @@
     }
 }
 
-.addmodal.active {
+.addSentenceModal.active {
     opacity: 1;
     pointer-events: all;
     //transform: scale(1);
 }
 
-.addmodal__content.active {
+.addSentenceModal__content.active {
     transform: scale(1);
 }

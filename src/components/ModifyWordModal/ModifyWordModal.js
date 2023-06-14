@@ -2,9 +2,9 @@ import database from "../../firebase";
 import { setDoc, collection, doc } from "firebase/firestore"; 
 import { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
-import './modifyModal.scss';
+import './modifyWordModal.scss';
 
-const ModifyModal = ({width, height, active, setActive, address, func, items,  selected, setMessage, setShowMessage}) => {
+const ModifyWordModal = ({width, height, maxLength, active, setActive, address, func, items,  selected, setMessage, setShowMessage}) => {
     
     const dataForModify = items.find(item => item.id === selected.id);
 
@@ -75,7 +75,7 @@ const ModifyModal = ({width, height, active, setActive, address, func, items,  s
                     <label htmlFor="english">English</label>
                     <input 
                         value={english}
-                        maxLength={30}
+                        maxLength={maxLength}
                         onChange={(e) => setEnglish(e.target.value.replace(/[^a-z ]/g, ''))}
                         type="text" 
                         id='english' 
@@ -85,7 +85,7 @@ const ModifyModal = ({width, height, active, setActive, address, func, items,  s
                     <label htmlFor="russian">Russian</label>
                     <input 
                         value={russian}
-                        maxLength={30}
+                        maxLength={maxLength}
                         onChange={(e) => setRussian(e.target.value.replace(/[^а-я ]/g, ''))}
                         type="text" 
                         id='russian' 
@@ -110,4 +110,4 @@ const ModifyModal = ({width, height, active, setActive, address, func, items,  s
     )
 }
 
-export default ModifyModal;
+export default ModifyWordModal;

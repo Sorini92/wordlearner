@@ -3,8 +3,8 @@ import {useDispatch} from 'react-redux';
 import database from "../firebase";
 import {deleteDoc, collection, doc, setDoc} from "firebase/firestore"; 
 import Navigation from "../components/Navigation/Navigation";
-import AddModal from "../components/AddModal/AddModal";
-import ModifyModal from "../components/ModifyModal/ModifyModal";
+import AddWordModal from "../components/AddWordModal/AddWordModal";
+import ModifyWordModal from "../components/ModifyWordModal/ModifyWordModal";
 import AlpabetFilter from '../components/AlphabetFilter/AlphabetFilter';
 import Message from '../components/Message/Message';
 import ArrowScrollUp from '../components/ArrowScrollUp/ArrowScrollUp';
@@ -218,7 +218,7 @@ const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTy
             })
         }
     }
-    
+
     return (
         <>
             <Navigation 
@@ -288,9 +288,10 @@ const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTy
                 dispatchFunction={setNumberPerUpload}
                 items={items}
             />
-            <AddModal 
+            <AddWordModal 
                 width={290}
                 height={230}
+                maxLength={30}
                 active={addModalActive} 
                 setActive={setAddModalActive} 
                 address={address}
@@ -299,9 +300,10 @@ const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTy
                 setShowMessage={setShowMessage}
                 setMessage={setMessage}
             />
-            <ModifyModal
+            <ModifyWordModal
                 width={290}
                 height={230}
+                maxLength={30}
                 active={modifyModalActive} 
                 setActive={setModifyModalActive} 
                 address={address}

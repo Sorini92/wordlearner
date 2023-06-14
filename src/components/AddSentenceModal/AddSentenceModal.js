@@ -3,9 +3,9 @@ import { setDoc, collection, doc } from "firebase/firestore";
 import { v4 as uuidv4 } from 'uuid';
 import { useState } from 'react';
 import { useDispatch } from "react-redux";
-import './addModal.scss';
+import './addSentenceModal.scss';
 
-const AddModal = ({width, height, active, setActive, address, func, items, setMessage, setShowMessage}) => {
+const AddSentenceModal = ({width, height, maxLength, active, setActive, address, func, items, setMessage, setShowMessage}) => {
 
     const [english, setEnglish] = useState('');
     const [russian, setRussian] = useState('');
@@ -20,10 +20,9 @@ const AddModal = ({width, height, active, setActive, address, func, items, setMe
         if (index === -1) {
 
             const newObj = {
-                english: english.toLowerCase(),
-                russian: russian.toLowerCase(),
+                english: english.toLowerCase().split(/([ ,.]+)/).map(item=> item.trim()).filter(item => item !== ' ' && item !== ''),
+                russian: russian.toLowerCase().split(/([ ,.]+)/).map(item=> item.trim()).filter(item => item !== ' ' && item !== ''),
                 date: Date.now(),
-                favorite: false,
                 id: uuidv4()
             }
             
@@ -55,20 +54,20 @@ const AddModal = ({width, height, active, setActive, address, func, items, setMe
 
     return (
         <>
-            <div className={active ? "addmodal active" : "addmodal"} onClick={() => setActive(false)}>
+            <div className={active ? "addSentenceModal active" : "addSentenceModal"} onClick={() => setActive(false)}>
                 <div 
                     style={{width: `${width}px`, height: `${height}px`}}
-                    className={active ? "addmodal__content active" : "addmodal__content"} 
+                    className={active ? "addSentenceModal__content active" : "addSentenceModal__content"} 
                     onClick={e => e.stopPropagation()}
                 >
-                    <form className='addmodal__form' onSubmit={handleSubmit}>
-                        <div className='addmodal__title'>Add new word</div>
+                    <form className='addSentenceModal__form' onSubmit={handleSubmit}>
+                        <div className='addSentenceModal__title'>Add new sentence</div>
 
                         <label htmlFor="english">English</label>
-                        <input 
+                        <textarea 
                             value={english}
-                            maxLength={30}
-                            onChange={(e) => setEnglish(e.target.value.replace(/[^a-z ]/g, ''))}
+                            maxLength={maxLength}
+                            onChange={(e) => setEnglish(e.target.value.replace(/[^a-zA-Z.,\- ]/g, ''))}
                             type="text" 
                             id='english' 
                             placeholder='Write here' 
@@ -76,19 +75,19 @@ const AddModal = ({width, height, active, setActive, address, func, items, setMe
                         />
 
                         <label htmlFor="russian">Russian</label>
-                        <input 
+                        <textarea 
                             value={russian}
-                            maxLength={30}
-                            onChange={(e) => setRussian(e.target.value.replace(/[^а-я ]/g, ''))}
+                            maxLength={maxLength}
+                            onChange={(e) => setRussian(e.target.value.replace(/[^а-яА-Я.,\- ]/g, ''))}
                             type="text" 
                             id='russian' 
                             placeholder='Write here' 
                             required
                         />
 
-                        <div className='addmodal__btns'>
+                        <div className='addSentenceModal__btns'>
                             <button 
-                                className='addmodal__btn' 
+                                className='addSentenceModal__btn' 
                                 onClick={(e) => {
                                     e.preventDefault();
                                     setActive(false);
@@ -96,7 +95,7 @@ const AddModal = ({width, height, active, setActive, address, func, items, setMe
                             >
                                 Close
                             </button>
-                            <button className='addmodal__btn' type='submit'>Add</button>
+                            <button className='addSentenceModal__btn' type='submit'>Add</button>
                         </div>
                     </form>
                 </div>
@@ -105,4 +104,4 @@ const AddModal = ({width, height, active, setActive, address, func, items, setMe
     )
 }
 
-export default AddModal;
+export default AddSentenceModal;

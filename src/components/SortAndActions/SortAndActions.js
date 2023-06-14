@@ -5,7 +5,7 @@ import './sortAndActions.scss';
 const SortAndActions = ({address, items, handleAddModal, onDelete, filteredArrayLength, sortItems, active, text, dispatchFunction, activeTypeChanged, handleQuizModal}) => {
     return (
         <div className={address.thirdUrl === 'words' ? "modifying" : "modifying alone"}>
-            {address.thirdUrl === 'words' ? 
+            {address.thirdUrl === 'words' || address.thirdUrl === 'sentences'? 
                 <Modification 
                     handleAddModal={handleAddModal} 
                     onDelete={onDelete}
