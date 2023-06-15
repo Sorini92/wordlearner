@@ -7,7 +7,7 @@ const initialState = {
     sentencesLoadingStatus: 'loading',
     currentPage: 1,
     totalPages: 1,
-    sentencesPerUpload: 30
+    sentencesPerUpload: 10
 }
 
 export const fetchSentences = createAsyncThunk(

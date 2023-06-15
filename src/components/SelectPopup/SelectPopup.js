@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import {  useDispatch } from 'react-redux';
 import './selectPopup.scss';
 
-const SelectPopup = ({items, active, text, dispatchFunction, activeTypeChanged}) => {
+const SelectPopup = ({items, active, textForSelectPopup, dispatchFunction, activeTypeChanged}) => {
     
     const [visiblePopup, setVisiblePopup] = useState(false);
     
@@ -64,7 +64,7 @@ const SelectPopup = ({items, active, text, dispatchFunction, activeTypeChanged})
                     fill="#2C2C2C"
                 />
                 </svg>
-                <b>{text}</b>
+                <b>{textForSelectPopup}</b>
                 <span onClick={toggleVisiblePopup}>{active}</span>
             </div>
             {visiblePopup && (

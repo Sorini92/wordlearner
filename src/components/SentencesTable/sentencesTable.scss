@@ -1,21 +1,43 @@
 .sentenceTable {
     margin-top: 10px;
     &__wrapper {
+        padding-top: 15px;
+        min-height: 710px;
         ul {
             display: grid;
             grid-template-columns: 1fr 1fr;
+            grid-template-rows: minmax(70px, auto);
+            grid-auto-rows: minmax(70px, auto);
             list-style-type: none;
             margin: 0;
             padding: 0;
             cursor: pointer;
+            &:hover {
+                background-color: #d4d0d0;
+            }
+        }
+    }
+    &__pencil {
+        position: absolute;
+        right: 0;
+        bottom: 5px;
+        width: 20px;
+        height: 20px;
+        img {
+            width: 100%;
+            height: 100%;
         }
     }
     &__leftItem, &__rightItem {
+        display: flex;
+        align-items: center;
         border-bottom: 1px dashed grey;
         padding: 10px 0;
     }
     &__rightItem {
         padding-left: 5px;
+        padding-right: 15px;
+        position: relative;
     }
     &__leftItem {
         padding-right: 5px;
@@ -49,4 +71,11 @@
 .sentence-exit-active {
     opacity: 0;
     transition: opacity 500ms ease-in;
+}
+
+.highlight {
+    //background-color: rgb(240, 240, 6);
+    color: red;
+    text-decoration: underline;
+    text-decoration-style: solid;
 }

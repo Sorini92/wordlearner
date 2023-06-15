@@ -49,6 +49,20 @@ const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTy
         // eslint-disable-next-line
     }, [filteredLength]);
 
+    useEffect(() => {
+        const handleKeyPress = (event) => {
+            if (event.key === 'Escape') {
+                setAddModalActive(false);
+                setModifyModalActive(false)
+            }
+        };
+    
+        document.addEventListener('keydown', handleKeyPress);
+    
+        return () => {
+            document.removeEventListener('keydown', handleKeyPress);
+        };
+    }, []);
 
     useEffect(() => {
         setSelectedWord({});
@@ -246,7 +260,7 @@ const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTy
                 filteredArrayLength={filteredArrayLength}
                 sortItems={sortItems}
                 active={sortType}
-                text={"Sort by:"}
+                textForSelectPopup={"Sort by:"}
                 dispatchFunction={sortByFunction}
                 activeTypeChanged={activeSortTypeChanged}
                 handleQuizModal={handleQuizModal}
@@ -284,7 +298,8 @@ const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTy
                 setPage={setPage}
                 numberOfItemsPerPage={numberOfItemsPerPage}
                 active={numberPerUpload}
-                text={"On the page:"}
+                textForSelectPopup={"On the page:"}
+                textForCounters={"words"}
                 dispatchFunction={setNumberPerUpload}
                 items={items}
             />

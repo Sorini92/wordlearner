@@ -1,8 +1,9 @@
 import database from "../../firebase";
 import { setDoc, collection, doc } from "firebase/firestore"; 
 import { v4 as uuidv4 } from 'uuid';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
+import compareArrays from '../../utils/compareArrays';
 import './addSentenceModal.scss';
 
 const AddSentenceModal = ({width, height, maxLength, active, setActive, address, func, items, setMessage, setShowMessage}) => {
@@ -15,13 +16,16 @@ const AddSentenceModal = ({width, height, maxLength, active, setActive, address,
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const index = items.findIndex(e => e.english === english.toLowerCase());
+        const englishArray = english.toLowerCase().split(/([ ,.]+)/).map(item=> item.trim()).filter(item => item !== ' ' && item !== '')
+        const russianArray = russian.toLowerCase().split(/([ ,.]+)/).map(item=> item.trim()).filter(item => item !== ' ' && item !== '')
+        
+        const englishIndex = items.findIndex(item => (compareArrays(item.english, englishArray)))
 
-        if (index === -1) {
+        if (englishIndex === -1) {
 
             const newObj = {
-                english: english.toLowerCase().split(/([ ,.]+)/).map(item=> item.trim()).filter(item => item !== ' ' && item !== ''),
-                russian: russian.toLowerCase().split(/([ ,.]+)/).map(item=> item.trim()).filter(item => item !== ' ' && item !== ''),
+                english: englishArray,
+                russian: russianArray,
                 date: Date.now(),
                 id: uuidv4()
             }

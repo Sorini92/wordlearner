@@ -85,12 +85,12 @@
         color: white;
     }
     tr:hover {
-        background-color: #bbb4b4;
+        background-color: #d4d0d0
     }
     tr:nth-child(even){
         background-color: #f2f2f2;
         &:hover {
-            background-color: #bbb4b4;
+            background-color: #d4d0d0;
         }
     }
     &__nowords {

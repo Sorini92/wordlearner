@@ -2,6 +2,8 @@ import database from "../../firebase";
 import { setDoc, collection, doc } from "firebase/firestore"; 
 import { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
+import makeSentence from "../../utils/makeSentense";
+import compareArrays from "../../utils/compareArrays";
 import './modifySentenceModal.scss';
 
 const ModifySentenceModal = ({width, height, maxLength, active, setActive, address, func, items,  selected, setMessage, setShowMessage}) => {
@@ -15,31 +17,34 @@ const ModifySentenceModal = ({width, height, maxLength, active, setActive, addre
 
     useEffect(() => {
         if (dataForModify !== undefined) {
-            setEnglish(dataForModify.english);
-            setRussian(dataForModify.russian);
+            setEnglish(makeSentence(dataForModify.english));
+            setRussian(makeSentence(dataForModify.russian));
         }
     }, [dataForModify])
 
     const handleSubmit = (e) => {
         e.preventDefault();
         
-        const index = items.findIndex(e => e.english === english.toLowerCase());
+        const englishArray = english.toLowerCase().split(/([ ,.]+)/).map(item=> item.trim()).filter(item => item !== ' ' && item !== '')
+        const russianArray = russian.toLowerCase().split(/([ ,.]+)/).map(item=> item.trim()).filter(item => item !== ' ' && item !== '')
         
-        if (index === -1) {
+        const englishIndex = items.findIndex(item => (compareArrays(item.english, englishArray)))
+        
+        if (englishIndex === -1) {
             
             const obj = {
-                english: english.toLowerCase().split(/([ ,.]+)/).map(item=> item.trim()).filter(item => item !== ' ' && item !== ''),
-                russian: russian.toLowerCase().split(/([ ,.]+)/).map(item=> item.trim()).filter(item => item !== ' ' && item !== ''),
+                english: englishArray,
+                russian: russianArray,
                 id: dataForModify.id,
                 date: dataForModify.date
             }
             
             dispatch(func(obj));
+
             setActive(false);
 
             const colRef = collection(database, address.firstUrl, address.secondUrl, address.thirdUrl)
             setDoc(doc(colRef, obj.id), obj);
-            
 
             setShowMessage(true);
             setMessage({
@@ -66,20 +71,20 @@ const ModifySentenceModal = ({width, height, maxLength, active, setActive, addre
                     <div className='modifySentenceModal__title'>Modify sentence</div>
 
                     <label htmlFor="english">English</label>
-                    <input 
+                    <textarea 
                         value={english}
                         maxLength={maxLength}
-                        onChange={(e) => setEnglish(e.target.value.replace(/[^a-z ]/g, ''))}
+                        onChange={(e) => setEnglish(e.target.value.replace(/[^a-zA-Z.,\- ]/g, ''))}
                         type="text" 
                         id='english' 
                         placeholder='Write here' 
                         required/>
 
                     <label htmlFor="russian">Russian</label>
-                    <input 
+                    <textarea 
                         value={russian}
                         maxLength={maxLength}
-                        onChange={(e) => setRussian(e.target.value.replace(/[^а-я ]/g, ''))}
+                        onChange={(e) => setRussian(e.target.value.replace(/[^а-яА-Я.,\- ]/g, ''))}
                         type="text" 
                         id='russian' 
                         placeholder='Write here' 

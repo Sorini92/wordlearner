@@ -10,6 +10,8 @@ import SortAndActions from '../components/SortAndActions/SortAndActions';
 import Message from '../components/Message/Message';
 import AddSentenceModal from '../components/AddSentenceModal/AddSentenceModal';
 import ModifySentenceModal from '../components/ModifySentenceModal/ModifySentenceModal';
+import ArrowScrollUp from '../components/ArrowScrollUp/ArrowScrollUp';
+import Footer from '../components/Footer/Footer';
 
 const SentencesPage = () => {
 
@@ -25,7 +27,7 @@ const SentencesPage = () => {
     const [cuttedArrayOfSentences, setCuttedArrayOfSentences] = useState([]);
     const [filteredArrayLength, setFilteredArrayLength] = useState(0);
     const [selectedSentence, setSelectedSentence] = useState({});
-    const [searchedWord, setSearchedWord] = useState([]);
+    const [searchedSentences, setSearchedSentences] = useState([]);
 
     const dispatch = useDispatch();
     const {isAuth, id} = useAuth();
@@ -36,9 +38,9 @@ const SentencesPage = () => {
     ];
 
     const numberOfSentencesPerPage = [
-        { name: 30},
-        { name: 60},
-        { name: 90},      
+        { name: 10},
+        { name: 20},
+        { name: 30},      
     ];
 
     const linkToSentences = {
@@ -60,9 +62,24 @@ const SentencesPage = () => {
     }, [sentencesPerUpload, filteredArrayLength]);
 
     useEffect(() => {
+        const handleKeyPress = (event) => {
+            if (event.key === 'Escape') {
+                setAddModalActive(false);
+                setModifyModalActive(false)
+            }
+        };
+    
+        document.addEventListener('keydown', handleKeyPress);
+    
+        return () => {
+            document.removeEventListener('keydown', handleKeyPress);
+        };
+    }, []);
+
+    useEffect(() => {
         setSelectedSentence({});
         // eslint-disable-next-line
-    }, [searchedWord.length]);
+    }, [searchedSentences.length]);
 
     useEffect(() => {
         setOffset(sentencesPerUpload * currentPage)
@@ -70,7 +87,7 @@ const SentencesPage = () => {
     }, [currentPage]);
     
     useEffect(() => {
-        if (searchedWord.length > 0) {
+        if (searchedSentences.length > 0) {
             if (!(filteredArrayLength % sentencesPerUpload)) {
                 dispatch(setTotalPages(filteredArrayLength/sentencesPerUpload))
             } else {
@@ -84,28 +101,28 @@ const SentencesPage = () => {
             }
         }
         // eslint-disable-next-line
-    }, [sentences, sentencesPerUpload, searchedWord.length, filteredArrayLength, totalPages])
+    }, [sentences, sentencesPerUpload, searchedSentences.length, filteredArrayLength, totalPages])
 
     useEffect(() => {
         let lastIndex = currentPage * sentencesPerUpload;
         let firstIndex = lastIndex - sentencesPerUpload;
 
-        if (searchedWord.length > 0) {
+        if (searchedSentences.length > 0) {
             setCuttedArrayOfSentences(filteredArray(sentences).slice(firstIndex, lastIndex));
         } else {
             setCuttedArrayOfSentences(sentences.slice(firstIndex, lastIndex));
         }
         // eslint-disable-next-line
-    }, [sentences, offset, searchedWord.length, sentencesPerUpload, currentPage]);
+    }, [sentences, offset, searchedSentences.length, sentencesPerUpload, currentPage]);
 
     const filteredArray = (array) => {
 
         let data = [];
 
-        if (searchedWord.length > 0) {
-            const searchWords = searchedWord.split(' ');
+        if (searchedSentences.length > 0) {
+            const searchWords = searchedSentences.split(' ');
 
-            if (!!searchedWord.match(/[^а-я]/g)) {
+            if (!!searchedSentences.match(/[^а-я]/g)) {
                 data = array.filter(item => searchWords.every(word => item.english.some(element => element.includes(word))));
             } else {
                 data = array.filter(item => searchWords.every(word => item.russian.some(element => element.includes(word))));
@@ -122,7 +139,7 @@ const SentencesPage = () => {
         
         if (selectedSentence.id !== undefined) {
             if (window.confirm('Are you sure?')) {
-                console.log(selectedSentence.id);
+
                 dispatch(deleteSentence(selectedSentence.id));
                 
                 deleteDoc(doc(sentencesColRef, selectedSentence.id));                
@@ -135,6 +152,12 @@ const SentencesPage = () => {
                     color: 'green'
                 })
             }
+        } else {
+            setShowMessage(true)
+            setMessage({
+                text: "Choose the sentence!",
+                color: 'red'
+            })
         }
     }
 
@@ -157,7 +180,7 @@ const SentencesPage = () => {
     return isAuth ? (
         <>
             <Navigation 
-                setSearched={setSearchedWord}
+                setSearched={setSearchedSentences}
                 setOffset={setOffset}
                 numberPerUpload={sentencesPerUpload}
             />
@@ -165,9 +188,10 @@ const SentencesPage = () => {
                 items={cuttedArrayOfSentences}
                 handleAddModal={handleAddModal}
                 onDelete={onDeleteSentence}
+                filteredArrayLength={filteredArrayLength}
                 sortItems={sortItems}
                 active={sortType}
-                text={"Sort by:"}
+                textForSelectPopup={"Sort by:"}
                 dispatchFunction={sortBy}
                 activeTypeChanged={activeSortTypeChanged}
                 address={linkToSentences}
@@ -177,11 +201,28 @@ const SentencesPage = () => {
                 loadingStatus={sentencesLoadingStatus}
                 setSelectedSentence={setSelectedSentence}
                 selectedSentence={selectedSentence}
+                cuttedArrayOfSentences={cuttedArrayOfSentences}
+                searchedSentences={searchedSentences}
+                handleModifyModal={handleModifyModal}
+            />
+            <Footer
+                cuttedArray={cuttedArrayOfSentences}
+                filteredArrayLength={filteredArrayLength}
+                numberPerUpload={sentencesPerUpload}
+                currentPage={currentPage}
+                totalPages={totalPages}
+                setPage={setPage}
+                numberOfItemsPerPage={numberOfSentencesPerPage}
+                active={sentencesPerUpload}
+                textForSelectPopup={"On the page:"}
+                textForCounters={"sentences"}
+                dispatchFunction={setSentencesPerUpload}
+                items={sentences}
             />
             <AddSentenceModal 
                 width={600}
                 height={310}
-                maxLength={150}
+                maxLength={190}
                 active={addModalActive} 
                 setActive={setAddModalActive} 
                 address={linkToSentences}
@@ -193,11 +234,11 @@ const SentencesPage = () => {
             <ModifySentenceModal
                 width={600}
                 height={310}
-                maxLength={150}
+                maxLength={190}
                 active={modifyModalActive} 
                 setActive={setModifyModalActive} 
                 address={linkToSentences}
-                func={handleModifyModal}
+                func={modifySentence}
                 items={sentences}
                 selected={selectedSentence}
                 setShowMessage={setShowMessage}
@@ -209,6 +250,7 @@ const SentencesPage = () => {
                 setShowMessage={setShowMessage}
                 color={message.color}
             />
+            <ArrowScrollUp/>
         </>
     ) : null
 }

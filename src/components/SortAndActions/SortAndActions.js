@@ -2,9 +2,9 @@ import SelectPopup from "../SelectPopup/SelectPopup";
 import Modification from "../Modification/Modification";
 import './sortAndActions.scss';
 
-const SortAndActions = ({address, items, handleAddModal, onDelete, filteredArrayLength, sortItems, active, text, dispatchFunction, activeTypeChanged, handleQuizModal}) => {
+const SortAndActions = ({address, items, handleAddModal, onDelete, filteredArrayLength, sortItems, active, textForSelectPopup, dispatchFunction, activeTypeChanged, handleQuizModal}) => {
     return (
-        <div className={address.thirdUrl === 'words' ? "modifying" : "modifying alone"}>
+        <div className={address.thirdUrl === 'words' || address.thirdUrl === 'sentences' ? "modifying" : "modifying alone"}>
             {address.thirdUrl === 'words' || address.thirdUrl === 'sentences'? 
                 <Modification 
                     handleAddModal={handleAddModal} 
@@ -24,7 +24,7 @@ const SortAndActions = ({address, items, handleAddModal, onDelete, filteredArray
                 <SelectPopup 
                     items={sortItems} 
                     active={active}
-                    text={text}
+                    textForSelectPopup={textForSelectPopup}
                     dispatchFunction={dispatchFunction}
                     activeTypeChanged={activeTypeChanged}
                 /> : 

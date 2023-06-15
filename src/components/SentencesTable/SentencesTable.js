@@ -1,21 +1,33 @@
 import { CSSTransition, TransitionGroup} from 'react-transition-group';
+import makeSentence from '../../utils/makeSentense';
 import Spinner from '../Spinner/Spinner';
+import pencil from '../../resources/pencil.png';
 import './sentencesTable.scss';
 
-const SentencesTable = ({items, loadingStatus, setSelectedSentence, selectedSentence}) => {
+const SentencesTable = ({items, loadingStatus, setSelectedSentence, selectedSentence, cuttedArrayOfSentences, searchedSentences, handleModifyModal}) => {
+
+    const highlightLetters = (sentence, search) => {
+        if (search.length === 0) {
+            return sentence;
+        }
+      
+        const words = search.split(' ').filter(word => word.trim() !== '');
+      
+        if (words.length === 0) {
+            return sentence;
+        }
+      
+        const regex = new RegExp(words.join('|'), 'gi');
+      
+        const highlightedSentence = sentence.replace(regex, match => `<span class="highlight">${match}</span>`);
+      
+        return <div dangerouslySetInnerHTML={{ __html: highlightedSentence }} />;
+    };
 
     const elements = items.map(item => {
 
-        const doSentence = (array) => {
-            return array
-                        .join(' ')
-                        .charAt(0)
-                        .toUpperCase() + 
-                   array
-                        .join(' ')
-                        .slice(1)
-                        .replace(/\s*([,.])/g, "$1");
-        }
+        const highlightedEnglish = highlightLetters(makeSentence(item.english), searchedSentences);
+        const highlightedRussian = highlightLetters(makeSentence(item.russian), searchedSentences);
 
         return (
             <CSSTransition 
@@ -31,27 +43,31 @@ const SentencesTable = ({items, loadingStatus, setSelectedSentence, selectedSent
                     }}
                 >
                     <ul className={selectedSentence.id !== item.id ? 'sentence' : 'sentence activeSentence'} onClick={() => setSelectedSentence(item)}>
-                        <li className='sentenceTable__leftItem'>{doSentence(item.english)}</li>
-                        <li className='sentenceTable__rightItem'>{doSentence(item.russian)}</li>
+                        <li className='sentenceTable__leftItem'>{highlightedEnglish}</li>
+                        <li className='sentenceTable__rightItem'>
+                            {highlightedRussian}
+                            <div onClick={() => handleModifyModal()} className='sentenceTable__pencil'>
+                                    <img src={pencil} alt='modify pencil'/>
+                            </div> 
+                        </li>
                     </ul>
             </CSSTransition>
-            //<ul onClick={() => setSelectedSentence(item)} key={item.id}>
-            //    <li className='sentenceTable__leftItem'>{doSentence(item.english)}</li>
-            //   <li className='sentenceTable__rightItem'>{doSentence(item.russian)}</li>
-            //</ul>
         )
     })
 
     const table = () => {
         return (
-            <div className='sentenceTable'>
-                <TransitionGroup component="div" className='sentenceTable__wrapper'>
-                    {elements}
-                </TransitionGroup>
-                {/* <div className='sentenceTable__wrapper'>
-                    {elements}
-                </div> */}
-            </div>
+            <>
+                {items.length === 0 || (cuttedArrayOfSentences.length === 0 && searchedSentences.length > 0)? 
+                    <div className='emptyTable'>There are no sentences!</div> 
+                    : 
+                    <div className='sentenceTable'>
+                        <TransitionGroup component="div" className='sentenceTable__wrapper'>
+                            {elements}
+                        </TransitionGroup>
+                    </div>
+                }
+            </>
         )
     }
 
