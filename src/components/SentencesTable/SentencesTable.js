@@ -1,33 +1,70 @@
+import { Fragment, useState } from 'react';
 import { CSSTransition, TransitionGroup} from 'react-transition-group';
-import makeSentence from '../../utils/makeSentense';
 import Spinner from '../Spinner/Spinner';
 import pencil from '../../resources/pencil.png';
 import './sentencesTable.scss';
+import TranslationPopup from '../TranslationPopup/TranslationPopup';
 
 const SentencesTable = ({items, loadingStatus, setSelectedSentence, selectedSentence, cuttedArrayOfSentences, searchedSentences, handleModifyModal}) => {
 
-    const highlightLetters = (sentence, search) => {
-        if (search.length === 0) {
-            return sentence;
-        }
-      
-        const words = search.split(' ').filter(word => word.trim() !== '');
-      
-        if (words.length === 0) {
-            return sentence;
-        }
-      
-        const regex = new RegExp(words.join('|'), 'gi');
-      
-        const highlightedSentence = sentence.replace(regex, match => `<span class="highlight">${match}</span>`);
-      
-        return <div dangerouslySetInnerHTML={{ __html: highlightedSentence }} />;
-    };
+    const [selectedWord, setSelectedWord] = useState('');
+    const [visiblePopup, setVisiblePopup] = useState(false);
+
+    const sentence = (array) => {
+        return array.map((item, i) => {
+
+            const firstWord = i === 0 ? item.slice(0, 1).toUpperCase() + item.slice(1) : item;
+
+            let itemWithSpace;
+
+            switch (item) {
+                case ",":
+                    itemWithSpace = <>{item}&nbsp;</>
+                break;
+                case ".":
+                    itemWithSpace = <>{item}</>
+                break;
+                case "-":
+                    itemWithSpace = <>&nbsp;{item}</>
+                break;
+                default:
+                    itemWithSpace = i === 0 ? 
+                                        <>
+                                            <span 
+                                                onClick={() => {
+                                                    setSelectedWord(item)
+                                                    setVisiblePopup(!visiblePopup)
+                                                }} 
+                                                className={searchedSentences.includes(item) ? 'sentence__word highlighted' : 'sentence__word'}
+                                            >
+                                                {firstWord}
+                                            </span>
+                                        </> : 
+                                        <>
+                                            <>&nbsp;</>
+                                            <span 
+                                                onClick={() => {
+                                                    setSelectedWord(item)
+                                                    setVisiblePopup(!visiblePopup)
+                                                }} 
+                                                className={searchedSentences.includes(item) ? 'sentence__word highlighted' : 'sentence__word'}
+                                            >
+                                                {firstWord}
+                                            </span>
+                                        </>
+            
+            }
+
+            return (
+                <Fragment key={i}>
+                    {itemWithSpace}
+                    <TranslationPopup visiblePopup={visiblePopup} setVisiblePopup={setVisiblePopup}/>
+                </Fragment>
+            )
+        })
+    }
 
     const elements = items.map(item => {
-
-        const highlightedEnglish = highlightLetters(makeSentence(item.english), searchedSentences);
-        const highlightedRussian = highlightLetters(makeSentence(item.russian), searchedSentences);
 
         return (
             <CSSTransition 
@@ -43,9 +80,11 @@ const SentencesTable = ({items, loadingStatus, setSelectedSentence, selectedSent
                     }}
                 >
                     <ul className={selectedSentence.id !== item.id ? 'sentence' : 'sentence activeSentence'} onClick={() => setSelectedSentence(item)}>
-                        <li className='sentenceTable__leftItem'>{highlightedEnglish}</li>
+                        <li className='sentenceTable__leftItem'>
+                            <div className='sentence'>{sentence(item.english)}</div>
+                        </li>
                         <li className='sentenceTable__rightItem'>
-                            {highlightedRussian}
+                            <div className='sentence'>{sentence(item.russian)}</div>
                             <div onClick={() => handleModifyModal()} className='sentenceTable__pencil'>
                                     <img src={pencil} alt='modify pencil'/>
                             </div> 

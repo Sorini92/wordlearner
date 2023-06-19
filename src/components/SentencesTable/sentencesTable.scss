@@ -45,6 +45,18 @@
     }
 }
 
+.sentence {
+    display: flex;
+    flex-wrap: wrap;
+    &__word {
+        position: relative;
+        &:hover {
+            background-color: rgb(151, 147, 147);
+            color: white;
+        }
+    }
+}
+
 .activeSentence {
     background-color: palegoldenrod !important;
 }
@@ -73,7 +85,7 @@
     transition: opacity 500ms ease-in;
 }
 
-.highlight {
+.highlighted {
     //background-color: rgb(240, 240, 6);
     color: red;
     text-decoration: underline;
