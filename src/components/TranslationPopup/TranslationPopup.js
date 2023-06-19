@@ -1,33 +1,35 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 import './translationPopup.scss';
 
-const TranslationPopup = ({setVisiblePopup, visiblePopup}) => {
+const TranslationPopup = ({position, setVisiblePopup, visiblePopup, selectedWord}) => {
     
-    const selectRef = useRef();
-
     const handleOutsideClick = (event) => {
-        const path = event.path || (event.composedPath && event.composedPath());
-        
-        if (!path.includes(selectRef.current)) {
-          setVisiblePopup(false);
+        if (event.target.tagName !== "SPAN") {
+            setVisiblePopup(false);
         }
     };
-
-    const onSelectItem = (name) => {
-
-    };
-
+    
     useEffect(() => {
         document.body.addEventListener('click', handleOutsideClick);
+        return () => {
+            document.body.removeEventListener('click', handleOutsideClick);
+        };
     }, []);
 
     return (
-        <div ref={selectRef} className="translationPopup">
+        <div 
+            className={visiblePopup ? "translationPopup active" : "translationPopup"} 
+            style={{top: position.top, left: position.left + position.width/2, transform: 'translate(-50%, -100%)'}}
+        >
             {visiblePopup && (
-                <div className="translationPopup__popup">
-                    <div className="translationPopup__content">sadsad</div>
+                selectedWord ? 
+                <div className="translationPopup__content">{selectedWord}</div> : 
+                <div className='translationPopup__content'>
+                    <div className="translationPopup__text">Unknown word</div>
+                    <button className="translationPopup__btn">add</button>
                 </div>
             )}
+            <div className='translationPopup__arrow'></div>
         </div>
     )
 }

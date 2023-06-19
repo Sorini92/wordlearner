@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useState, useRef } from 'react';
 import { CSSTransition, TransitionGroup} from 'react-transition-group';
 import Spinner from '../Spinner/Spinner';
 import pencil from '../../resources/pencil.png';
@@ -9,6 +9,14 @@ const SentencesTable = ({items, loadingStatus, setSelectedSentence, selectedSent
 
     const [selectedWord, setSelectedWord] = useState('');
     const [visiblePopup, setVisiblePopup] = useState(false);
+    const [position, setPosition] = useState({top: 0, left: 0, width: 0});
+
+    const handleWordClick = (event, word) => {
+        const wordPosition = event.target.getBoundingClientRect();
+        setSelectedWord(word);
+        setVisiblePopup(true);
+        setPosition({ top: wordPosition.top, left: wordPosition.left, width: wordPosition.width });
+    }
 
     const sentence = (array) => {
         return array.map((item, i) => {
@@ -31,10 +39,7 @@ const SentencesTable = ({items, loadingStatus, setSelectedSentence, selectedSent
                     itemWithSpace = i === 0 ? 
                                         <>
                                             <span 
-                                                onClick={() => {
-                                                    setSelectedWord(item)
-                                                    setVisiblePopup(!visiblePopup)
-                                                }} 
+                                                onClick={(e) => handleWordClick(e, item)} 
                                                 className={searchedSentences.includes(item) ? 'sentence__word highlighted' : 'sentence__word'}
                                             >
                                                 {firstWord}
@@ -43,10 +48,7 @@ const SentencesTable = ({items, loadingStatus, setSelectedSentence, selectedSent
                                         <>
                                             <>&nbsp;</>
                                             <span 
-                                                onClick={() => {
-                                                    setSelectedWord(item)
-                                                    setVisiblePopup(!visiblePopup)
-                                                }} 
+                                                onClick={(e) => handleWordClick(e, item)} 
                                                 className={searchedSentences.includes(item) ? 'sentence__word highlighted' : 'sentence__word'}
                                             >
                                                 {firstWord}
@@ -58,14 +60,12 @@ const SentencesTable = ({items, loadingStatus, setSelectedSentence, selectedSent
             return (
                 <Fragment key={i}>
                     {itemWithSpace}
-                    <TranslationPopup visiblePopup={visiblePopup} setVisiblePopup={setVisiblePopup}/>
                 </Fragment>
             )
         })
     }
 
     const elements = items.map(item => {
-
         return (
             <CSSTransition 
                     timeout={500}
@@ -117,6 +117,13 @@ const SentencesTable = ({items, loadingStatus, setSelectedSentence, selectedSent
             :
             loadingStatus === "error" ? <div className='error'>Something went wrong, error from server</div> : table()
             }
+            {visiblePopup && 
+            <TranslationPopup 
+                position={position} 
+                visiblePopup={visiblePopup} 
+                setVisiblePopup={setVisiblePopup} 
+                selectedWord={undefined}
+            />}
         </>
     )
 }

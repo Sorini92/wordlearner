@@ -1,5 +1,6 @@
 .sentenceTable {
     margin-top: 10px;
+    position: relative;
     &__wrapper {
         padding-top: 15px;
         min-height: 710px;
@@ -49,7 +50,6 @@
     display: flex;
     flex-wrap: wrap;
     &__word {
-        position: relative;
         &:hover {
             background-color: rgb(151, 147, 147);
             color: white;
