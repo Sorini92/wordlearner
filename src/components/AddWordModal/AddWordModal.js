@@ -1,16 +1,28 @@
 import database from "../../firebase";
 import { setDoc, collection, doc } from "firebase/firestore"; 
 import { v4 as uuidv4 } from 'uuid';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch } from "react-redux";
 import './addWordModal.scss';
 
-const AddWordModal = ({width, height, maxLength, active, setActive, address, func, items, setMessage, setShowMessage}) => {
+const AddWordModal = ({width, height, maxLength, active, setActive, address, func, items, setMessage, setShowMessage, selectedWord}) => {
 
     const [english, setEnglish] = useState('');
     const [russian, setRussian] = useState('');
     
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (selectedWord !== undefined) {
+            if (!!selectedWord.match(/[^а-я-]/g)) {
+                setEnglish(selectedWord);
+                setRussian('')
+            } else {
+                setEnglish('')
+                setRussian(selectedWord);
+            }
+        }
+    }, [selectedWord])
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -68,7 +80,7 @@ const AddWordModal = ({width, height, maxLength, active, setActive, address, fun
                         <input 
                             value={english}
                             maxLength={maxLength}
-                            onChange={(e) => setEnglish(e.target.value.replace(/[^a-z ]/g, ''))}
+                            onChange={(e) => setEnglish(e.target.value.replace(/[^a-z- ]/g, ''))}
                             type="text" 
                             id='english' 
                             placeholder='Write here' 
@@ -79,7 +91,7 @@ const AddWordModal = ({width, height, maxLength, active, setActive, address, fun
                         <input 
                             value={russian}
                             maxLength={maxLength}
-                            onChange={(e) => setRussian(e.target.value.replace(/[^а-я ]/g, ''))}
+                            onChange={(e) => setRussian(e.target.value.replace(/[^а-я- ]/g, ''))}
                             type="text" 
                             id='russian' 
                             placeholder='Write here' 

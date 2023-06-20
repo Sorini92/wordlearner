@@ -35,6 +35,9 @@
                 width: 18px;
                 right: 25px;
                 cursor: pointer;
+                &:hover {
+                    transform: scale(1.1);
+                }
                 img {
                     width: 100%;
                     height: 100%;
@@ -50,6 +53,9 @@
                 top: 8px;
                 bottom: 0;
                 cursor: pointer;
+                &:hover {
+                    transform: scale(1.1);
+                }
             }
         }
     }

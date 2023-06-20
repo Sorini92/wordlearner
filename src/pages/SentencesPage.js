@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchSentences, sortBy, activeSortTypeChanged, addSentence, modifySentence, setTotalPages, setSentencesPerUpload, setPage, deleteSentence} from '../store/slices/sentencesSlice';
+import {fetchWords, addWord} from '../store/slices/wordSlice';
 import database from "../firebase";
-import {deleteDoc, collection, doc, setDoc} from "firebase/firestore"; 
+import {deleteDoc, collection, doc} from "firebase/firestore"; 
 import useAuth from '../hooks/use-auth';
 import Navigation from "../components/Navigation/Navigation";
 import SentencesTable from "../components/SentencesTable/SentencesTable";
 import SortAndActions from '../components/SortAndActions/SortAndActions';
 import Message from '../components/Message/Message';
 import AddSentenceModal from '../components/AddSentenceModal/AddSentenceModal';
+import AddWordModal from '../components/AddWordModal/AddWordModal';
 import ModifySentenceModal from '../components/ModifySentenceModal/ModifySentenceModal';
 import ArrowScrollUp from '../components/ArrowScrollUp/ArrowScrollUp';
 import Footer from '../components/Footer/Footer';
@@ -16,7 +18,9 @@ import Footer from '../components/Footer/Footer';
 const SentencesPage = () => {
 
     const {sentencesLoadingStatus, sentences, sentencesPerUpload, sortType, currentPage, totalPages} = useSelector(state => state.sentences);
+    const {words} = useSelector(state => state.words);
 
+    const [addWordModalActive, setAddWordModalActive] = useState(false);
     const [addModalActive, setAddModalActive] = useState(false);
     const [modifyModalActive, setModifyModalActive] = useState(false);
 
@@ -28,6 +32,7 @@ const SentencesPage = () => {
     const [filteredArrayLength, setFilteredArrayLength] = useState(0);
     const [selectedSentence, setSelectedSentence] = useState({});
     const [searchedSentences, setSearchedSentences] = useState([]);
+    const [selectedWord, setSelectedWord] = useState('');
 
     const dispatch = useDispatch();
     const {isAuth, id} = useAuth();
@@ -49,9 +54,16 @@ const SentencesPage = () => {
         thirdUrl: 'sentences'
     }
 
+    const linkToWords = {
+        firstUrl: 'users',
+        secondUrl: id,
+        thirdUrl: 'words'
+    }
+
     useEffect(() => {
         if (id !== null) {
             dispatch(fetchSentences(id));
+            dispatch(fetchWords(id));
         }
         // eslint-disable-next-line
     }, [id]);
@@ -114,7 +126,7 @@ const SentencesPage = () => {
         }
         // eslint-disable-next-line
     }, [sentences, offset, searchedSentences.length, sentencesPerUpload, currentPage]);
-
+    
     const filteredArray = (array) => {
 
         let data = [];
@@ -134,29 +146,21 @@ const SentencesPage = () => {
         return data;
     }
     
-    const onDeleteSentence = () => {
+    const onDeleteSentence = (id) => {
         const sentencesColRef = collection(database, linkToSentences.firstUrl, linkToSentences.secondUrl, linkToSentences.thirdUrl)
         
-        if (selectedSentence.id !== undefined) {
-            if (window.confirm('Are you sure?')) {
+        if (window.confirm('Are you sure?')) {
 
-                dispatch(deleteSentence(selectedSentence.id));
-                
-                deleteDoc(doc(sentencesColRef, selectedSentence.id));                
+            dispatch(deleteSentence(id));
+            
+            deleteDoc(doc(sentencesColRef, id));                
 
-                setSelectedSentence({})
+            setSelectedSentence({})
 
-                setShowMessage(true)
-                setMessage({
-                    text: "The word was successfully deleted!",
-                    color: 'green'
-                })
-            }
-        } else {
             setShowMessage(true)
             setMessage({
-                text: "Choose the sentence!",
-                color: 'red'
+                text: "The word was successfully deleted!",
+                color: 'green'
             })
         }
     }
@@ -177,6 +181,10 @@ const SentencesPage = () => {
         }
     }
 
+    const handleAddWordModal = () => {
+        setAddWordModalActive(!addWordModalActive);
+    }
+
     return isAuth ? (
         <>
             <Navigation 
@@ -187,7 +195,6 @@ const SentencesPage = () => {
             <SortAndActions
                 items={cuttedArrayOfSentences}
                 handleAddModal={handleAddModal}
-                onDelete={onDeleteSentence}
                 filteredArrayLength={filteredArrayLength}
                 sortItems={sortItems}
                 active={sortType}
@@ -197,6 +204,7 @@ const SentencesPage = () => {
                 address={linkToSentences}
             />
             <SentencesTable 
+                words={words}
                 items={cuttedArrayOfSentences}
                 loadingStatus={sentencesLoadingStatus}
                 setSelectedSentence={setSelectedSentence}
@@ -204,6 +212,10 @@ const SentencesPage = () => {
                 cuttedArrayOfSentences={cuttedArrayOfSentences}
                 searchedSentences={searchedSentences}
                 handleModifyModal={handleModifyModal}
+                onDeleteSentence={onDeleteSentence}
+                handleAddWordModal={handleAddWordModal}
+                selectedWord={selectedWord}
+                setSelectedWord={setSelectedWord}
             />
             <Footer
                 cuttedArray={cuttedArrayOfSentences}
@@ -230,6 +242,19 @@ const SentencesPage = () => {
                 items={sentences}
                 setShowMessage={setShowMessage}
                 setMessage={setMessage}
+            />
+            <AddWordModal 
+                width={290}
+                height={230}
+                maxLength={30}
+                active={addWordModalActive} 
+                setActive={setAddWordModalActive} 
+                address={linkToWords}
+                func={addWord}
+                items={words}
+                setShowMessage={setShowMessage}
+                setMessage={setMessage}
+                selectedWord={selectedWord}
             />
             <ModifySentenceModal
                 width={600}

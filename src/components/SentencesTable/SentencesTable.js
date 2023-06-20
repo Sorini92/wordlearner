@@ -1,18 +1,48 @@
-import { Fragment, useState, useRef } from 'react';
-import { CSSTransition, TransitionGroup} from 'react-transition-group';
+import {Fragment, useEffect, useState} from 'react';
+import {CSSTransition, TransitionGroup} from 'react-transition-group';
 import Spinner from '../Spinner/Spinner';
 import pencil from '../../resources/pencil.png';
-import './sentencesTable.scss';
 import TranslationPopup from '../TranslationPopup/TranslationPopup';
+import buscet from '../../resources/buscet.png';
+import './sentencesTable.scss';
 
-const SentencesTable = ({items, loadingStatus, setSelectedSentence, selectedSentence, cuttedArrayOfSentences, searchedSentences, handleModifyModal}) => {
+const SentencesTable = ({words, items, loadingStatus, setSelectedSentence, cuttedArrayOfSentences, searchedSentences, handleModifyModal, onDeleteSentence, handleAddWordModal, selectedWord, setSelectedWord}) => {
 
-    const [selectedWord, setSelectedWord] = useState('');
+    const [translationResult, setTranslationResult] = useState([]);
     const [visiblePopup, setVisiblePopup] = useState(false);
+    const [isTranslationComplete, setTranslationComplete] = useState(false);
     const [position, setPosition] = useState({top: 0, left: 0, width: 0});
 
+    const translation = (array) => {
+        let data = [];
+
+        if (!!selectedWord.match(/[^а-я-]/g)) {
+            data = array.filter(item => {
+                return item.english.toLowerCase().includes(selectedWord)
+            })
+        } else {
+            data = array.filter(item => {
+                if (selectedWord.length > 2) {
+                    return item.russian.toLowerCase().includes(selectedWord.slice(0, selectedWord.length - 2))
+                } else {
+                    return item.russian.toLowerCase().includes(selectedWord)
+                }
+            })
+        }
+
+        return data
+    }
+
+    useEffect(() => {
+        setTranslationResult(translation(words));
+        setTranslationComplete(true);
+        // eslint-disable-next-line
+    }, [isTranslationComplete]);
+    
     const handleWordClick = (event, word) => {
         const wordPosition = event.target.getBoundingClientRect();
+        setTranslationComplete(false);
+        setTranslationResult(translation(words));
         setSelectedWord(word);
         setVisiblePopup(true);
         setPosition({ top: wordPosition.top, left: wordPosition.left, width: wordPosition.width });
@@ -79,12 +109,15 @@ const SentencesTable = ({items, loadingStatus, setSelectedSentence, selectedSent
                         exitActive: 'sentence-exit-active'
                     }}
                 >
-                    <ul className={selectedSentence.id !== item.id ? 'sentence' : 'sentence activeSentence'} onClick={() => setSelectedSentence(item)}>
+                    <ul className='sentence' onClick={() => setSelectedSentence(item)}>
                         <li className='sentenceTable__leftItem'>
                             <div className='sentence'>{sentence(item.english)}</div>
                         </li>
                         <li className='sentenceTable__rightItem'>
                             <div className='sentence'>{sentence(item.russian)}</div>
+                            <div onClick={() => onDeleteSentence(item.id)} className='sentenceTable__buscet'>
+                                    <img src={buscet} alt='delete buscet'/>
+                            </div> 
                             <div onClick={() => handleModifyModal()} className='sentenceTable__pencil'>
                                     <img src={pencil} alt='modify pencil'/>
                             </div> 
@@ -119,10 +152,12 @@ const SentencesTable = ({items, loadingStatus, setSelectedSentence, selectedSent
             }
             {visiblePopup && 
             <TranslationPopup 
+                isTranslationComplete={isTranslationComplete}
                 position={position} 
                 visiblePopup={visiblePopup} 
                 setVisiblePopup={setVisiblePopup} 
-                selectedWord={undefined}
+                handleAddWordModal={handleAddWordModal}
+                translation={translationResult}
             />}
         </>
     )

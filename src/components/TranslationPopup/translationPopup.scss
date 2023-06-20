@@ -43,6 +43,10 @@
     }
 }
 
+.result {
+    text-align: start;
+}
+
 .translationPopup.active {
     opacity: 1;
     transition: 0.5s all;
