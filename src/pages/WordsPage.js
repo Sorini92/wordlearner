@@ -11,7 +11,7 @@ const WordsPage = () => {
 
     const dispatch = useDispatch();
     const {isAuth, id} = useAuth();
-        
+
     const sortItems = [
         { name: 'from new'},
         { name: 'from old'},         
@@ -31,6 +31,13 @@ const WordsPage = () => {
         firstUrl: 'users',
         secondUrl: id,
         thirdUrl: 'words'
+    }
+
+    const tableSettings = {
+        date: 'words-date-column',
+        ticks: 'words-ticks-column',
+        blur: 'words-isBluredWords',
+        reverse: 'words-isReverseWords'
     }
 
     useEffect(() => {
@@ -62,6 +69,7 @@ const WordsPage = () => {
                 setTotalPages={setTotalPages}
                 TableComponent={WordsTable}
                 items={words}
+                tableSettings={tableSettings}
             />
         </>
     ) : null

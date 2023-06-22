@@ -12,6 +12,7 @@ const WordsQuiz = ({setVariant, setActive, items, loadingStatus}) => {
     const [isTrue, setIsTrue] = useState(false);
     const [isFalse, setIsFalse] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
+    const [isNextQuiestionBtnClicked, setIsNextQuiestionBtnClicked] = useState(false);
 
     useEffect(() => {
         nextQuestion();        
@@ -42,6 +43,15 @@ const WordsQuiz = ({setVariant, setActive, items, loadingStatus}) => {
         setIsFalse(false);
         setIsTrue(false);
         setIsChecked(false);
+        setIsNextQuiestionBtnClicked(false)
+    }
+
+    const handleNextQuestion = () => {
+        if (isChecked) {
+            nextQuestion()
+        } else {
+            setIsNextQuiestionBtnClicked(true)
+        }
     }
 
     const getRandomInt = (max) => {
@@ -56,6 +66,7 @@ const WordsQuiz = ({setVariant, setActive, items, loadingStatus}) => {
         setIndex(i)
         setAnswer(answer)
         setIsChecked(false);
+        setIsNextQuiestionBtnClicked(false)
     }
 
     const handleCheckAnswer = () => {
@@ -123,12 +134,13 @@ const WordsQuiz = ({setVariant, setActive, items, loadingStatus}) => {
                     {isTrue && isChecked ? <div className='wordsquiz__success'>Correct answer</div> : null}
                     {isFalse && isChecked ? <div className='wordsquiz__wrong'>Incorrect answer</div> : null}
                     {isChecked && !isFalse && !isTrue ? <div className='wordsquiz__wrong'>Choose the variant</div> : null}
+                    {isNextQuiestionBtnClicked ? <div className='wordsquiz__wrong'>You have not completed this question</div> : null}
                 </div>
                 
                 <div className='wordsquiz__btns'>
                     <button className='wordsquiz__btn' onClick={() => setVariant('')}>To main page</button>
                     <button className='wordsquiz__btn' onClick={() => handleCheckAnswer()}>Check</button>
-                    <button className='wordsquiz__btn' onClick={() => nextQuestion()}>Next quistion</button>
+                    <button className='wordsquiz__btn' onClick={() => handleNextQuestion()}>Next quistion</button>
                 </div>
             </div>
         </div>

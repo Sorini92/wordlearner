@@ -13,8 +13,10 @@ import WordsNavigation from '../components/WordsNavigation/WordsNavigation';
 import Footer from '../components/Footer/Footer';
 import SortAndActions from '../components/SortAndActions/SortAndActions';
 import useFilteredArray from '../hooks/useFilteredArray';
+import useLocalStorage from '../hooks/useLocalStorage';
+import useSearchParamsState from '../hooks/useSearchParamsState';
 
-const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTypeChanged, setNumberPerUpload, numberPerUpload, currentPage, totalPages, setPage, numberOfItemsPerPage, address, wordsLoadingStatus, deleteItem, deleteItems, add, modify, setTotalPages, items}) => {
+const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTypeChanged, setNumberPerUpload, numberPerUpload, currentPage, totalPages, setPage, numberOfItemsPerPage, address, wordsLoadingStatus, deleteItem, deleteItems, add, modify, setTotalPages, items, tableSettings}) => {
     
     const [addModalActive, setAddModalActive] = useState(false);
     const [modifyModalActive, setModifyModalActive] = useState(false);
@@ -31,18 +33,28 @@ const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTy
     const [showMessage, setShowMessage] = useState(false);
 	const [offset, setOffset] = useState(30);
 
-    const [isShowDate, setIsShowDate] = useState(false);
-    const [isShowTicks, setIsShowTicks] = useState(false);
-    const [isBlured, setIsBlured] = useState(false);
-    const [reverseWords, setReverseWords] = useState(false);
-
     const {filtered, filteredLength} = useFilteredArray(items, selectedLetter, searchedWord)
+    
+    const [isShowDate, setIsShowDate] = useLocalStorage(tableSettings?.date, false);
+    const [isShowTicks, setIsShowTicks] = useLocalStorage(tableSettings?.ticks, false); 
+    const [isBlured, setIsBlured] = useLocalStorage(tableSettings?.blur, false); 
+    const [reverseWords, setReverseWords] = useLocalStorage(tableSettings?.reverse, false);  
+    
     const dispatch = useDispatch();
 
+    const [pageUrlValue, setPageUrlValue] = useSearchParamsState({
+        name: 'page',
+        deserialize: (v) => (v ? v : "")
+    })
+
     useEffect(() => {
-        dispatch(setPage(1))
+        if (pageUrlValue !== '') {
+            dispatch(setPage(Number(pageUrlValue)))
+        } else {
+            dispatch(setPage(currentPage))
+        }
         // eslint-disable-next-line
-    }, [numberPerUpload, filteredArrayLength]);
+    }, [pageUrlValue]);
 
     useEffect(() => {
         setFilteredArrayLength(filteredLength)
@@ -233,6 +245,19 @@ const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTy
         }
     }
 
+    const onClearLetter = () => {
+        setSelectedLetter('');
+        setFilteredArrayLength(0);
+        setOffset(numberPerUpload);
+        setPageUrlValue(1)
+        dispatch(setPage(1))
+    }
+
+    const switchToFirstPage = () => {
+        setPageUrlValue(1)
+        dispatch(setPage(1))
+    }
+
     return (
         <>
             <Navigation 
@@ -269,8 +294,9 @@ const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTy
             <AlpabetFilter 
                 setSelectedLetter={setSelectedLetter} 
                 setOffset={setOffset}
-                wordsPerUpload={numberPerUpload}
-                setFilteredArrayLength={setFilteredArrayLength}
+                wordsPerUpload={numberPerUpload}               
+                onClearLetter={onClearLetter}
+                switchToFirstPage={switchToFirstPage}
             />
             <TableComponent 
                 searchedWord={searchedWord}
@@ -296,11 +322,13 @@ const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTy
                 currentPage={currentPage}
                 totalPages={totalPages}
                 setPage={setPage}
+                setPageUrlValue={setPageUrlValue}
                 numberOfItemsPerPage={numberOfItemsPerPage}
                 active={numberPerUpload}
                 textForSelectPopup={"On the page:"}
                 textForCounters={"words"}
                 dispatchFunction={setNumberPerUpload}
+                switchToFirstPage={switchToFirstPage}
                 items={items}
             />
             <AddWordModal 

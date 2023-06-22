@@ -2,7 +2,7 @@ import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import './pagination.scss';
 
-const Pagination = ({items, cuttedArray, filteredArrayLength, numberPerUpload, currentPage, totalPages, setPage}) => {
+const Pagination = ({items, cuttedArray, filteredArrayLength, numberPerUpload, currentPage, totalPages, setPage, setPageUrlValue}) => {
 
     const [arrOfCurrPages, setArrOfCurrPages] = useState([])
 
@@ -45,7 +45,7 @@ const Pagination = ({items, cuttedArray, filteredArrayLength, numberPerUpload, c
           tempNumberOfPages = ([1, dotsLeft, ...sliced])                        
         }
         
-        else if (currentPage === dotsInitial) {
+        /* else if (currentPage === dotsInitial) {
             dispatch(setPage(arrOfCurrPages[arrOfCurrPages.length-3] + 1)) 
         }
         else if (currentPage === dotsRight) {
@@ -54,15 +54,16 @@ const Pagination = ({items, cuttedArray, filteredArrayLength, numberPerUpload, c
     
         else if (currentPage === dotsLeft) {
             dispatch(setPage(arrOfCurrPages[3] - 2))
-        }
+        } */
     
         setArrOfCurrPages(tempNumberOfPages)
-        dispatch(setPage(currentPage))
+        //dispatch(setPage(currentPage))
         // eslint-disable-next-line
     }, [currentPage, cuttedArray, totalPages])
 
     const handlePageClick = (pageNumber) => {
         dispatch(setPage(pageNumber));
+        setPageUrlValue(pageNumber)
     };
 
     const prevBtns = () => {

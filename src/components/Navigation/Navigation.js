@@ -5,9 +5,10 @@ import "./navigation.scss";
 
 const Navigation = ({setSearched, setOffset, numberPerUpload, setFilteredArrayLength}) => {
 
-    const location = useLocation();
     const [text, setText] = useState('');
     const [active, setActive] = useState(0);
+
+    const location = useLocation();
 
     const links = [
         {to: '/words', text: 'Words'},
@@ -44,7 +45,7 @@ const Navigation = ({setSearched, setOffset, numberPerUpload, setFilteredArrayLe
         return (
             <Link 
                 key={i} 
-                to={item.to} 
+                to={`${item.to}?page=1`} 
                 className={i === active ? `navigation__tab activeTab` : `navigation__tab`} 
                 onClick={() => handleTabClick(i)}>
                     {item.text}

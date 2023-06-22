@@ -14,6 +14,7 @@ import AddWordModal from '../components/AddWordModal/AddWordModal';
 import ModifySentenceModal from '../components/ModifySentenceModal/ModifySentenceModal';
 import ArrowScrollUp from '../components/ArrowScrollUp/ArrowScrollUp';
 import Footer from '../components/Footer/Footer';
+import useSearchParamsState from '../hooks/useSearchParamsState';
 
 const SentencesPage = () => {
 
@@ -36,6 +37,11 @@ const SentencesPage = () => {
 
     const dispatch = useDispatch();
     const {isAuth, id} = useAuth();
+
+    const [pageUrlValue, setPageUrlValue] = useSearchParamsState({
+        name: 'page',
+        deserialize: (v) => (v ? v : "")
+    })
 
     const sortItems = [
         { name: 'from new'},
@@ -69,9 +75,13 @@ const SentencesPage = () => {
     }, [id]);
 
     useEffect(() => {
-        dispatch(setPage(1))
+        if (pageUrlValue !== '') {
+            dispatch(setPage(Number(pageUrlValue)))
+        } else {
+            dispatch(setPage(currentPage))
+        }
         // eslint-disable-next-line
-    }, [sentencesPerUpload, filteredArrayLength]);
+    }, [pageUrlValue]);
 
     useEffect(() => {
         const handleKeyPress = (event) => {
@@ -185,6 +195,11 @@ const SentencesPage = () => {
         setAddWordModalActive(!addWordModalActive);
     }
 
+    const switchToFirstPage = () => {
+        setPageUrlValue(1)
+        dispatch(setPage(1))
+    }
+
     return isAuth ? (
         <>
             <Navigation 
@@ -229,6 +244,8 @@ const SentencesPage = () => {
                 textForSelectPopup={"On the page:"}
                 textForCounters={"sentences"}
                 dispatchFunction={setSentencesPerUpload}
+                setPageUrlValue={setPageUrlValue}
+                switchToFirstPage={switchToFirstPage}
                 items={sentences}
             />
             <AddSentenceModal 

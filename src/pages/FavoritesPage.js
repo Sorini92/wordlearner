@@ -32,6 +32,12 @@ const FavoritesPage = () => {
         secondUrl: id,
         thirdUrl: 'favoriteWords'
     }
+
+    const tableSettings = {
+        date: 'favorites-date-column',
+        blur: 'favorites-isBluredWords',
+        reverse: 'favorites-isReverseWords'
+    }
     
     useEffect(() => {
         if (id !== null) {
@@ -60,6 +66,7 @@ const FavoritesPage = () => {
                 setTotalPages={setTotalPages}
                 TableComponent={WordsTable}
                 items={favorites}
+                tableSettings={tableSettings}
             />
         </>
     ) : null
