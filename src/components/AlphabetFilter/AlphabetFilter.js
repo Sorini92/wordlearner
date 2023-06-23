@@ -1,10 +1,13 @@
 import { Fragment, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import './alphabetFilter.scss';
 
-const AlpabetFilter = ({setSelectedLetter, setOffset, wordsPerUpload, onClearLetter, switchToFirstPage}) => {
+const AlpabetFilter = ({setLetter, setOffset, wordsPerUpload, onClearLetter, switchToFirstPage}) => {
 
     const [switcher, setSwitcher] = useState(true);
     const [active, setActive] = useState('');
+
+    const dispatch = useDispatch();
 
     const englishAlphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
     const russianAlphabet = ['а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'э', 'ю', 'я'];
@@ -17,7 +20,7 @@ const AlpabetFilter = ({setSelectedLetter, setOffset, wordsPerUpload, onClearLet
     const handleSelectLetter = (letter, index) => {
         setActive(index);
         setOffset(wordsPerUpload);
-        setSelectedLetter(letter);
+        dispatch(setLetter(letter));
         switchToFirstPage();
     }
 

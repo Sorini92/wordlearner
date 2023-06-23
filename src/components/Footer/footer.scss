@@ -1,8 +1,11 @@
 .footer {
     width: 100%;
     height: 40px;
-    margin-top: 15px;
-    margin-bottom: 60px;
+    //margin-top: 15px;
+    //margin-bottom: 60px;
+    position: absolute;
+    max-width: inherit;
+    bottom: 30px;
     display: flex;
     justify-content: space-between;
     &__numberOfWords {

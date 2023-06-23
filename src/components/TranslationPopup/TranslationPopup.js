@@ -34,10 +34,11 @@ const TranslationPopup = ({translation, position, setVisiblePopup, visiblePopup,
                     :
                     elements(translation)
                     }
+                    <button onClick={() => handleAddWordModal()} className="translationPopup__btn"/>
                 </div> : 
                 <div className='translationPopup__content'>
                     <div className="translationPopup__text">Unknown word</div>
-                    <button onClick={() => handleAddWordModal()} className="translationPopup__btn">add</button>
+                    <button onClick={() => handleAddWordModal()} className="translationPopup__btn"/>
                 </div>
             )}
             <div className='translationPopup__arrow'></div>

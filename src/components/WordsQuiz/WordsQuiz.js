@@ -134,7 +134,7 @@ const WordsQuiz = ({setVariant, setActive, items, loadingStatus}) => {
                     {isTrue && isChecked ? <div className='wordsquiz__success'>Correct answer</div> : null}
                     {isFalse && isChecked ? <div className='wordsquiz__wrong'>Incorrect answer</div> : null}
                     {isChecked && !isFalse && !isTrue ? <div className='wordsquiz__wrong'>Choose the variant</div> : null}
-                    {isNextQuiestionBtnClicked ? <div className='wordsquiz__wrong'>You have not completed this question</div> : null}
+                    {isNextQuiestionBtnClicked && !isChecked? <div className='wordsquiz__wrong'>You have not completed this question</div> : null}
                 </div>
                 
                 <div className='wordsquiz__btns'>

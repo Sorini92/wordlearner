@@ -29,7 +29,7 @@ const WordsNavigation = ({showSetting, setIsShowDate, setIsShowTicks, setReverse
         return (
             <Link 
                 key={i} 
-                to={`${item.to}?page=1`} 
+                to={`${item.to}`} 
                 className={i === active ? `wordsNavigation__tab activeTab` : `wordsNavigation__tab`} 
                 onClick={() => handleTabClick(i)}>
                     {item.text}

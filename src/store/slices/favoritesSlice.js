@@ -4,6 +4,7 @@ import {useGetData} from '../../hooks/useGetData';
 const initialState = {
     favorites: [],
     sortType: 'from new',
+    letter: '',
     wordsLoadingStatus: 'loading',
     currentPage: 1,
     totalPages: 1,
@@ -43,6 +44,9 @@ const favoritesSlice = createSlice({
         },
         setPage: (state, action) => {
             state.currentPage = action.payload;
+        },
+        setLetter: (state, action) => {
+            state.letter = action.payload;
         },
         setTotalPages: (state, action) => {
             state.totalPages = action.payload;
@@ -134,6 +138,7 @@ export const {
     modifyWord,
     deleteWord,
     setPage,
+    setLetter,
     setWordsPerUpload,
     setTotalPages,
     activeSortTypeChanged,

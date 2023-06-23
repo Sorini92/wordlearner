@@ -1,14 +1,30 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { CSSTransition, TransitionGroup} from 'react-transition-group';
 import Spinner from '../Spinner/Spinner';
 import './irregularVerbsTable.scss';
 
-const IrregularVerbsTable = ({searchedWord, cuttedArrayOfWords, selectedLetter}) => {
+const IrregularVerbsTable = ({searchedWord, cuttedArrayOfWords, selectedLetter, isBlured}) => {
     
     const {wordsLoadingStatus, verbs} = useSelector(state => state.irregularVerbs)
 
     const [idForCompare, setIdForCompare] = useState('');
+    const [unbluredWord, setUnbluredWord] = useState('');
+
+    const timerRef = useRef(null)
+
+    const handleUnblur = (word) => {
+
+        clearTimeout(timerRef.current);
+        setUnbluredWord(word);
+
+        timerRef.current = setTimeout(() => {
+            setUnbluredWord('')
+        }, 2000);
+
+    }
+    
+    useEffect(() => () => clearTimeout(timerRef.current), [])
     
     const handleClick = (word) => {
         setIdForCompare(word.id);
@@ -16,6 +32,9 @@ const IrregularVerbsTable = ({searchedWord, cuttedArrayOfWords, selectedLetter})
 
     const elements = (array) => {
         return array.map((item) => {
+
+            const isItemBlurred = isBlured && unbluredWord !== item.id;
+            
             return (
                 <CSSTransition 
                     timeout={500}
@@ -33,13 +52,19 @@ const IrregularVerbsTable = ({searchedWord, cuttedArrayOfWords, selectedLetter})
                         className={idForCompare !== item.id ? 'verb' : 'verb activeVerb'} 
                         onClick={() => handleClick(item)}
                     >
-                            <td className='irregularVerbsTable__base'>
+                            <td 
+                                onClick={() => handleUnblur(item.id)} 
+                                className={isItemBlurred ? 'irregularVerbsTable__base blur' : 'irregularVerbsTable__base'}>
                                 {item.baseForm}
                             </td>
-                            <td className='irregularVerbsTable__simple'>
+                            <td 
+                                onClick={() => handleUnblur(item.id)} 
+                                className={isItemBlurred ? 'irregularVerbsTable__simple blur' : 'irregularVerbsTable__simple'}>
                                 {item.pastParticiple}
                             </td> 
-                            <td className="irregularVerbsTable__participle">
+                            <td 
+                                onClick={() => handleUnblur(item.id)} 
+                                className={isItemBlurred ? 'irregularVerbsTable__participle blur' : 'irregularVerbsTable__participle'}>
                                 {item.pastSimple}
                             </td>
                             <td className='irregularVerbsTable__translation'>

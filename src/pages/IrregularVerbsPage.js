@@ -1,13 +1,13 @@
 import {useDispatch, useSelector} from 'react-redux';
 import {useEffect} from "react";
-import {setTotalPages, fetchIrregularVerbs, sortBy, activeSortTypeChanged, setWordsPerUpload, setPage} from '../store/slices/irregularVerbsSlice';
+import {setTotalPages, fetchIrregularVerbs, sortBy, activeSortTypeChanged, setWordsPerUpload, setPage, setLetter} from '../store/slices/irregularVerbsSlice';
 import useAuth from '../hooks/use-auth';
 import IrregularVerbsTable from '../components/IrregularVerbsTable.js/IrregularVerbsTable';
 import Page from './Page';
 
 const IrregularVerbsPage = () => {
 
-    const {wordsLoadingStatus, verbs, wordsPerUpload, sortType, currentPage, totalPages} = useSelector(state => state.irregularVerbs);
+    const {wordsLoadingStatus, verbs, wordsPerUpload, sortType, currentPage, totalPages, letter} = useSelector(state => state.irregularVerbs);
     
     const dispatch = useDispatch();
     const {isAuth} = useAuth();
@@ -27,6 +27,10 @@ const IrregularVerbsPage = () => {
 
     const linkToWords = {
         thirdUrl: 'irregularVerb'
+    }
+
+    const tableSettings = {
+        blur: 'verbs-isBluredWords',
     }
     
     useEffect(() => {
@@ -52,6 +56,9 @@ const IrregularVerbsPage = () => {
                 setTotalPages={setTotalPages}
                 TableComponent={IrregularVerbsTable}
                 items={verbs}
+                letter={letter}
+                setLetter={setLetter}
+                tableSettings={tableSettings}
             />
         </>
     ) : null

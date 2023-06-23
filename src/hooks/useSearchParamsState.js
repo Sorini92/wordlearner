@@ -33,7 +33,7 @@ const useSearchParamsState = ({name, serialize = String, deserialize = v => v}) 
         setValue(value)
 
         const newSearch = setSearchParam(location.search, name, serialize(value))
-
+        
         navigate({ search: newSearch });
         // eslint-disable-next-line
     }, [location.search, name])

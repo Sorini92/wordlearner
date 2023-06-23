@@ -2,7 +2,7 @@ import Pagination from '../Pagination/Pagination';
 import SelectPopup from "../SelectPopup/SelectPopup";
 import './footer.scss';
 
-const Footer = ({textForCounters, cuttedArray, filteredArrayLength, numberPerUpload, currentPage, totalPages, setPage, numberOfItemsPerPage, active, textForSelectPopup, dispatchFunction, items, setPageUrlValue, switchToFirstPage}) => {
+const Footer = ({textForCounters, cuttedArray, filteredArrayLength, numberPerUpload, currentPage, totalPages, setPage, numberOfItemsPerPage, active, textForSelectPopup, dispatchFunction, items, setPageUrlValue, switchToFirstPage, setNumberPerUploadUrlValue}) => {
     return (
         <div className='footer'>
             <div className='footer__numberOfWords'>
@@ -26,6 +26,7 @@ const Footer = ({textForCounters, cuttedArray, filteredArrayLength, numberPerUpl
                 active={active}
                 textForSelectPopup={textForSelectPopup}
                 dispatchFunction={dispatchFunction}
+                setNumberPerUploadUrlValue={setNumberPerUploadUrlValue}
             /> : null}
         </div>
     )

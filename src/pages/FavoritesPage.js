@@ -1,13 +1,13 @@
 import {useDispatch, useSelector} from 'react-redux';
 import {useEffect} from "react"; 
-import {modifyWord, deleteWord, setTotalPages, fetchFavorites, sortBy, activeSortTypeChanged, setWordsPerUpload, setPage} from '../store/slices/favoritesSlice';
+import {modifyWord, deleteWord, setTotalPages, fetchFavorites, sortBy, activeSortTypeChanged, setWordsPerUpload, setPage, setLetter} from '../store/slices/favoritesSlice';
 import useAuth from '../hooks/use-auth';
 import WordsTable from '../components/WordsTable/WordsTable';
 import Page from './Page';
 
 const FavoritesPage = () => {
 
-    const {favorites, wordsLoadingStatus,  wordsPerUpload, sortType, currentPage, totalPages} = useSelector(state => state.favorites);
+    const {favorites, wordsLoadingStatus,  wordsPerUpload, sortType, currentPage, totalPages, letter} = useSelector(state => state.favorites);
 
     const dispatch = useDispatch();
     const {isAuth, id} = useAuth();
@@ -67,6 +67,8 @@ const FavoritesPage = () => {
                 TableComponent={WordsTable}
                 items={favorites}
                 tableSettings={tableSettings}
+                letter={letter}
+                setLetter={setLetter}
             />
         </>
     ) : null

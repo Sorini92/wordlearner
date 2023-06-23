@@ -1,13 +1,13 @@
 import {useDispatch, useSelector} from 'react-redux';
 import {useEffect} from "react";
-import {deleteWord, deleteWords, addWord, modifyWord, setTotalPages, fetchWords, sortBy, activeSortTypeChanged, setWordsPerUpload, setPage} from '../store/slices/wordSlice';
+import {deleteWord, deleteWords, addWord, modifyWord, setTotalPages, fetchWords, sortBy, activeSortTypeChanged, setWordsPerUpload, setPage, setLetter} from '../store/slices/wordSlice';
 import useAuth from '../hooks/use-auth';
 import WordsTable from "../components/WordsTable/WordsTable";
 import Page from './Page';
 
 const WordsPage = () => {
 
-    const {wordsLoadingStatus, words, wordsPerUpload, sortType, currentPage, totalPages} = useSelector(state => state.words);
+    const {wordsLoadingStatus, words, wordsPerUpload, sortType, currentPage, totalPages, letter} = useSelector(state => state.words);
 
     const dispatch = useDispatch();
     const {isAuth, id} = useAuth();
@@ -70,6 +70,8 @@ const WordsPage = () => {
                 TableComponent={WordsTable}
                 items={words}
                 tableSettings={tableSettings}
+                letter={letter}
+                setLetter={setLetter}
             />
         </>
     ) : null

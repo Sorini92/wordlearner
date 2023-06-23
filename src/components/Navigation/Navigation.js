@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import scope from '../../resources/scope.svg';
 import "./navigation.scss";
 
-const Navigation = ({setSearched, setOffset, numberPerUpload, setFilteredArrayLength}) => {
+const Navigation = ({setSearched, setOffset, numberPerUpload, setFilteredArrayLength, currentPage}) => {
 
     const [text, setText] = useState('');
     const [active, setActive] = useState(0);
@@ -45,7 +45,7 @@ const Navigation = ({setSearched, setOffset, numberPerUpload, setFilteredArrayLe
         return (
             <Link 
                 key={i} 
-                to={`${item.to}?page=1`} 
+                to={`${item.to}`} 
                 className={i === active ? `navigation__tab activeTab` : `navigation__tab`} 
                 onClick={() => handleTabClick(i)}>
                     {item.text}

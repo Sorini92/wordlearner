@@ -43,6 +43,11 @@ const SentencesPage = () => {
         deserialize: (v) => (v ? v : "")
     })
 
+    const [numberPerUploadUrlValue, setNumberPerUploadUrlValue] = useSearchParamsState({
+        name: 'limit',
+        deserialize: (v) => (v ? v : "")
+    })
+
     const sortItems = [
         { name: 'from new'},
         { name: 'from old'},         
@@ -79,9 +84,20 @@ const SentencesPage = () => {
             dispatch(setPage(Number(pageUrlValue)))
         } else {
             dispatch(setPage(currentPage))
+            setPageUrlValue(currentPage)
         }
         // eslint-disable-next-line
     }, [pageUrlValue]);
+
+    useEffect(() => {
+        if (numberPerUploadUrlValue !== '') {
+            setNumberPerUploadUrlValue(sentencesPerUpload)
+        } else {
+            dispatch(setSentencesPerUpload(sentencesPerUpload))
+            setNumberPerUploadUrlValue(sentencesPerUpload)
+        }
+        // eslint-disable-next-line
+    }, [numberPerUploadUrlValue]);
 
     useEffect(() => {
         const handleKeyPress = (event) => {
@@ -244,9 +260,10 @@ const SentencesPage = () => {
                 textForSelectPopup={"On the page:"}
                 textForCounters={"sentences"}
                 dispatchFunction={setSentencesPerUpload}
-                setPageUrlValue={setPageUrlValue}
                 switchToFirstPage={switchToFirstPage}
                 items={sentences}
+                setPageUrlValue={setPageUrlValue}
+                setNumberPerUploadUrlValue={setNumberPerUploadUrlValue}
             />
             <AddSentenceModal 
                 width={600}

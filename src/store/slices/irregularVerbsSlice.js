@@ -4,6 +4,7 @@ import {useGetData} from '../../hooks/useGetData';
 const initialState = {
     verbs: [],
     sortType: 'a to z',
+    letter: '',
     wordsLoadingStatus: 'loading',
     currentPage: 1,
     totalPages: 1,
@@ -27,6 +28,9 @@ const irregularVerbsSlice = createSlice({
     reducers: {
         setPage: (state, action) => {
             state.currentPage = action.payload;
+        },
+        setLetter: (state, action) => {
+            state.letter = action.payload;
         },
         setTotalPages: (state, action) => {
             state.totalPages = action.payload;
@@ -118,6 +122,7 @@ export const {
     irregularVerbsFetched,
     irregularVerbsFetchingError,
     setPage,
+    setLetter,
     setWordsPerUpload,
     setTotalPages,
     activeSortTypeChanged,

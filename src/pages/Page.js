@@ -16,7 +16,7 @@ import useFilteredArray from '../hooks/useFilteredArray';
 import useLocalStorage from '../hooks/useLocalStorage';
 import useSearchParamsState from '../hooks/useSearchParamsState';
 
-const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTypeChanged, setNumberPerUpload, numberPerUpload, currentPage, totalPages, setPage, numberOfItemsPerPage, address, wordsLoadingStatus, deleteItem, deleteItems, add, modify, setTotalPages, items, tableSettings}) => {
+const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTypeChanged, setNumberPerUpload, numberPerUpload, currentPage, totalPages, setPage, numberOfItemsPerPage, address, wordsLoadingStatus, deleteItem, deleteItems, add, modify, setTotalPages, items, tableSettings, letter, setLetter}) => {
     
     const [addModalActive, setAddModalActive] = useState(false);
     const [modifyModalActive, setModifyModalActive] = useState(false);
@@ -24,7 +24,6 @@ const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTy
 
     const [selectedWord, setSelectedWord] = useState({});
     const [selectedWords, setSelectedWords] = useState([]);
-    const [selectedLetter, setSelectedLetter] = useState('');
     const [searchedWord, setSearchedWord] = useState([]);
     const [cuttedArrayOfWords, setCuttedArrayOfWords] = useState([]);
     const [filteredArrayLength, setFilteredArrayLength] = useState(0);
@@ -33,7 +32,7 @@ const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTy
     const [showMessage, setShowMessage] = useState(false);
 	const [offset, setOffset] = useState(30);
 
-    const {filtered, filteredLength} = useFilteredArray(items, selectedLetter, searchedWord)
+    const {filtered, filteredLength} = useFilteredArray(items, letter, searchedWord)
     
     const [isShowDate, setIsShowDate] = useLocalStorage(tableSettings?.date, false);
     const [isShowTicks, setIsShowTicks] = useLocalStorage(tableSettings?.ticks, false); 
@@ -47,14 +46,32 @@ const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTy
         deserialize: (v) => (v ? v : "")
     })
 
+    const [numberPerUploadUrlValue, setNumberPerUploadUrlValue] = useSearchParamsState({
+        name: 'limit',
+        deserialize: (v) => (v ? v : "")
+    })
+    //console.log(numberPerUploadUrlValue);
     useEffect(() => {
         if (pageUrlValue !== '') {
             dispatch(setPage(Number(pageUrlValue)))
         } else {
             dispatch(setPage(currentPage))
+            setPageUrlValue(currentPage)
         }
         // eslint-disable-next-line
     }, [pageUrlValue]);
+
+    useEffect(() => {
+        if (numberPerUploadUrlValue !== '') {
+            dispatch(setNumberPerUpload(Number(numberPerUploadUrlValue)))
+            dispatch(setPage(1))
+            setPageUrlValue(1) /// подумать как сделать что бы не сбрасывалась страница
+        } else {
+            dispatch(setNumberPerUpload(numberPerUpload))
+            setNumberPerUploadUrlValue(numberPerUpload)
+        }
+        // eslint-disable-next-line
+    }, [numberPerUploadUrlValue]);
 
     useEffect(() => {
         setFilteredArrayLength(filteredLength)
@@ -80,7 +97,7 @@ const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTy
         setSelectedWord({});
         setSelectedWords([]);
         // eslint-disable-next-line
-    }, [selectedLetter, searchedWord.length]);
+    }, [letter, searchedWord.length]);
 
     useEffect(() => {
         setOffset(numberPerUpload * currentPage)
@@ -88,7 +105,7 @@ const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTy
     }, [currentPage]);
 
     useEffect(() => {
-        if (selectedLetter.length !== 0 || searchedWord.length > 0) {
+        if (letter.length !== 0 || searchedWord.length > 0) {
             if (!(filteredArrayLength % numberPerUpload)) {
                 dispatch(setTotalPages(filteredArrayLength/numberPerUpload))
             } else {
@@ -102,19 +119,19 @@ const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTy
             }
         }
         // eslint-disable-next-line
-    }, [items, numberPerUpload, selectedLetter, searchedWord.length, filteredArrayLength, totalPages])
+    }, [items, numberPerUpload, letter, searchedWord.length, filteredArrayLength, totalPages])
 
     useEffect(() => {
         let lastIndex = currentPage * numberPerUpload;
         let firstIndex = lastIndex - numberPerUpload;
 
-        if (selectedLetter.length !== 0 || searchedWord.length > 0) {
+        if (letter.length !== 0 || searchedWord.length > 0) {
             setCuttedArrayOfWords(filtered.slice(firstIndex, lastIndex));
         } else {
             setCuttedArrayOfWords(items.slice(firstIndex, lastIndex));
         }
         // eslint-disable-next-line
-    }, [items, offset, selectedLetter, searchedWord.length, numberPerUpload, filtered, currentPage]);
+    }, [items, offset, letter, searchedWord.length, numberPerUpload, filtered, currentPage]);
 
     const handleAddModal = () => {
         setAddModalActive(!addModalActive);
@@ -246,7 +263,7 @@ const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTy
     }
 
     const onClearLetter = () => {
-        setSelectedLetter('');
+        dispatch(setLetter(''));
         setFilteredArrayLength(0);
         setOffset(numberPerUpload);
         setPageUrlValue(1)
@@ -257,7 +274,7 @@ const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTy
         setPageUrlValue(1)
         dispatch(setPage(1))
     }
-
+    
     return (
         <>
             <Navigation 
@@ -292,7 +309,7 @@ const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTy
                 address={address}
             />
             <AlpabetFilter 
-                setSelectedLetter={setSelectedLetter} 
+                setLetter={setLetter} 
                 setOffset={setOffset}
                 wordsPerUpload={numberPerUpload}               
                 onClearLetter={onClearLetter}
@@ -301,7 +318,7 @@ const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTy
             <TableComponent 
                 searchedWord={searchedWord}
                 cuttedArrayOfWords={cuttedArrayOfWords}
-                selectedLetter={selectedLetter}
+                selectedLetter={letter}
                 selectedWord={selectedWord}
                 setSelectedWord={setSelectedWord}
                 selectedWords={selectedWords}
@@ -322,7 +339,6 @@ const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTy
                 currentPage={currentPage}
                 totalPages={totalPages}
                 setPage={setPage}
-                setPageUrlValue={setPageUrlValue}
                 numberOfItemsPerPage={numberOfItemsPerPage}
                 active={numberPerUpload}
                 textForSelectPopup={"On the page:"}
@@ -330,6 +346,8 @@ const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTy
                 dispatchFunction={setNumberPerUpload}
                 switchToFirstPage={switchToFirstPage}
                 items={items}
+                setPageUrlValue={setPageUrlValue}
+                setNumberPerUploadUrlValue={setNumberPerUploadUrlValue}
             />
             <AddWordModal 
                 width={290}

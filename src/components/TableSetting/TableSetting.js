@@ -20,6 +20,10 @@ const TableSetting = ({address, setIsShowDate, setIsShowTicks, setReverseWords, 
         {name: 'Reverse words', switcher: reverseWords, setFunc: setReverseWords},
         {name: 'Blur right side', switcher: isBlured, setFunc: setIsBlured},
     ]
+
+    const verbsItems = [
+        {name: 'Blur verbs', switcher: isBlured, setFunc: setIsBlured},
+    ]
         
     const toggleVisiblePopup = () => {
         setVisiblePopup(!visiblePopup);
@@ -58,7 +62,6 @@ const TableSetting = ({address, setIsShowDate, setIsShowTicks, setReverseWords, 
 
     return (
         <>
-            {address.thirdUrl === 'words' || address.thirdUrl === 'favoriteWords' ?
             <div ref={selectRef} className="tableSetting">
                 <div className="tableSetting__label">
                     <img src={settingImg} alt='setting img' onClick={toggleVisiblePopup}/>
@@ -66,11 +69,13 @@ const TableSetting = ({address, setIsShowDate, setIsShowTicks, setReverseWords, 
                 {visiblePopup && (
                     <div className="tableSetting__popup">
                         <div className='tableSetting__wrapper'>
-                            {address.thirdUrl === 'words' ? elements(items) : elements(favoriteItems)}
+                            {address.thirdUrl === 'words' ? elements(items) : null}
+                            {address.thirdUrl === 'favoriteWords' ? elements(favoriteItems) : null}
+                            {address.thirdUrl === 'irregularVerb' ? elements(verbsItems) : null}
                         </div>
                     </div>
                 )}
-            </div> : null}
+            </div> 
         </>
     )
 }

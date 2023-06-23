@@ -4,6 +4,7 @@ import {useGetData} from '../../hooks/useGetData';
 const initialState = {
     words: [],
     sortType: 'from new',
+    letter: '',
     wordsLoadingStatus: 'loading',
     currentPage: 1,
     totalPages: 1,
@@ -49,6 +50,9 @@ const wordsSlice = createSlice({
         },
         setPage: (state, action) => {
             state.currentPage = action.payload;
+        },
+        setLetter: (state, action) => {
+            state.letter = action.payload;
         },
         setTotalPages: (state, action) => {
             state.totalPages = action.payload;
@@ -141,6 +145,7 @@ export const {
     modifyWord,
     deleteWord,
     deleteWords,
+    setLetter,
     setPage,
     setWordsPerUpload,
     setTotalPages,

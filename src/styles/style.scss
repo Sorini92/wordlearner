@@ -1,7 +1,11 @@
+body {
+    position: relative;
+}
+
 .app {
     min-height: 100vh;
     margin: 0 auto;
-    width: 65%;
+    max-width: 1100px;
 }
 
 .end {
