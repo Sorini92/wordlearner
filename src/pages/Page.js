@@ -14,7 +14,6 @@ import Footer from '../components/Footer/Footer';
 import SortAndActions from '../components/SortAndActions/SortAndActions';
 import useFilteredArray from '../hooks/useFilteredArray';
 import useLocalStorage from '../hooks/useLocalStorage';
-import useSearchParamsState from '../hooks/useSearchParamsState';
 
 const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTypeChanged, setNumberPerUpload, numberPerUpload, currentPage, totalPages, setPage, numberOfItemsPerPage, address, wordsLoadingStatus, deleteItem, deleteItems, add, modify, setTotalPages, items, tableSettings, letter, setLetter}) => {
     
@@ -40,38 +39,6 @@ const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTy
     const [reverseWords, setReverseWords] = useLocalStorage(tableSettings?.reverse, false);  
     
     const dispatch = useDispatch();
-
-    const [pageUrlValue, setPageUrlValue] = useSearchParamsState({
-        name: 'page',
-        deserialize: (v) => (v ? v : "")
-    })
-
-    const [numberPerUploadUrlValue, setNumberPerUploadUrlValue] = useSearchParamsState({
-        name: 'limit',
-        deserialize: (v) => (v ? v : "")
-    })
-    //console.log(numberPerUploadUrlValue);
-    useEffect(() => {
-        if (pageUrlValue !== '') {
-            dispatch(setPage(Number(pageUrlValue)))
-        } else {
-            dispatch(setPage(currentPage))
-            setPageUrlValue(currentPage)
-        }
-        // eslint-disable-next-line
-    }, [pageUrlValue]);
-
-    useEffect(() => {
-        if (numberPerUploadUrlValue !== '') {
-            dispatch(setNumberPerUpload(Number(numberPerUploadUrlValue)))
-            dispatch(setPage(1))
-            setPageUrlValue(1) /// подумать как сделать что бы не сбрасывалась страница
-        } else {
-            dispatch(setNumberPerUpload(numberPerUpload))
-            setNumberPerUploadUrlValue(numberPerUpload)
-        }
-        // eslint-disable-next-line
-    }, [numberPerUploadUrlValue]);
 
     useEffect(() => {
         setFilteredArrayLength(filteredLength)
@@ -266,12 +233,10 @@ const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTy
         dispatch(setLetter(''));
         setFilteredArrayLength(0);
         setOffset(numberPerUpload);
-        setPageUrlValue(1)
         dispatch(setPage(1))
     }
 
     const switchToFirstPage = () => {
-        setPageUrlValue(1)
         dispatch(setPage(1))
     }
     
@@ -346,8 +311,6 @@ const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTy
                 dispatchFunction={setNumberPerUpload}
                 switchToFirstPage={switchToFirstPage}
                 items={items}
-                setPageUrlValue={setPageUrlValue}
-                setNumberPerUploadUrlValue={setNumberPerUploadUrlValue}
             />
             <AddWordModal 
                 width={290}

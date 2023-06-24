@@ -11,14 +11,15 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 0 5px;
+        margin: 0 3px;
         color: black;
         float: left;
-        width: 40px;
-        height: 40px;
+        width: 30px;
+        height: 30px;
         text-decoration: none;
         cursor: pointer;
-        border-radius: 100%;          
+        border-radius: 100%;   
+        font-size: 12px;       
         &:hover {
             background-color: rgb(204, 204, 204);
         }
@@ -27,16 +28,17 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 0 5px;
+        margin: 0 3px;
         color: black;
         float: left;
-        width: 40px;
-        height: 40px;
+        width: 30px;
+        height: 30px;
         text-decoration: none;
         border: none;
         cursor: pointer;
         border-radius: 100%; 
-        background-color: inherit;         
+        background-color: inherit;   
+        font-size: 14px;       
         &:hover {
             background-color: rgb(204, 204, 204);
         }
@@ -45,15 +47,16 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 0 5px;
+        margin: 0 3px;
         color: white;
         float: left;
-        width: 40px;
-        height: 40px;
+        width: 30px;
+        height: 30px;
         text-decoration: none;
         background-color: #0d6efd;
         cursor: pointer;
         border-radius: 100%;
+        font-size: 12px; 
         &:hover {
             opacity: 0.9;
         }

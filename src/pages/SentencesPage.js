@@ -14,7 +14,6 @@ import AddWordModal from '../components/AddWordModal/AddWordModal';
 import ModifySentenceModal from '../components/ModifySentenceModal/ModifySentenceModal';
 import ArrowScrollUp from '../components/ArrowScrollUp/ArrowScrollUp';
 import Footer from '../components/Footer/Footer';
-import useSearchParamsState from '../hooks/useSearchParamsState';
 
 const SentencesPage = () => {
 
@@ -37,16 +36,6 @@ const SentencesPage = () => {
 
     const dispatch = useDispatch();
     const {isAuth, id} = useAuth();
-
-    const [pageUrlValue, setPageUrlValue] = useSearchParamsState({
-        name: 'page',
-        deserialize: (v) => (v ? v : "")
-    })
-
-    const [numberPerUploadUrlValue, setNumberPerUploadUrlValue] = useSearchParamsState({
-        name: 'limit',
-        deserialize: (v) => (v ? v : "")
-    })
 
     const sortItems = [
         { name: 'from new'},
@@ -78,26 +67,6 @@ const SentencesPage = () => {
         }
         // eslint-disable-next-line
     }, [id]);
-
-    useEffect(() => {
-        if (pageUrlValue !== '') {
-            dispatch(setPage(Number(pageUrlValue)))
-        } else {
-            dispatch(setPage(currentPage))
-            setPageUrlValue(currentPage)
-        }
-        // eslint-disable-next-line
-    }, [pageUrlValue]);
-
-    useEffect(() => {
-        if (numberPerUploadUrlValue !== '') {
-            setNumberPerUploadUrlValue(sentencesPerUpload)
-        } else {
-            dispatch(setSentencesPerUpload(sentencesPerUpload))
-            setNumberPerUploadUrlValue(sentencesPerUpload)
-        }
-        // eslint-disable-next-line
-    }, [numberPerUploadUrlValue]);
 
     useEffect(() => {
         const handleKeyPress = (event) => {
@@ -212,7 +181,6 @@ const SentencesPage = () => {
     }
 
     const switchToFirstPage = () => {
-        setPageUrlValue(1)
         dispatch(setPage(1))
     }
 
@@ -262,8 +230,6 @@ const SentencesPage = () => {
                 dispatchFunction={setSentencesPerUpload}
                 switchToFirstPage={switchToFirstPage}
                 items={sentences}
-                setPageUrlValue={setPageUrlValue}
-                setNumberPerUploadUrlValue={setNumberPerUploadUrlValue}
             />
             <AddSentenceModal 
                 width={600}

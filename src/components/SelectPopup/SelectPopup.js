@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import {  useDispatch } from 'react-redux';
 import './selectPopup.scss';
 
-const SelectPopup = ({items, active, textForSelectPopup, dispatchFunction, activeTypeChanged, switchToFirstPage, setNumberPerUploadUrlValue}) => {
+const SelectPopup = ({items, active, textForSelectPopup, dispatchFunction, activeTypeChanged, switchToFirstPage}) => {
     
     const [visiblePopup, setVisiblePopup] = useState(false);
     
@@ -29,8 +29,7 @@ const SelectPopup = ({items, active, textForSelectPopup, dispatchFunction, activ
             setVisiblePopup(false);
         } else {
             dispatch(dispatchFunction(name))
-            setNumberPerUploadUrlValue(name)
-            //switchToFirstPage()
+            switchToFirstPage()
             setVisiblePopup(false);
         }
     };
