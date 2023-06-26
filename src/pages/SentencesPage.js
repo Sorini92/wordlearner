@@ -229,6 +229,7 @@ const SentencesPage = () => {
                 textForCounters={"sentences"}
                 dispatchFunction={setSentencesPerUpload}
                 switchToFirstPage={switchToFirstPage}
+                loadingStatus={sentencesLoadingStatus}
                 items={sentences}
             />
             <AddSentenceModal 

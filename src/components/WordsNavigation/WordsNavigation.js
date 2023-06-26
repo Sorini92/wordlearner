@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import TableSetting from '../TableSetting/TableSetting';
 import "./wordsNavigation.scss";
 
-const WordsNavigation = ({showSetting, setIsShowDate, setIsShowTicks, setReverseWords, setIsBlured, isShowDate, isShowTicks, reverseWords, isBlured, address}) => {
+const WordsNavigation = ({showSetting, setIsShowDate, setIsShowTicks, setIsReverseWords, setIsBlured, isShowDate, isShowTicks, isReverseWords, isBlured, address}) => {
 
     const location = useLocation();
     const [active, setActive] = useState(0);
@@ -49,11 +49,11 @@ const WordsNavigation = ({showSetting, setIsShowDate, setIsShowTicks, setReverse
                     address={address}
                     setIsShowDate={setIsShowDate}
                     setIsShowTicks={setIsShowTicks}
-                    setReverseWords={setReverseWords}
+                    setIsReverseWords={setIsReverseWords}
                     setIsBlured={setIsBlured}
                     isShowDate={isShowDate}
                     isShowTicks={isShowTicks}
-                    reverseWords={reverseWords}
+                    isReverseWords={isReverseWords}
                     isBlured={isBlured}
                 /> : null
                 }

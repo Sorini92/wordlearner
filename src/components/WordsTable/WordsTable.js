@@ -4,7 +4,7 @@ import Spinner from '../Spinner/Spinner';
 import pencil from '../../resources/pencil.png';
 import './wordsTable.scss';
 
-const WordsTable = ({handleModifyModal, searchedWord, cuttedArrayOfWords, selectedLetter, setSelectedWord, selectedWords, selectedWord, setSelectedWords, onAddToFavorite, loadingStatus, isShowDate, isShowTicks, reverseWords, isBlured, items}) => {
+const WordsTable = ({handleModifyModal, searchedWord, cuttedArrayOfWords, selectedLetter, setSelectedWord, selectedWords, selectedWord, setSelectedWords, onAddToFavorite, loadingStatus, isShowDate, isShowTicks, isReverseWords, isBlured, items}) => {
 
     const [isChecked, setIsChecked] = useState(false);
     const [unbluredWord, setUnbluredWord] = useState('');
@@ -120,7 +120,7 @@ const WordsTable = ({handleModifyModal, searchedWord, cuttedArrayOfWords, select
                             null
                         }
                         <td className='wordsTable__word'>
-                            {reverseWords ? item.russian : item.english}
+                            {isReverseWords ? item.russian : item.english}
                         </td> 
                         <td className='wordsTable__translate'>
                             <div className='wordsTable__translate-inner'>
@@ -128,7 +128,7 @@ const WordsTable = ({handleModifyModal, searchedWord, cuttedArrayOfWords, select
                                     onClick={() => handleUnblur(item.id)} 
                                     className={isItemBlurred ? 'blur' : ''}
                                     >
-                                    {reverseWords ? item.english : item.russian}
+                                    {isReverseWords ? item.english : item.russian}
                                 </div> 
                                 <div onClick={() => handleModifyModal()} className='wordsTable__translate-inner-pencil'>
                                     <img src={pencil} alt='modify pencil'/>
@@ -156,7 +156,7 @@ const WordsTable = ({handleModifyModal, searchedWord, cuttedArrayOfWords, select
         return (
             <>
                 {items.length === 0 || (cuttedArrayOfWords.length === 0 && searchedWord.length > 0) || (cuttedArrayOfWords.length === 0 && selectedLetter.length > 0)? 
-                    <div className='emptyTable'>There are no words!</div> 
+                    !loadingStatus === "loading" ? <div className='emptyTable'>There are no words!</div> : null 
                     : 
                     <div className='wordsTable__wrapper'>
                         <table className='wordsTable'>
@@ -170,10 +170,10 @@ const WordsTable = ({handleModifyModal, searchedWord, cuttedArrayOfWords, select
                                         null
                                     }
                                     <th className='wordsTable__wordHeader'>
-                                        {reverseWords ? 'Russian words' : 'English words'}
+                                        {isReverseWords ? 'Russian words' : 'English words'}
                                     </th> 
                                     <th className='wordsTable__translateHeader'>
-                                        {reverseWords ? 'English words' : 'Russian words'}
+                                        {isReverseWords ? 'English words' : 'Russian words'}
                                     </th>
                                     {isShowDate ? 
                                         <th className='wordsTable__date'>

@@ -1,23 +1,26 @@
 import { useState, useRef, useEffect, Fragment } from 'react';
 import './tableSetting.scss';
 import settingImg from '../../resources/setting.png';
+import { useDispatch } from 'react-redux';
 
-const TableSetting = ({address, setIsShowDate, setIsShowTicks, setReverseWords, setIsBlured, isShowDate, isShowTicks, reverseWords, isBlured}) => {
+const TableSetting = ({address, setIsShowDate, setIsShowTicks, setIsReverseWords, setIsBlured, isShowDate, isShowTicks, isReverseWords, isBlured}) => {
     
     const [visiblePopup, setVisiblePopup] = useState(false);
     
     const selectRef = useRef();
 
+    const dispatch = useDispatch();
+
     const items = [
         {name: 'Show date', switcher: isShowDate, setFunc: setIsShowDate},
         {name: 'Multiple selection', switcher: isShowTicks, setFunc: setIsShowTicks},
-        {name: 'Reverse words', switcher: reverseWords, setFunc: setReverseWords},
+        {name: 'Reverse words', switcher: isReverseWords, setFunc: setIsReverseWords},
         {name: 'Blur right side', switcher: isBlured, setFunc: setIsBlured},
     ]
 
     const favoriteItems = [
         {name: 'Show date', switcher: isShowDate, setFunc: setIsShowDate},
-        {name: 'Reverse words', switcher: reverseWords, setFunc: setReverseWords},
+        {name: 'Reverse words', switcher: isReverseWords, setFunc: setIsReverseWords},
         {name: 'Blur right side', switcher: isBlured, setFunc: setIsBlured},
     ]
 
@@ -50,7 +53,7 @@ const TableSetting = ({address, setIsShowDate, setIsShowTicks, setReverseWords, 
                     <div className='tableSetting__name'>
                         {item.name}
                     </div>
-                    <div className="switcher" onClick={() => item.setFunc(!item.switcher)}>
+                    <div className="switcher" onClick={() => dispatch(item.setFunc())}>
                         <div className={item.switcher ? "switcher__true" : "switcher__false"}/>
                     </div>
                 </div> :

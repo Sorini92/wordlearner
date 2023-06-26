@@ -1,13 +1,13 @@
 import {useDispatch, useSelector} from 'react-redux';
 import {useEffect} from "react"; 
-import {modifyWord, deleteWord, setTotalPages, fetchFavorites, sortBy, activeSortTypeChanged, setWordsPerUpload, setPage, setLetter} from '../store/slices/favoritesSlice';
+import {modifyWord, deleteWord, setTotalPages, fetchFavorites, sortBy, activeSortTypeChanged, setWordsPerUpload, setPage, setLetter, setIsBlured, setIsShowDate, setIsReverseWords} from '../store/slices/favoritesSlice';
 import useAuth from '../hooks/use-auth';
 import WordsTable from '../components/WordsTable/WordsTable';
 import Page from './Page';
 
 const FavoritesPage = () => {
 
-    const {favorites, wordsLoadingStatus,  wordsPerUpload, sortType, currentPage, totalPages, letter} = useSelector(state => state.favorites);
+    const {favorites, wordsLoadingStatus,  wordsPerUpload, sortType, currentPage, totalPages, letter, isBlured, isShowDate, isReverseWords} = useSelector(state => state.favorites);
 
     const dispatch = useDispatch();
     const {isAuth, id} = useAuth();
@@ -31,12 +31,6 @@ const FavoritesPage = () => {
         firstUrl: 'users',
         secondUrl: id,
         thirdUrl: 'favoriteWords'
-    }
-
-    const tableSettings = {
-        date: 'favorites-date-column',
-        blur: 'favorites-isBluredWords',
-        reverse: 'favorites-isReverseWords'
     }
     
     useEffect(() => {
@@ -66,9 +60,14 @@ const FavoritesPage = () => {
                 setTotalPages={setTotalPages}
                 TableComponent={WordsTable}
                 items={favorites}
-                tableSettings={tableSettings}
                 letter={letter}
                 setLetter={setLetter}
+                isBlured={isBlured}
+                isShowDate={isShowDate}
+                isReverseWords={isReverseWords} 
+                setIsBlured={setIsBlured}
+                setIsShowDate={setIsShowDate}
+                setIsReverseWords={setIsReverseWords}
             />
         </>
     ) : null

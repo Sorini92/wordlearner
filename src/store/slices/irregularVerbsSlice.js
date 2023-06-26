@@ -8,7 +8,8 @@ const initialState = {
     wordsLoadingStatus: 'loading',
     currentPage: 1,
     totalPages: 1,
-    wordsPerUpload: 30
+    wordsPerUpload: 30,
+    isBlured: false
 }
 
 export const fetchIrregularVerbs = createAsyncThunk(
@@ -37,6 +38,9 @@ const irregularVerbsSlice = createSlice({
         },
         setWordsPerUpload: (state, action) => {
             state.wordsPerUpload = action.payload;
+        },
+        setIsBlured: (state) => {
+            state.isBlured = !state.isBlured;
         },
         activeSortTypeChanged: (state, action) => {state.sortType = action.payload},
         sortBy: (state, action) => {
@@ -124,6 +128,7 @@ export const {
     setPage,
     setLetter,
     setWordsPerUpload,
+    setIsBlured,
     setTotalPages,
     activeSortTypeChanged,
     sortBy

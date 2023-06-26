@@ -131,7 +131,7 @@ const SentencesTable = ({words, items, loadingStatus, setSelectedSentence, cutte
         return (
             <>
                 {items.length === 0 || (cuttedArrayOfSentences.length === 0 && searchedSentences.length > 0)? 
-                    <div className='emptyTable'>There are no sentences!</div> 
+                    !loadingStatus === "loading" ? <div className='emptyTable'>There are no sentences!</div> : null
                     : 
                     <div className='sentenceTable'>
                         <TransitionGroup component="div" className='sentenceTable__wrapper'>
@@ -142,7 +142,7 @@ const SentencesTable = ({words, items, loadingStatus, setSelectedSentence, cutte
             </>
         )
     }
-
+    
     return (
         <>
             {loadingStatus === "loading" ? 

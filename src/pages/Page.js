@@ -13,9 +13,8 @@ import WordsNavigation from '../components/WordsNavigation/WordsNavigation';
 import Footer from '../components/Footer/Footer';
 import SortAndActions from '../components/SortAndActions/SortAndActions';
 import useFilteredArray from '../hooks/useFilteredArray';
-import useLocalStorage from '../hooks/useLocalStorage';
 
-const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTypeChanged, setNumberPerUpload, numberPerUpload, currentPage, totalPages, setPage, numberOfItemsPerPage, address, wordsLoadingStatus, deleteItem, deleteItems, add, modify, setTotalPages, items, tableSettings, letter, setLetter}) => {
+const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTypeChanged, setNumberPerUpload, numberPerUpload, currentPage, totalPages, setPage, numberOfItemsPerPage, address, wordsLoadingStatus, deleteItem, deleteItems, add, modify, setTotalPages, items, tableSettings, letter, setLetter, isBlured, isShowDate, isReverseWords, isShowTicks, setIsBlured, setIsShowDate, setIsReverseWords, setIsShowTicks}) => {
     
     const [addModalActive, setAddModalActive] = useState(false);
     const [modifyModalActive, setModifyModalActive] = useState(false);
@@ -32,11 +31,6 @@ const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTy
 	const [offset, setOffset] = useState(30);
 
     const {filtered, filteredLength} = useFilteredArray(items, letter, searchedWord)
-    
-    const [isShowDate, setIsShowDate] = useLocalStorage(tableSettings?.date, false);
-    const [isShowTicks, setIsShowTicks] = useLocalStorage(tableSettings?.ticks, false); 
-    const [isBlured, setIsBlured] = useLocalStorage(tableSettings?.blur, false); 
-    const [reverseWords, setReverseWords] = useLocalStorage(tableSettings?.reverse, false);  
     
     const dispatch = useDispatch();
 
@@ -252,11 +246,11 @@ const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTy
                 showSetting={true}
                 setIsShowDate={setIsShowDate}
                 setIsShowTicks={setIsShowTicks}
-                setReverseWords={setReverseWords}
+                setIsReverseWords={setIsReverseWords}
                 setIsBlured={setIsBlured}
                 isShowDate={isShowDate}
                 isShowTicks={isShowTicks}
-                reverseWords={reverseWords}
+                isReverseWords={isReverseWords}
                 isBlured={isBlured}
                 address={address}
             />
@@ -294,7 +288,7 @@ const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTy
                 isShowDate={isShowDate}
                 isBlured={isBlured}
                 isShowTicks={isShowTicks}
-                reverseWords={reverseWords}
+                isReverseWords={isReverseWords}
                 items={items}
             />
             <Footer
@@ -310,6 +304,7 @@ const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTy
                 textForCounters={"words"}
                 dispatchFunction={setNumberPerUpload}
                 switchToFirstPage={switchToFirstPage}
+                loadingStatus={wordsLoadingStatus}
                 items={items}
             />
             <AddWordModal 

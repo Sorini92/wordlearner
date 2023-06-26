@@ -80,7 +80,7 @@ const IrregularVerbsTable = ({searchedWord, cuttedArrayOfWords, selectedLetter, 
         return (
             <>
                 {verbs.length === 0 || (cuttedArrayOfWords.length === 0 && searchedWord.length > 0) || (cuttedArrayOfWords.length === 0 && selectedLetter.length > 0)? 
-                    <div className='emptyTable'>There are no words!</div> 
+                    !wordsLoadingStatus === "loading" ? <div className='emptyTable'>There are no words!</div> : null 
                     : 
                     <div className='irregularVerbsTable__wrapper'>
                         <table className='irregularVerbsTable'>

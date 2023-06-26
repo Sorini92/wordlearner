@@ -1,13 +1,13 @@
 import {useDispatch, useSelector} from 'react-redux';
 import {useEffect} from "react";
-import {deleteWord, deleteWords, addWord, modifyWord, setTotalPages, fetchWords, sortBy, activeSortTypeChanged, setWordsPerUpload, setPage, setLetter} from '../store/slices/wordSlice';
+import {deleteWord, deleteWords, addWord, modifyWord, setTotalPages, fetchWords, sortBy, activeSortTypeChanged, setWordsPerUpload, setPage, setLetter, setIsBlured, setIsShowDate, setIsReverseWords, setIsShowTicks} from '../store/slices/wordSlice';
 import useAuth from '../hooks/use-auth';
 import WordsTable from "../components/WordsTable/WordsTable";
 import Page from './Page';
 
 const WordsPage = () => {
 
-    const {wordsLoadingStatus, words, wordsPerUpload, sortType, currentPage, totalPages, letter} = useSelector(state => state.words);
+    const {wordsLoadingStatus, words, wordsPerUpload, sortType, currentPage, totalPages, letter, isBlured, isShowDate, isReverseWords, isShowTicks} = useSelector(state => state.words);
 
     const dispatch = useDispatch();
     const {isAuth, id} = useAuth();
@@ -31,13 +31,6 @@ const WordsPage = () => {
         firstUrl: 'users',
         secondUrl: id,
         thirdUrl: 'words'
-    }
-
-    const tableSettings = {
-        date: 'words-date-column',
-        ticks: 'words-ticks-column',
-        blur: 'words-isBluredWords',
-        reverse: 'words-isReverseWords'
     }
 
     useEffect(() => {
@@ -69,9 +62,16 @@ const WordsPage = () => {
                 setTotalPages={setTotalPages}
                 TableComponent={WordsTable}
                 items={words}
-                tableSettings={tableSettings}
                 letter={letter}
                 setLetter={setLetter}
+                isBlured={isBlured}
+                isShowDate={isShowDate}
+                isReverseWords={isReverseWords} 
+                isShowTicks={isShowTicks}
+                setIsBlured={setIsBlured}
+                setIsShowDate={setIsShowDate}
+                setIsReverseWords={setIsReverseWords}
+                setIsShowTicks={setIsShowTicks}
             />
         </>
     ) : null

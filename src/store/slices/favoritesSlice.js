@@ -8,7 +8,10 @@ const initialState = {
     wordsLoadingStatus: 'loading',
     currentPage: 1,
     totalPages: 1,
-    wordsPerUpload: 30
+    wordsPerUpload: 30,
+    isBlured: false,
+    isShowDate: false,
+    isReverseWords: false,
 }
 
 export const fetchFavorites = createAsyncThunk(
@@ -53,6 +56,15 @@ const favoritesSlice = createSlice({
         },
         setWordsPerUpload: (state, action) => {
             state.wordsPerUpload = action.payload;
+        },
+        setIsBlured: (state) => {
+            state.isBlured = !state.isBlured;
+        },
+        setIsShowDate: (state) => {
+            state.isShowDate = !state.isShowDate;
+        },
+        setIsReverseWords: (state) => {
+            state.isReverseWords = !state.isReverseWords;
         },
         activeSortTypeChanged: (state, action) => {state.sortType = action.payload},
         sortBy: (state, action) => {
@@ -140,6 +152,9 @@ export const {
     setPage,
     setLetter,
     setWordsPerUpload,
+    setIsBlured,
+    setIsShowDate,
+    setIsReverseWords,
     setTotalPages,
     activeSortTypeChanged,
     sortBy

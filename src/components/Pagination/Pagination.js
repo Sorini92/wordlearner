@@ -2,7 +2,7 @@ import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import './pagination.scss';
 
-const Pagination = ({items, cuttedArray, filteredArrayLength, numberPerUpload, currentPage, totalPages, setPage}) => {
+const Pagination = ({items, cuttedArray, loadingStatus, filteredArrayLength, numberPerUpload, currentPage, totalPages, setPage}) => {
 
     const [arrOfCurrPages, setArrOfCurrPages] = useState([])
 
@@ -124,9 +124,15 @@ const Pagination = ({items, cuttedArray, filteredArrayLength, numberPerUpload, c
     }
 
     return (
-        <div className='pagination'>
-            {(items.length <= numberPerUpload || cuttedArray.length < numberPerUpload || cuttedArray.length === filteredArrayLength) && (currentPage === 1 && totalPages < 2) ? null : elements()}
-        </div>
+        <>
+            {loadingStatus === "loading" ? 
+            null
+            :
+            <div className='pagination'>
+                {(items.length <= numberPerUpload || cuttedArray.length < numberPerUpload || cuttedArray.length === filteredArrayLength) && (currentPage === 1 && totalPages < 2) ? null : elements()}
+            </div>
+        }
+        </>        
     )
 }
 
