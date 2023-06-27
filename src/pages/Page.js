@@ -1,5 +1,6 @@
 import {useState, useEffect} from "react";
 import {useDispatch} from 'react-redux';
+import PropTypes from 'prop-types';
 import database from "../firebase";
 import {deleteDoc, collection, doc, setDoc} from "firebase/firestore"; 
 import Navigation from "../components/Navigation/Navigation";
@@ -14,7 +15,36 @@ import Footer from '../components/Footer/Footer';
 import SortAndActions from '../components/SortAndActions/SortAndActions';
 import useFilteredArray from '../hooks/useFilteredArray';
 
-const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTypeChanged, setNumberPerUpload, numberPerUpload, currentPage, totalPages, setPage, numberOfItemsPerPage, address, wordsLoadingStatus, deleteItem, deleteItems, add, modify, setTotalPages, items, tableSettings, letter, setLetter, isBlured, isShowDate, isReverseWords, isShowTicks, setIsBlured, setIsShowDate, setIsReverseWords, setIsShowTicks}) => {
+const Page = ({
+    TableComponent, 
+    sortItems, 
+    sortType, 
+    sortByFunction, 
+    activeSortTypeChanged, 
+    setNumberPerUpload, 
+    numberPerUpload, 
+    currentPage, 
+    totalPages, 
+    setPage, 
+    numberOfItemsPerPage, 
+    address, 
+    wordsLoadingStatus, 
+    deleteItem, 
+    deleteItems, 
+    add, 
+    modify, 
+    setTotalPages, 
+    items,  
+    letter, 
+    setLetter, 
+    isBlured, 
+    isShowDate, 
+    isReverseWords,
+    isShowTicks, 
+    setIsBlured, 
+    setIsShowDate, 
+    setIsReverseWords, 
+    setIsShowTicks}) => {
     
     const [addModalActive, setAddModalActive] = useState(false);
     const [modifyModalActive, setModifyModalActive] = useState(false);
@@ -347,6 +377,38 @@ const Page = ({TableComponent, sortItems, sortType, sortByFunction, activeSortTy
             <ArrowScrollUp/>
         </>
     )
+}
+
+Page.propTypes = {
+    TableComponent: PropTypes.func.isRequired, 
+    sortItems: PropTypes.array.isRequired, 
+    sortType: PropTypes.string.isRequired, 
+    sortByFunction: PropTypes.func.isRequired, 
+    activeSortTypeChanged: PropTypes.func.isRequired, 
+    setNumberPerUpload: PropTypes.func.isRequired, 
+    numberPerUpload: PropTypes.number.isRequired, 
+    currentPage: PropTypes.number.isRequired, 
+    totalPages: PropTypes.number.isRequired, 
+    setPage: PropTypes.func.isRequired, 
+    numberOfItemsPerPage: PropTypes.array.isRequired, 
+    address: PropTypes.object.isRequired, 
+    wordsLoadingStatus: PropTypes.string.isRequired, 
+    deleteItem: PropTypes.func, 
+    deleteItems: PropTypes.func, 
+    add: PropTypes.func, 
+    modify: PropTypes.func, 
+    setTotalPages: PropTypes.func.isRequired, 
+    items: PropTypes.array.isRequired,  
+    letter: PropTypes.string.isRequired, 
+    setLetter: PropTypes.func.isRequired, 
+    isBlured: PropTypes.bool, 
+    isShowDate: PropTypes.bool, 
+    isReverseWords: PropTypes.bool,
+    isShowTicks: PropTypes.bool, 
+    setIsBlured: PropTypes.func, 
+    setIsShowDate: PropTypes.func, 
+    setIsReverseWords: PropTypes.func, 
+    setIsShowTicks: PropTypes.func,
 }
 
 export default Page;

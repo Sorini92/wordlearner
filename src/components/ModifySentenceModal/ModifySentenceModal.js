@@ -2,6 +2,7 @@ import database from "../../firebase";
 import { setDoc, collection, doc } from "firebase/firestore"; 
 import { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
+import PropTypes from 'prop-types';
 import makeSentence from "../../utils/makeSentense";
 import compareArrays from "../../utils/compareArrays";
 import './modifySentenceModal.scss';
@@ -106,6 +107,20 @@ const ModifySentenceModal = ({width, height, maxLength, active, setActive, addre
             </div>
         </div>
     )
+}
+
+ModifySentenceModal.propTypes = {
+    width:  PropTypes.number.isRequired,
+    height:  PropTypes.number.isRequired,
+    maxLength:  PropTypes.number.isRequired,
+    active:  PropTypes.bool.isRequired,
+    setActive:  PropTypes.func.isRequired, 
+    address:  PropTypes.object.isRequired, 
+    func:  PropTypes.func,
+    items:  PropTypes.array.isRequired, 
+    setMessage:  PropTypes.func.isRequired, 
+    setShowMessage:  PropTypes.func.isRequired,
+    selected: PropTypes.object.isRequired
 }
 
 export default ModifySentenceModal;

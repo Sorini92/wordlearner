@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import {  useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
 import './selectPopup.scss';
 
 const SelectPopup = ({items, active, textForSelectPopup, dispatchFunction, activeTypeChanged, switchToFirstPage}) => {
@@ -80,6 +81,15 @@ const SelectPopup = ({items, active, textForSelectPopup, dispatchFunction, activ
             )}
         </div>
     )
+}
+
+SelectPopup.propTypes = {   
+    switchToFirstPage:  PropTypes.func, 
+    activeTypeChanged: PropTypes.func, 
+    dispatchFunction:  PropTypes.func.isRequired, 
+    textForSelectPopup:  PropTypes.string.isRequired, 
+    active:  PropTypes.any.isRequired,
+    items:  PropTypes.array.isRequired
 }
 
 export default SelectPopup;

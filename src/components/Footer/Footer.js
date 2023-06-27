@@ -1,5 +1,6 @@
 import Pagination from '../Pagination/Pagination';
 import SelectPopup from "../SelectPopup/SelectPopup";
+import PropTypes from 'prop-types';
 import './footer.scss';
 
 const Footer = ({textForCounters, cuttedArray, filteredArrayLength, loadingStatus, numberPerUpload, currentPage, totalPages, setPage, numberOfItemsPerPage, active, textForSelectPopup, dispatchFunction, items, switchToFirstPage}) => {
@@ -29,6 +30,23 @@ const Footer = ({textForCounters, cuttedArray, filteredArrayLength, loadingStatu
             /> : null}
         </div>
     )
+}
+
+Footer.propTypes = {
+    textForCounters:  PropTypes.string.isRequired,
+    cuttedArray:  PropTypes.array.isRequired,
+    filteredArrayLength:  PropTypes.number.isRequired,
+    loadingStatus:  PropTypes.string.isRequired,
+    numberPerUpload:  PropTypes.number.isRequired, 
+    switchToFirstPage:  PropTypes.func.isRequired, 
+    currentPage:  PropTypes.number.isRequired,
+    totalPages:  PropTypes.number.isRequired, 
+    setPage:  PropTypes.func.isRequired, 
+    numberOfItemsPerPage:  PropTypes.array.isRequired,
+    active:  PropTypes.any.isRequired,
+    textForSelectPopup:  PropTypes.string.isRequired, 
+    dispatchFunction:  PropTypes.func.isRequired, 
+    items:  PropTypes.array.isRequired
 }
 
 export default Footer;

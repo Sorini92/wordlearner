@@ -1,5 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import './pagination.scss';
 
 const Pagination = ({items, cuttedArray, loadingStatus, filteredArrayLength, numberPerUpload, currentPage, totalPages, setPage}) => {
@@ -134,6 +135,17 @@ const Pagination = ({items, cuttedArray, loadingStatus, filteredArrayLength, num
         }
         </>        
     )
+}
+
+Pagination.propTypes = {   
+    setPage:  PropTypes.func.isRequired, 
+    totalPages:  PropTypes.number.isRequired, 
+    currentPage:  PropTypes.number.isRequired,
+    numberPerUpload:  PropTypes.number.isRequired, 
+    filteredArrayLength:  PropTypes.number.isRequired,
+    loadingStatus:  PropTypes.string.isRequired,
+    cuttedArray:  PropTypes.array.isRequired,
+    items:  PropTypes.array.isRequired
 }
 
 export default Pagination;

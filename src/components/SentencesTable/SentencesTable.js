@@ -1,5 +1,6 @@
 import {Fragment, useEffect, useState} from 'react';
 import {CSSTransition, TransitionGroup} from 'react-transition-group';
+import PropTypes from 'prop-types';
 import Spinner from '../Spinner/Spinner';
 import pencil from '../../resources/pencil.png';
 import TranslationPopup from '../TranslationPopup/TranslationPopup';
@@ -161,6 +162,20 @@ const SentencesTable = ({words, items, loadingStatus, setSelectedSentence, cutte
             />}
         </>
     )
+}
+
+SentencesTable.propTypes = {
+    words:  PropTypes.array.isRequired,
+    items:  PropTypes.array.isRequired,
+    loadingStatus:  PropTypes.string.isRequired,
+    setSelectedSentence:  PropTypes.func.isRequired,
+    cuttedArrayOfSentences:  PropTypes.array.isRequired, 
+    searchedSentences:  PropTypes.array.isRequired, 
+    handleModifyModal:  PropTypes.func.isRequired,
+    onDeleteSentence:  PropTypes.func.isRequired, 
+    handleAddWordModal:  PropTypes.func.isRequired, 
+    selectedWord:  PropTypes.string.isRequired,
+    setSelectedWord:  PropTypes.func.isRequired,
 }
 
 export default SentencesTable;

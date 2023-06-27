@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { CSSTransition, TransitionGroup} from 'react-transition-group';
+import PropTypes from 'prop-types';
 import Spinner from '../Spinner/Spinner';
 import './irregularVerbsTable.scss';
 
@@ -23,7 +24,7 @@ const IrregularVerbsTable = ({searchedWord, cuttedArrayOfWords, selectedLetter, 
         }, 2000);
 
     }
-    
+
     useEffect(() => () => clearTimeout(timerRef.current), [])
     
     const handleClick = (word) => {
@@ -119,6 +120,13 @@ const IrregularVerbsTable = ({searchedWord, cuttedArrayOfWords, selectedLetter, 
             }
         </>
     )
+}
+
+IrregularVerbsTable.propTypes = {
+    searchedWord:  PropTypes.array.isRequired,
+    cuttedArrayOfWords:  PropTypes.array.isRequired,
+    selectedLetter:  PropTypes.string.isRequired,
+    isBlured:  PropTypes.bool.isRequired,
 }
 
 export default IrregularVerbsTable;

@@ -1,10 +1,11 @@
 import { useEffect, useState, Fragment, useRef } from 'react';
+import PropTypes from 'prop-types';
 import rightArrow from '../../resources/rightarrow.png';
 import leftArrow from '../../resources/leftarrow.png';
 import './flashCards.scss';
 import Spinner from '../Spinner/Spinner';
 
-const FleshCards = ({setActive, setVariant, items, loadingStatus}) => {
+const FlashCards = ({setActive, setVariant, items, loadingStatus}) => {
 
     const [isFlipped, setIsFlipped] = useState(false);
     const [isReversedCard, setIsReversedCard] = useState(false);
@@ -105,4 +106,11 @@ const FleshCards = ({setActive, setVariant, items, loadingStatus}) => {
     )
 }
 
-export default FleshCards;
+FlashCards.propTypes = {
+    setActive:  PropTypes.func.isRequired,
+    setVariant:  PropTypes.func.isRequired,
+    items:  PropTypes.array.isRequired,
+    loadingStatus:  PropTypes.string.isRequired,
+}
+
+export default FlashCards;

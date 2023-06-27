@@ -1,9 +1,10 @@
 import database from "../../firebase";
 import { setDoc, collection, doc } from "firebase/firestore"; 
 import { v4 as uuidv4 } from 'uuid';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch } from "react-redux";
 import compareArrays from '../../utils/compareArrays';
+import PropTypes from 'prop-types';
 import './addSentenceModal.scss';
 
 const AddSentenceModal = ({width, height, maxLength, active, setActive, address, func, items, setMessage, setShowMessage}) => {
@@ -106,6 +107,19 @@ const AddSentenceModal = ({width, height, maxLength, active, setActive, address,
             </div>
         </>        
     )
+}
+
+AddSentenceModal.propTypes = {
+    width:  PropTypes.number.isRequired,
+    height:  PropTypes.number.isRequired,
+    maxLength:  PropTypes.number.isRequired,
+    active:  PropTypes.bool.isRequired,
+    setActive:  PropTypes.func.isRequired, 
+    address:  PropTypes.object.isRequired, 
+    func:  PropTypes.func,
+    items:  PropTypes.array.isRequired, 
+    setMessage:  PropTypes.func.isRequired, 
+    setShowMessage:  PropTypes.func.isRequired
 }
 
 export default AddSentenceModal;

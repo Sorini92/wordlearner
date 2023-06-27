@@ -1,5 +1,6 @@
 import { Fragment, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
 import './alphabetFilter.scss';
 
 const AlpabetFilter = ({setLetter, setOffset, wordsPerUpload, onClearLetter, switchToFirstPage}) => {
@@ -53,6 +54,14 @@ const AlpabetFilter = ({setLetter, setOffset, wordsPerUpload, onClearLetter, swi
             <div className='alphabet__all' onClick={() => handleClearLetter()}>all words</div>
         </div>
     )
+}
+
+AlpabetFilter.propTypes = {
+    setLetter:  PropTypes.func.isRequired,
+    setOffset:  PropTypes.func.isRequired,
+    wordsPerUpload:  PropTypes.number.isRequired,
+    onClearLetter:  PropTypes.func.isRequired,
+    switchToFirstPage:  PropTypes.func.isRequired, 
 }
 
 export default AlpabetFilter;

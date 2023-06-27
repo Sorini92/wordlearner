@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect, Fragment } from 'react';
-import './tableSetting.scss';
-import settingImg from '../../resources/setting.png';
 import { useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
+import settingImg from '../../resources/setting.png';
+import './tableSetting.scss';
 
 const TableSetting = ({address, setIsShowDate, setIsShowTicks, setIsReverseWords, setIsBlured, isShowDate, isShowTicks, isReverseWords, isBlured}) => {
     
@@ -81,6 +82,18 @@ const TableSetting = ({address, setIsShowDate, setIsShowTicks, setIsReverseWords
             </div> 
         </>
     )
+}
+
+TableSetting.propTypes = {
+    address:  PropTypes.object.isRequired,
+    setIsShowDate:  PropTypes.func,
+    setIsShowTicks:  PropTypes.func,
+    setIsReverseWords:  PropTypes.func,
+    setIsBlured:  PropTypes.func, 
+    isReverseWords:  PropTypes.bool, 
+    isShowDate:  PropTypes.bool,
+    isShowTicks:  PropTypes.bool, 
+    isBlured:  PropTypes.bool, 
 }
 
 export default TableSetting;

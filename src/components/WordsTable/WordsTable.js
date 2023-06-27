@@ -1,10 +1,26 @@
 import { useEffect, useRef, useState } from 'react';
 import { CSSTransition, TransitionGroup} from 'react-transition-group';
+import PropTypes from 'prop-types';
 import Spinner from '../Spinner/Spinner';
 import pencil from '../../resources/pencil.png';
 import './wordsTable.scss';
 
-const WordsTable = ({handleModifyModal, searchedWord, cuttedArrayOfWords, selectedLetter, setSelectedWord, selectedWords, selectedWord, setSelectedWords, onAddToFavorite, loadingStatus, isShowDate, isShowTicks, isReverseWords, isBlured, items}) => {
+const WordsTable = ({
+    handleModifyModal, 
+    searchedWord, 
+    cuttedArrayOfWords, 
+    selectedLetter, 
+    setSelectedWord, 
+    selectedWords, 
+    selectedWord, 
+    setSelectedWords, 
+    onAddToFavorite, 
+    loadingStatus, 
+    isShowDate, 
+    isShowTicks, 
+    isReverseWords, 
+    isBlured, 
+    items}) => {
 
     const [isChecked, setIsChecked] = useState(false);
     const [unbluredWord, setUnbluredWord] = useState('');
@@ -203,6 +219,24 @@ const WordsTable = ({handleModifyModal, searchedWord, cuttedArrayOfWords, select
             }
         </>
     )
+}
+
+WordsTable.propTypes = {
+    handleModifyModal: PropTypes.func.isRequired, 
+    searchedWord: PropTypes.array.isRequired, 
+    cuttedArrayOfWords: PropTypes.array.isRequired, 
+    selectedLetter: PropTypes.string.isRequired, 
+    setSelectedWord: PropTypes.func.isRequired, 
+    selectedWords: PropTypes.array.isRequired, 
+    selectedWord: PropTypes.object.isRequired, 
+    setSelectedWords: PropTypes.func.isRequired, 
+    onAddToFavorite: PropTypes.func.isRequired, 
+    loadingStatus: PropTypes.string.isRequired, 
+    isShowDate: PropTypes.bool, 
+    isShowTicks: PropTypes.bool, 
+    isReverseWords: PropTypes.bool, 
+    isBlured: PropTypes.bool, 
+    items: PropTypes.array.isRequired,
 }
 
 export default WordsTable;

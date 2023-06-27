@@ -1,9 +1,10 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
+import PropTypes from 'prop-types';
 import scope from '../../resources/scope.svg';
 import "./navigation.scss";
 
-const Navigation = ({setSearched, setOffset, numberPerUpload, setFilteredArrayLength, currentPage}) => {
+const Navigation = ({setSearched, setOffset, numberPerUpload, setFilteredArrayLength}) => {
 
     const [text, setText] = useState('');
     const [active, setActive] = useState(0);
@@ -80,6 +81,13 @@ const Navigation = ({setSearched, setOffset, numberPerUpload, setFilteredArrayLe
             </div>
         </>
     )
+}
+
+Navigation.propTypes = {
+    setSearched:  PropTypes.func.isRequired,
+    setOffset:  PropTypes.func.isRequired,
+    numberPerUpload:  PropTypes.number.isRequired,
+    setFilteredArrayLength:  PropTypes.func
 }
 
 export default Navigation;

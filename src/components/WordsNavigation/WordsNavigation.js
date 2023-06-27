@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
+import PropTypes from 'prop-types';
 import TableSetting from '../TableSetting/TableSetting';
 import "./wordsNavigation.scss";
 
@@ -59,7 +60,20 @@ const WordsNavigation = ({showSetting, setIsShowDate, setIsShowTicks, setIsRever
                 }
             </div>
         </>
-    )
+    )   
+}
+
+WordsNavigation.propTypes = {
+    showSetting:  PropTypes.bool.isRequired, 
+    address:  PropTypes.object.isRequired,
+    setIsShowDate:  PropTypes.func,
+    setIsShowTicks:  PropTypes.func,
+    setIsReverseWords:  PropTypes.func,
+    setIsBlured:  PropTypes.func, 
+    isReverseWords:  PropTypes.bool, 
+    isShowDate:  PropTypes.bool,
+    isShowTicks:  PropTypes.bool, 
+    isBlured:  PropTypes.bool, 
 }
 
 export default WordsNavigation;

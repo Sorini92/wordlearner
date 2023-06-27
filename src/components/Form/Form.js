@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import PropTypes from 'prop-types';
 import './form.scss';
 
-const Form = ({link, type, title, handleClick, to, text}) => {
+const Form = ({type, title, handleClick, to, text}) => {
 
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
@@ -26,7 +27,6 @@ const Form = ({link, type, title, handleClick, to, text}) => {
                 placeholder="password"
             />
             <div className="form__bottom">
-                <Link to={`/${link}`}>{link}</Link>
                 <button
                     className="form__btn"
                     onClick={() => handleClick(email, pass)}
@@ -39,6 +39,14 @@ const Form = ({link, type, title, handleClick, to, text}) => {
             </p>
         </div>
     )
+}
+
+Form.propTypes = {
+    type:  PropTypes.string.isRequired,
+    title:  PropTypes.string.isRequired,
+    handleClick:  PropTypes.func.isRequired,
+    to:  PropTypes.string.isRequired, 
+    text:  PropTypes.string.isRequired, 
 }
 
 export default Form;

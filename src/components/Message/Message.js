@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import './message.scss';
 
 const Message = ({showMessage, message, setShowMessage, color}) => {
@@ -22,8 +23,14 @@ const Message = ({showMessage, message, setShowMessage, color}) => {
                 {message}
             </div>
         </div>
-    )
-        
+    )       
+}
+
+Message.propTypes = {
+    showMessage:  PropTypes.bool.isRequired,
+    message:  PropTypes.string,
+    setShowMessage:  PropTypes.func.isRequired,
+    color:  PropTypes.string,
 }
 
 export default Message;

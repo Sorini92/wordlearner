@@ -3,6 +3,7 @@ import { setDoc, collection, doc } from "firebase/firestore";
 import { v4 as uuidv4 } from 'uuid';
 import { useState, useEffect } from 'react';
 import { useDispatch } from "react-redux";
+import PropTypes from 'prop-types';
 import './addWordModal.scss';
 
 const AddWordModal = ({width, height, maxLength, active, setActive, address, func, items, setMessage, setShowMessage, selectedWord}) => {
@@ -115,6 +116,20 @@ const AddWordModal = ({width, height, maxLength, active, setActive, address, fun
             </div>
         </>        
     )
+}
+
+AddWordModal.propTypes = {
+    width:  PropTypes.number.isRequired,
+    height:  PropTypes.number.isRequired,
+    maxLength:  PropTypes.number.isRequired,
+    active:  PropTypes.bool.isRequired,
+    setActive:  PropTypes.func.isRequired, 
+    address:  PropTypes.object.isRequired, 
+    func:  PropTypes.func,
+    items:  PropTypes.array.isRequired, 
+    setMessage:  PropTypes.func.isRequired, 
+    setShowMessage:  PropTypes.func.isRequired,
+    selectedWord: PropTypes.string
 }
 
 export default AddWordModal;

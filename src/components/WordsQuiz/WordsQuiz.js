@@ -1,4 +1,5 @@
 import { useEffect, useState, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import './wordsQuiz.scss';
 import Spinner from '../Spinner/Spinner';
 
@@ -145,6 +146,13 @@ const WordsQuiz = ({setVariant, setActive, items, loadingStatus}) => {
             </div>
         </div>
     )
+}
+
+WordsQuiz.propTypes = {
+    setVariant:  PropTypes.func.isRequired,
+    setActive:  PropTypes.func.isRequired,
+    items:  PropTypes.array.isRequired,
+    loadingStatus:  PropTypes.string.isRequired,
 }
 
 export default WordsQuiz;

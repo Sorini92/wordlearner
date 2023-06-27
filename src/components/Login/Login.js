@@ -25,7 +25,7 @@ const Login = () => {
 
     return (
         <div className='firstpage'>
-            <Form text={'or'} to={'register'} type='Login' title="sign in" handleClick={handleLogin}/>
+            <Form text='or' to='register' type='Login' title='sign in' handleClick={handleLogin}/>
         </div>
     )
 }

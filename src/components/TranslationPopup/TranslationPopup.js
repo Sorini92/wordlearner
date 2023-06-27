@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import SmallSpinner from '../SmallSpinner/SmallSpinner';
 import './translationPopup.scss';
 
@@ -44,6 +45,15 @@ const TranslationPopup = ({translation, position, setVisiblePopup, visiblePopup,
             <div className='translationPopup__arrow'></div>
         </div>
     )
+}
+
+TranslationPopup.propTypes = {
+    translation:  PropTypes.array.isRequired,
+    position:  PropTypes.object.isRequired,
+    setVisiblePopup:  PropTypes.func.isRequired,
+    visiblePopup:  PropTypes.bool.isRequired,
+    isTranslationComplete:  PropTypes.bool.isRequired, 
+    handleAddWordModal:  PropTypes.func.isRequired, 
 }
 
 export default TranslationPopup;

@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import FleshCards from '../FlashCards/FlashCards';
+import PropTypes from 'prop-types';
+import FlashCards from '../FlashCards/FlashCards';
 import WordsQuiz from '../WordsQuiz/WordsQuiz';
 import cards from '../../resources/cards.jpg';
 import quiz from '../../resources/quiz.png';
@@ -65,11 +66,18 @@ const QuizModal = ({setActive, active, items, loadingStatus}) => {
                 >
                     {variant === '' ? mainForm : null}
                     {variant === 0 ? <WordsQuiz items={items} loadingStatus={loadingStatus} setVariant={setVariant} setActive={setActive}/> : null}
-                    {variant === 1 ? <FleshCards items={items} loadingStatus={loadingStatus} setVariant={setVariant} setActive={setActive}/> : null}
+                    {variant === 1 ? <FlashCards items={items} loadingStatus={loadingStatus} setVariant={setVariant} setActive={setActive}/> : null}
                 </div>
             </div>
         </>        
     )
+}
+
+QuizModal.propTypes = {
+    setActive:  PropTypes.func.isRequired,
+    active:  PropTypes.bool.isRequired,
+    items:  PropTypes.array.isRequired,
+    loadingStatus:  PropTypes.string.isRequired
 }
 
 export default QuizModal;

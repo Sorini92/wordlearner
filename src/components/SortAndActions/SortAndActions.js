@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import SelectPopup from "../SelectPopup/SelectPopup";
 import Modification from "../Modification/Modification";
 import './sortAndActions.scss';
@@ -32,6 +33,20 @@ const SortAndActions = ({address, items, handleAddModal, onDelete, filteredArray
             }
         </div>
     )
+}
+
+SortAndActions.propTypes = {
+    address:  PropTypes.object.isRequired,
+    items:  PropTypes.array.isRequired,
+    handleAddModal:  PropTypes.func.isRequired,
+    onDelete:  PropTypes.func,
+    filteredArrayLength:  PropTypes.number.isRequired, 
+    sortItems:  PropTypes.array.isRequired, 
+    active:  PropTypes.string.isRequired,
+    textForSelectPopup:  PropTypes.string.isRequired, 
+    dispatchFunction:  PropTypes.func.isRequired, 
+    activeTypeChanged:  PropTypes.func.isRequired,
+    handleQuizModal:  PropTypes.func,
 }
 
 export default SortAndActions;
