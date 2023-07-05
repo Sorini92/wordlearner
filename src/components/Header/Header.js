@@ -31,13 +31,17 @@ const Header = () => {
         <div className="header">
             <Link to={'/'} className="header__text">WORD LEARNER</Link>
             <div className='header__wrapper'>
-                <div className='header__email'>{email}</div>
-                <button 
-                    className="header__logout" 
-                    onClick={() => handleLogout()}
-                >
-                    Log out
-                </button>
+                {email ? 
+                <>
+                    <div className='header__email'>{email}</div>
+                    <button 
+                        className="header__logout" 
+                        onClick={() => handleLogout()}
+                    >
+                        Log out
+                    </button> 
+                </>: 
+                null}
             </div>
         </div>
         </>

@@ -19,13 +19,53 @@ const TranslationPopup = ({translation, position, setVisiblePopup, visiblePopup,
     }, []);
 
     const elements = (array) => {
-        return array.map((item, i) => <div className='result' key={i}><b>{item.english}&nbsp;</b> - {item.russian}</div>)
+        return array.slice(0, 5).map((item, i) => <div className='result' key={i}><b>{item.english}&nbsp;</b> - {item.russian}</div>)
     }
-    
+
+    const positionOfPopup = () => {
+        let style;
+
+        if (window.innerWidth/2 > position.left) {
+            style = {
+                top: position.top, 
+                left: position.left, 
+                transform: 'translate(0, -100%)'
+            }
+        } else {
+            style = {
+                top: position.top, 
+                right: window.innerWidth - (position.left + position.width), 
+                transform: 'translate(0, -100%)'
+            }
+        }
+        
+        return style
+    }
+
+    const positionOfArrow = () => {
+        let style;
+
+        if (window.innerWidth/2 > position.left) {
+            style = {
+                left: 2,
+                bottom: -2,
+                transform: 'rotate(73deg)'
+            }
+        } else {
+            style = {
+                right: 2,
+                bottom: -2,
+                transform: 'rotate(105deg)'
+            }
+        }
+        
+        return style
+    }
+
     return (
         <div 
             className={visiblePopup ? "translationPopup active" : "translationPopup"} 
-            style={{top: position.top, left: position.left + position.width/2, transform: 'translate(-50%, -100%)'}}
+            style={positionOfPopup()}
         >
             {visiblePopup && (
                 translation.length !== 0 ? 
@@ -35,6 +75,7 @@ const TranslationPopup = ({translation, position, setVisiblePopup, visiblePopup,
                     :
                     elements(translation)
                     }
+                    {translation.length > 5 ? <div>...</div> : null}
                     <button onClick={() => handleAddWordModal()} className="translationPopup__btn"/>
                 </div> : 
                 <div className='translationPopup__content'>
@@ -42,7 +83,7 @@ const TranslationPopup = ({translation, position, setVisiblePopup, visiblePopup,
                     <button onClick={() => handleAddWordModal()} className="translationPopup__btn"/>
                 </div>
             )}
-            <div className='translationPopup__arrow'></div>
+            <div className='translationPopup__arrow' style={positionOfArrow()}></div>
         </div>
     )
 }

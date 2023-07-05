@@ -19,7 +19,7 @@
         text-decoration: none;
         cursor: pointer;
         border-radius: 100%;   
-        font-size: 12px;       
+        font-size: 12px;    
         &:hover {
             background-color: rgb(204, 204, 204);
         }
@@ -76,5 +76,12 @@
     cursor: default;
     &:hover {
         background-color: inherit;
+    }
+}
+
+@media (max-width: 575px) {
+    .pagination {
+        margin: 10px auto;
+        order: 3;
     }
 }

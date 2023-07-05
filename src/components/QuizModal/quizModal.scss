@@ -12,6 +12,7 @@
     pointer-events: none;
     transition: 0.5s;
     z-index: 2;
+    overflow: hidden;
     &__content {
         border: 2px double grey;
         padding: 20px;
@@ -116,4 +117,18 @@
 
 .quiz__content.active {
     transform: scale(1);
+}
+
+@media (max-width: 680px) {
+    .quiz {
+        &__variant {
+            width: 40%;
+            height: 80%;
+            //padding: 10px;
+        }
+        &__content {
+            min-width: 80%;
+            min-height: 30%;
+        }
+    }
 }

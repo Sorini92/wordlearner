@@ -17,7 +17,8 @@
     "redux-persist": "^6.0.0",
     "sass": "^1.62.1",
     "uuid": "^8.3.2",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "xregexp": "^5.1.1"
   },
   "scripts": {
     "start": "react-scripts start",

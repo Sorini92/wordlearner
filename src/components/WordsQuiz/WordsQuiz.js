@@ -14,6 +14,8 @@ const WordsQuiz = ({setVariant, setActive, items, loadingStatus}) => {
     const [isFalse, setIsFalse] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
     const [isNextQuiestionBtnClicked, setIsNextQuiestionBtnClicked] = useState(false);
+    const [counterOfQuestions, setCounterOfQuestions] = useState(1);
+    const [amountOfRightAnswers, setAmountOfRightAnswers] = useState(0);
 
     useEffect(() => {
         nextQuestion();        
@@ -48,8 +50,9 @@ const WordsQuiz = ({setVariant, setActive, items, loadingStatus}) => {
     }
 
     const handleNextQuestion = () => {
-        if (isChecked) {
+        if (isChecked && answer !== "") {
             nextQuestion()
+            setCounterOfQuestions(counterOfQuestions + 1)
         } else {
             setIsNextQuiestionBtnClicked(true)
         }
@@ -74,6 +77,7 @@ const WordsQuiz = ({setVariant, setActive, items, loadingStatus}) => {
         setIsChecked(true);
         if (answer !== '') {
             if (answer.id === correct.id) {
+                setAmountOfRightAnswers(amountOfRightAnswers + 1)
                 setIsFalse(false)
                 setIsTrue(true)
             } else {
@@ -84,6 +88,12 @@ const WordsQuiz = ({setVariant, setActive, items, loadingStatus}) => {
             setIsFalse(false)
             setIsTrue(false)
         }
+    }
+
+    const onHandleClose = () => {
+        setActive(false);
+        setCounterOfQuestions(1);
+        setAmountOfRightAnswers(0);
     }
 
     const elements = oneQuestion.map((question, i) => {
@@ -128,9 +138,14 @@ const WordsQuiz = ({setVariant, setActive, items, loadingStatus}) => {
     return (
         <div className="wordsquiz">
             <div className='wordsquiz__form'>
-                <div onClick={() => setActive(false)} className='wordsquiz__close'>&times;</div>
+                <div onClick={() => onHandleClose()} className='wordsquiz__close'>&times;</div>
 
                 <div className='wordsquiz__wrapper'>
+                    <div className='wordsquiz__score'>
+                        <div className='wordsquiz__score-amount'>Question - <b>{counterOfQuestions}</b></div>
+                        <div className='wordsquiz__score-right'>Right answers - <b>{amountOfRightAnswers}</b></div>
+                    </div>
+
                     {loadingStatus === 'loading' ? <Spinner/> : elements}
                     {isTrue && isChecked ? <div className='wordsquiz__success'>Correct answer</div> : null}
                     {isFalse && isChecked ? <div className='wordsquiz__wrong'>Incorrect answer</div> : null}
@@ -140,7 +155,7 @@ const WordsQuiz = ({setVariant, setActive, items, loadingStatus}) => {
                 
                 <div className='wordsquiz__btns'>
                     <button className='wordsquiz__btn' onClick={() => setVariant('')}>To main page</button>
-                    <button className='wordsquiz__btn' onClick={() => handleCheckAnswer()}>Check</button>
+                    <button className='wordsquiz__btn' onClick={() => isChecked ? false : handleCheckAnswer()}>Check</button>
                     <button className='wordsquiz__btn' onClick={() => handleNextQuestion()}>Next quistion</button>
                 </div>
             </div>

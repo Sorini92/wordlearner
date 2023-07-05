@@ -6,6 +6,7 @@ body {
     min-height: 100vh;
     margin: 0 auto;
     max-width: 1100px;
+    padding: 0 calc(15px - (100vw - 100%)) 0 0;
 }
 
 .end {
@@ -17,4 +18,22 @@ body {
     font-size: 50px;
     text-align: center;
     margin-top: 200px;
+}
+
+@media (max-width: 1200px) {
+    .app {
+        padding: 0 15px;
+    }
+}
+
+@media (max-width: 700px) {
+    .app {
+        padding: 0 10px;
+    }
+}
+
+@media (max-width: 500px) {
+    .app {
+        padding: 0 5px;
+    }
 }

@@ -167,12 +167,12 @@ const WordsTable = ({
             )
         })
     }
-
+    
     const table = () => {
         return (
             <>
                 {items.length === 0 || (cuttedArrayOfWords.length === 0 && searchedWord.length > 0) || (cuttedArrayOfWords.length === 0 && selectedLetter.length > 0)? 
-                    !loadingStatus === "loading" ? <div className='emptyTable'>There are no words!</div> : null 
+                    loadingStatus === "idle" ? <div className='emptyTable'>There are no words!</div> : null 
                     : 
                     <div className='wordsTable__wrapper'>
                         <table className='wordsTable'>
@@ -223,7 +223,7 @@ const WordsTable = ({
 
 WordsTable.propTypes = {
     handleModifyModal: PropTypes.func.isRequired, 
-    searchedWord: PropTypes.array.isRequired, 
+    searchedWord: PropTypes.string.isRequired, 
     cuttedArrayOfWords: PropTypes.array.isRequired, 
     selectedLetter: PropTypes.string.isRequired, 
     setSelectedWord: PropTypes.func.isRequired, 

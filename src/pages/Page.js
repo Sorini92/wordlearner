@@ -52,7 +52,7 @@ const Page = ({
 
     const [selectedWord, setSelectedWord] = useState({});
     const [selectedWords, setSelectedWords] = useState([]);
-    const [searchedWord, setSearchedWord] = useState([]);
+    const [searchedWord, setSearchedWord] = useState('');
     const [cuttedArrayOfWords, setCuttedArrayOfWords] = useState([]);
     const [filteredArrayLength, setFilteredArrayLength] = useState(0);
 
@@ -68,6 +68,15 @@ const Page = ({
         setFilteredArrayLength(filteredLength)
         // eslint-disable-next-line
     }, [filteredLength]);
+
+    useEffect(() => {
+        if (addModalActive || modifyModalActive || quizModalActive) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+        // eslint-disable-next-line
+    }, [addModalActive, modifyModalActive, quizModalActive]);
 
     useEffect(() => {
         const handleKeyPress = (event) => {
@@ -297,13 +306,13 @@ const Page = ({
                 handleQuizModal={handleQuizModal}
                 address={address}
             />
-            <AlpabetFilter 
+            {/* <AlpabetFilter 
                 setLetter={setLetter} 
                 setOffset={setOffset}
                 wordsPerUpload={numberPerUpload}               
                 onClearLetter={onClearLetter}
                 switchToFirstPage={switchToFirstPage}
-            />
+            /> */}
             <TableComponent 
                 searchedWord={searchedWord}
                 cuttedArrayOfWords={cuttedArrayOfWords}

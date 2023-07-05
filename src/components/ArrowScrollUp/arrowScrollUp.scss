@@ -29,3 +29,11 @@
 .show {
     display: block;
 }
+
+@media (max-width: 500px) {
+    .scrollup {
+        width: 30px;
+        height: 30px;
+        right: 10%;
+    }
+}

@@ -31,17 +31,17 @@ const SentencesPage = () => {
     const [cuttedArrayOfSentences, setCuttedArrayOfSentences] = useState([]);
     const [filteredArrayLength, setFilteredArrayLength] = useState(0);
     const [selectedSentence, setSelectedSentence] = useState({});
-    const [searchedSentences, setSearchedSentences] = useState([]);
+    const [searchedSentences, setSearchedSentences] = useState('');
     const [selectedWord, setSelectedWord] = useState('');
 
     const dispatch = useDispatch();
     const {isAuth, id} = useAuth();
-
+    
     const sortItems = [
         { name: 'from new'},
         { name: 'from old'},         
     ];
-
+    
     const numberOfSentencesPerPage = [
         { name: 10},
         { name: 20},
@@ -67,6 +67,15 @@ const SentencesPage = () => {
         }
         // eslint-disable-next-line
     }, [id]);
+
+    useEffect(() => {
+        if (addModalActive || modifyModalActive || addWordModalActive) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+        // eslint-disable-next-line
+    }, [addModalActive, modifyModalActive, addWordModalActive]);
 
     useEffect(() => {
         const handleKeyPress = (event) => {
@@ -125,17 +134,19 @@ const SentencesPage = () => {
     const filteredArray = (array) => {
 
         let data = [];
-
+        
         if (searchedSentences.length > 0) {
             const searchWords = searchedSentences.split(' ');
 
             if (!!searchedSentences.match(/[^а-я]/g)) {
                 data = array.filter(item => searchWords.every(word => item.english.some(element => element.includes(word))));
-            } else {
+            } 
+            
+            if (!!searchedSentences.match(/[^a-z]/g)) {
                 data = array.filter(item => searchWords.every(word => item.russian.some(element => element.includes(word))));
             }
         }
-
+        
         setFilteredArrayLength(data.length)
 
         return data;
@@ -183,7 +194,7 @@ const SentencesPage = () => {
     const switchToFirstPage = () => {
         dispatch(setPage(1))
     }
-
+    
     return isAuth ? (
         <>
             <Navigation 
@@ -204,7 +215,7 @@ const SentencesPage = () => {
             />
             <SentencesTable 
                 words={words}
-                items={cuttedArrayOfSentences}
+                items={sentences}
                 loadingStatus={sentencesLoadingStatus}
                 setSelectedSentence={setSelectedSentence}
                 selectedSentence={selectedSentence}

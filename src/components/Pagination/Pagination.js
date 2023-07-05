@@ -129,9 +129,13 @@ const Pagination = ({items, cuttedArray, loadingStatus, filteredArrayLength, num
             {loadingStatus === "loading" ? 
             null
             :
-            <div className='pagination'>
-                {(items.length <= numberPerUpload || cuttedArray.length < numberPerUpload || cuttedArray.length === filteredArrayLength) && (currentPage === 1 && totalPages < 2) ? null : elements()}
-            </div>
+            <>
+                {(items.length <= numberPerUpload || cuttedArray.length < numberPerUpload || cuttedArray.length === filteredArrayLength) && (currentPage === 1 && totalPages < 2) ? null : 
+                <div className='pagination'>
+                   {elements()}
+                </div>
+                }
+            </>
         }
         </>        
     )

@@ -12,25 +12,26 @@ const SentencesTable = ({words, items, loadingStatus, setSelectedSentence, cutte
     const [translationResult, setTranslationResult] = useState([]);
     const [visiblePopup, setVisiblePopup] = useState(false);
     const [isTranslationComplete, setTranslationComplete] = useState(false);
-    const [position, setPosition] = useState({top: 0, left: 0, width: 0});
+    const [position, setPosition] = useState({top: 0, left: 0, right: 0, width: 0});
 
     const translation = (array) => {
         let data = [];
 
         if (!!selectedWord.match(/[^а-я-]/g)) {
-            data = array.filter(item => {
-                return item.english.toLowerCase().includes(selectedWord)
-            })
-        } else {
-            data = array.filter(item => {
-                if (selectedWord.length > 2) {
-                    return item.russian.toLowerCase().includes(selectedWord.slice(0, selectedWord.length - 2))
-                } else {
-                    return item.russian.toLowerCase().includes(selectedWord)
-                }
-            })
-        }
+            const regex = new RegExp("\\b" + selectedWord + "(s|es|ed|d|ing)?\\b", "i");
+            const ingRegex = new RegExp("\\b" + selectedWord.slice(0, -1) + "ing\\b", "i");
 
+            data = array.filter(item => {
+                return regex.test(item.english) || ingRegex.test(item.english);
+            });
+        } else {
+            const regex = new RegExp(`(?:^|\\s)${selectedWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?=\\s|$)`, "iu");
+
+            data = array.filter(item => {
+                return regex.test(item.russian);
+            }); 
+        }
+        
         return data
     }
 
@@ -42,11 +43,12 @@ const SentencesTable = ({words, items, loadingStatus, setSelectedSentence, cutte
     
     const handleWordClick = (event, word) => {
         const wordPosition = event.target.getBoundingClientRect();
+        const scrollTop = document.documentElement.scrollTop;
         setTranslationComplete(false);
         setTranslationResult(translation(words));
         setSelectedWord(word);
         setVisiblePopup(true);
-        setPosition({ top: wordPosition.top, left: wordPosition.left, width: wordPosition.width });
+        setPosition({ top: wordPosition.top + scrollTop, left: wordPosition.left, right: wordPosition.right, width: wordPosition.width });
     }
 
     const sentence = (array) => {
@@ -96,7 +98,8 @@ const SentencesTable = ({words, items, loadingStatus, setSelectedSentence, cutte
         })
     }
 
-    const elements = items.map(item => {
+    const elements = cuttedArrayOfSentences.map(item => {
+
         return (
             <CSSTransition 
                     timeout={500}
@@ -127,12 +130,12 @@ const SentencesTable = ({words, items, loadingStatus, setSelectedSentence, cutte
             </CSSTransition>
         )
     })
-
+    
     const table = () => {
         return (
             <>
                 {items.length === 0 || (cuttedArrayOfSentences.length === 0 && searchedSentences.length > 0)? 
-                    !loadingStatus === "loading" ? <div className='emptyTable'>There are no sentences!</div> : null
+                    loadingStatus === "idle" ? <div className='emptyTable'>There are no sentences!</div> : null
                     : 
                     <div className='sentenceTable'>
                         <TransitionGroup component="div" className='sentenceTable__wrapper'>
@@ -170,7 +173,7 @@ SentencesTable.propTypes = {
     loadingStatus:  PropTypes.string.isRequired,
     setSelectedSentence:  PropTypes.func.isRequired,
     cuttedArrayOfSentences:  PropTypes.array.isRequired, 
-    searchedSentences:  PropTypes.array.isRequired, 
+    searchedSentences:  PropTypes.string.isRequired, 
     handleModifyModal:  PropTypes.func.isRequired,
     onDeleteSentence:  PropTypes.func.isRequired, 
     handleAddWordModal:  PropTypes.func.isRequired, 

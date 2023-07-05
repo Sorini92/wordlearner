@@ -7,9 +7,26 @@
     max-width: inherit;
     bottom: 30px;
     display: flex;
+    align-items: center;
     justify-content: space-between;
     &__numberOfWords {
-        font-size: 17px;
+        font-size: 15px;
         font-weight: 700;
+    }
+}
+
+@media (max-width: 1200px) {
+    .footer {
+        width: 96%;
+    }
+}
+
+@media (max-width: 575px) {
+    .footer {
+        flex-wrap: wrap;
+        &__numberOfWords {
+            font-size: 12px;
+            font-weight: 700;
+        }
     }
 }
