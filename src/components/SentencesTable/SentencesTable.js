@@ -119,18 +119,18 @@ const SentencesTable = ({words, items, loadingStatus, setSelectedSentence, cutte
                         </li>
                         <li className='sentenceTable__rightItem'>
                             <div className='sentence'>{sentence(item.russian)}</div>
-                            <div onClick={() => onDeleteSentence(item.id)} className='sentenceTable__buscet'>
-                                    <img src={buscet} alt='delete buscet'/>
-                            </div> 
-                            <div onClick={() => handleModifyModal()} className='sentenceTable__pencil'>
-                                    <img src={pencil} alt='modify pencil'/>
-                            </div> 
                         </li>
+                        <div onClick={() => onDeleteSentence(item.id)} className='sentenceTable__buscet'>
+                                <img src={buscet} alt='delete buscet'/>
+                        </div> 
+                        <div onClick={() => handleModifyModal()} className='sentenceTable__pencil'>
+                                <img src={pencil} alt='modify pencil'/>
+                        </div> 
                     </ul>
             </CSSTransition>
         )
     })
-    
+
     const table = () => {
         return (
             <>

@@ -10,6 +10,10 @@
             height: 100%;
             width: 100%;
         }
+        &:hover {
+            transform: scale(1.1);
+            opacity: 0.9;
+        }
     }
     &__popup {
         z-index: 1;

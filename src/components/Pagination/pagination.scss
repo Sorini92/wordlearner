@@ -4,8 +4,9 @@
     justify-content: center;
     align-items: center;
     &__pages{
-        display: block;
+        display: flex;
         margin: 10px;
+        flex-wrap: nowrap;
     }
     &__page {
         display: flex;
@@ -79,9 +80,21 @@
     }
 }
 
-@media (max-width: 575px) {
+@media (max-width: 700px) {
     .pagination {
         margin: 10px auto;
+        &__pages{
+            margin-left: 0;
+            margin-right: 0;
+        }
+        &__page {
+            margin: 0 1px;
+        }
+    }
+}
+
+@media (max-width: 641px) {
+    .pagination {
         order: 3;
     }
 }

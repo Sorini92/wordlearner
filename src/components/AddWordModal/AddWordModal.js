@@ -101,7 +101,7 @@ const AddWordModal = ({width, height, maxLength, active, setActive, address, fun
 
                         <div className='addmodal__btns'>
                             <button 
-                                className='addmodal__btn' 
+                                className='addmodal__closebtn' 
                                 onClick={(e) => {
                                     e.preventDefault();
                                     setActive(false);

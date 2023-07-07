@@ -1,15 +1,10 @@
 .modification {
-    max-width: 210px;
-    &__btn {
-        background-color: #0d6efd;
-        width: 100px;
-        height: 30px;
-        border: none;
-        border-radius: 3px;
+    //max-width: 210px;
+    height: 40px;
+    &__icon {
+        width: 40px;
+        height: 40px;
         cursor: pointer;
-        color: white;
-        text-align: center;
-        padding: 3px;
         text-decoration: none;
         margin-right: 10px;
         &:last-child {
@@ -17,6 +12,13 @@
         }
         &:hover {
             opacity: 0.9;
+            transform: scale(1.1);
         }
+    }
+}
+
+@media (max-width: 600px) {
+    .modification {
+        margin-bottom: 10px;
     }
 }

@@ -74,3 +74,20 @@
     filter: blur(5px);
     transition: 0.7s all;
 }
+
+@media (max-width: 600px) {
+    .irregularVerbsTable {
+        &__wrapper {
+            min-height: 560px;
+            margin-top: 15px;
+        }
+    }
+}
+
+@media (max-width: 500px) {
+    .irregularVerbsTable {
+        td, th {
+            font-size: 11px;
+        }
+    }
+}

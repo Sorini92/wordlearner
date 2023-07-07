@@ -95,7 +95,7 @@ const ModifyWordModal = ({width, height, maxLength, active, setActive, address, 
 
                     <div className='modifymodal__btns'>
                         <button 
-                            className='modifymodal__btn' 
+                            className='modifymodal__closebtn' 
                             onClick={(e) => {
                                 e.preventDefault();
                                 setActive(false);

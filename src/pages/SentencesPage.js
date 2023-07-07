@@ -69,6 +69,13 @@ const SentencesPage = () => {
     }, [id]);
 
     useEffect(() => {
+        if (!!activeSortTypeChanged) {
+            dispatch(sortBy(sortType))
+        } 
+        // eslint-disable-next-line
+    }, [sortType, sentences])
+
+    useEffect(() => {
         if (addModalActive || modifyModalActive || addWordModalActive) {
             document.body.style.overflow = 'hidden';
         } else {
@@ -137,12 +144,11 @@ const SentencesPage = () => {
         
         if (searchedSentences.length > 0) {
             const searchWords = searchedSentences.split(' ');
+            const englishPattern = /^[A-Za-z\s!.,?-]+$/;
 
-            if (!!searchedSentences.match(/[^а-я]/g)) {
+            if (englishPattern.test(searchedSentences)) {
                 data = array.filter(item => searchWords.every(word => item.english.some(element => element.includes(word))));
-            } 
-            
-            if (!!searchedSentences.match(/[^a-z]/g)) {
+            } else {
                 data = array.filter(item => searchWords.every(word => item.russian.some(element => element.includes(word))));
             }
         }
@@ -198,6 +204,7 @@ const SentencesPage = () => {
     return isAuth ? (
         <>
             <Navigation 
+                items={sentences}
                 setSearched={setSearchedSentences}
                 setOffset={setOffset}
                 numberPerUpload={sentencesPerUpload}

@@ -5,7 +5,7 @@ const initialState = {
     words: [],
     sortType: 'from new',
     letter: '',
-    wordsLoadingStatus: 'loading',
+    wordsLoadingStatus: 'idle',
     currentPage: 1,
     totalPages: 1,
     wordsPerUpload: 30,
@@ -154,9 +154,6 @@ const {actions, reducer} = wordsSlice;
 
 export default reducer;
 export const {
-    wordsFetching,
-    wordsFetched,
-    wordsFetchingError,
     addWord,
     modifyWord,
     deleteWord,

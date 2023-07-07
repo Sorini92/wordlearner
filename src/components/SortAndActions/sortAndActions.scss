@@ -2,25 +2,18 @@
     position: relative;
     display: flex;
     justify-content: space-between;
-    margin-top: 15px;
+    margin-top: 10px;
     align-items: center;
-    height: 30px;
-    &__quizbtn {
+    min-height: 40px;
+    &__learnIcon {
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
-        background-color: #fe5f1e;
-        height: 30px;
-        width: 100px;
-        border: none;
-        border-radius: 3px;
+        height: 40px;
+        width: 40px;
         cursor: pointer;
-        color: white;
-        text-align: center;
-        padding: 5px 15px;
-        text-decoration: none;
-        margin-right: 50px;
         &:hover {
+            transform: translateX(-50%) scale(1.1);
             opacity: 0.9;
         }
     }
@@ -30,4 +23,21 @@
     justify-content: flex-end;
 }
 
+@media (max-width: 850px) {
+    .modifying {
+        margin-bottom: 10px;
+    }
+}
 
+@media (max-width: 600px) {
+    .modifying {
+        flex-direction: column;
+        height: 100%;
+        align-items: flex-start;
+        &__learnIcon {
+            left: 100%;
+            transform: translateX(-100%);
+            //top: 10px;
+        }
+    }
+}

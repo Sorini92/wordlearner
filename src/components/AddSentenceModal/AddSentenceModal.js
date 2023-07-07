@@ -92,7 +92,7 @@ const AddSentenceModal = ({width, height, maxLength, active, setActive, address,
 
                         <div className='addSentenceModal__btns'>
                             <button 
-                                className='addSentenceModal__btn' 
+                                className='addSentenceModal__closebtn' 
                                 onClick={(e) => {
                                     e.preventDefault();
                                     setActive(false);

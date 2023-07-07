@@ -6,6 +6,7 @@
         min-height: 710px;
         padding-bottom: 100px;
         ul {
+            position: relative;
             display: grid;
             grid-template-columns: 1fr 1fr;
             grid-template-rows: minmax(70px, auto);
@@ -18,7 +19,7 @@
     &__pencil {
         position: absolute;
         right: 0;
-        bottom: 5px;
+        top: 5px;
         width: 20px;
         height: 20px;
         cursor: pointer;
@@ -33,7 +34,7 @@
     &__buscet {
         position: absolute;
         right: 0;
-        top: 5px;
+        bottom: 5px;
         width: 25px;
         height: 25px;
         cursor: pointer;
@@ -110,13 +111,21 @@
     text-decoration-style: solid;
 }
 
+@media (max-width: 600px) {
+    .sentenceTable {
+        &__wrapper {
+            min-height: 560px;
+        }
+    }
+}
+
 @media (max-width: 500px) {
     .sentenceTable {
         &__wrapper {
             ul {
                 grid-template-columns: 1fr;
-                grid-template-rows: minmax(70px, auto);
-                grid-auto-rows: minmax(70px, auto);
+                grid-template-rows: minmax(30px, auto);
+                grid-auto-rows: minmax(30px, auto);
             }
         }
         &__leftItem {
@@ -129,10 +138,6 @@
         &__leftItem, &__rightItem {
             padding-top: 5px;
             padding-bottom: 5px;
-        }
-        &__buscet {
-            right: 0;
-            top: -67px;
         }
     }
 }

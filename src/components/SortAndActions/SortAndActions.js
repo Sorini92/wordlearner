@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import SelectPopup from "../SelectPopup/SelectPopup";
 import Modification from "../Modification/Modification";
+import learn from "../../resources/learn.png";
 import './sortAndActions.scss';
 
 const SortAndActions = ({address, items, handleAddModal, onDelete, filteredArrayLength, sortItems, active, textForSelectPopup, dispatchFunction, activeTypeChanged, handleQuizModal}) => {
@@ -15,9 +16,7 @@ const SortAndActions = ({address, items, handleAddModal, onDelete, filteredArray
             }
 
             {handleQuizModal && (address.thirdUrl === 'words' || address.thirdUrl === 'favoriteWords') ? 
-                <button className='modifying__quizbtn' onClick={() => handleQuizModal()}>
-                    Games
-                </button> : 
+                <img onClick={() => handleQuizModal()} className='modifying__learnIcon' src={learn} alt="quiz"/>:
                 null
             }
 

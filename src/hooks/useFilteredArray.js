@@ -7,10 +7,11 @@ const useFilteredArray = (array, selectedLetter, searchedWord) => {
 
     useEffect(() => {
         let data = [];
+        const englishPattern = /^[A-Za-z\s!.,?-]+$/;
 
         if (searchedWord.length > 0) {
             
-            if (!!searchedWord.match(/[^а-я]/g)) {
+            if (englishPattern.test(searchedWord)) {
                 data = array.filter(item => {
                     if (item.english !== undefined) {
                         return item.english.toLowerCase().includes(searchedWord)
@@ -18,9 +19,7 @@ const useFilteredArray = (array, selectedLetter, searchedWord) => {
                         return item.baseForm.toLowerCase().includes(searchedWord)
                     }
                 })
-            } 
-
-            if (!!searchedWord.match(/[^a-z]/g)) {
+            } else {
                 data = array.filter(item => {
                     if (item.russian !== undefined) {
                         return item.russian.toLowerCase().includes(searchedWord)
@@ -33,7 +32,7 @@ const useFilteredArray = (array, selectedLetter, searchedWord) => {
         } else {
             if (selectedLetter.length !== 0) {
                 
-                if (!!selectedLetter.match(/[^а-я]/g)) {
+                if (englishPattern.test(selectedLetter)) {
                     data = array.filter(item => {
                         if (item.english !== undefined) {
                             return item.english.toLowerCase().slice(0, 1) === selectedLetter
@@ -41,9 +40,7 @@ const useFilteredArray = (array, selectedLetter, searchedWord) => {
                             return item.baseForm.toLowerCase().slice(0, 1) === selectedLetter
                         }
                     })
-                } 
-
-                if (!!selectedLetter.match(/[^a-z]/g)) {
+                } else {
                     data = array.filter(item => {
                         if (item.russian !== undefined) {
                             return item.russian.toLowerCase().slice(0, 1) === selectedLetter

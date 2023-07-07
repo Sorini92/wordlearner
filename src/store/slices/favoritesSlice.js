@@ -5,7 +5,7 @@ const initialState = {
     favorites: [],
     sortType: 'from new',
     letter: '',
-    wordsLoadingStatus: 'loading',
+    wordsLoadingStatus: 'idle',
     currentPage: 1,
     totalPages: 1,
     wordsPerUpload: 30,
@@ -15,7 +15,7 @@ const initialState = {
 }
 
 export const fetchFavorites = createAsyncThunk(
-    'favorites/fetchWords',
+    'favorites/fetchFavorites',
     async (id) => {
         const {request} = useGetData();
         
@@ -144,9 +144,6 @@ const {actions, reducer} = favoritesSlice;
 
 export default reducer;
 export const {
-    favoritesFetching,
-    favoritesFetched,
-    favoritesFetchingError,
     modifyWord,
     deleteWord,
     setPage,

@@ -65,6 +65,13 @@ const Page = ({
     const dispatch = useDispatch();
 
     useEffect(() => {
+        if (!!activeSortTypeChanged) {
+            dispatch(sortByFunction(sortType))
+        } 
+        // eslint-disable-next-line
+    }, [sortType, items])
+
+    useEffect(() => {
         setFilteredArrayLength(filteredLength)
         // eslint-disable-next-line
     }, [filteredLength]);
@@ -276,6 +283,8 @@ const Page = ({
     return (
         <>
             <Navigation 
+                letter={letter}
+                items={items}
                 setSearched={setSearchedWord}
                 setOffset={setOffset}
                 numberPerUpload={numberPerUpload}
@@ -306,13 +315,16 @@ const Page = ({
                 handleQuizModal={handleQuizModal}
                 address={address}
             />
-            {/* <AlpabetFilter 
+            <AlpabetFilter 
+                letter={letter}
                 setLetter={setLetter} 
                 setOffset={setOffset}
                 wordsPerUpload={numberPerUpload}               
                 onClearLetter={onClearLetter}
                 switchToFirstPage={switchToFirstPage}
-            /> */}
+                searchedWord={searchedWord}
+                items={items}
+            />
             <TableComponent 
                 searchedWord={searchedWord}
                 cuttedArrayOfWords={cuttedArrayOfWords}

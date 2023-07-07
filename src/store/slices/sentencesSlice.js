@@ -4,7 +4,7 @@ import {useGetData} from '../../hooks/useGetData';
 const initialState = {
     sentences: [],
     sortType: 'from new',
-    sentencesLoadingStatus: 'loading',
+    sentencesLoadingStatus: 'idle',
     currentPage: 1,
     totalPages: 1,
     sentencesPerUpload: 10
@@ -90,9 +90,6 @@ const {actions, reducer} = sentencesSlice;
 
 export default reducer;
 export const {
-    sentencesFetching,
-    sentencesFetched,
-    sentencesFetchingError,
     addSentence,
     modifySentence,
     deleteSentence,

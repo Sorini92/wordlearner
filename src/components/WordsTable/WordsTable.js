@@ -3,6 +3,8 @@ import { CSSTransition, TransitionGroup} from 'react-transition-group';
 import PropTypes from 'prop-types';
 import Spinner from '../Spinner/Spinner';
 import pencil from '../../resources/pencil.png';
+import star from '../../resources/star.png';
+import fullStar from '../../resources/fullstar.png';
 import './wordsTable.scss';
 
 const WordsTable = ({
@@ -146,19 +148,40 @@ const WordsTable = ({
                                     >
                                     {isReverseWords ? item.english : item.russian}
                                 </div> 
-                                <div onClick={() => handleModifyModal()} className='wordsTable__translate-inner-pencil'>
-                                    <img src={pencil} alt='modify pencil'/>
-                                </div> 
-                                <div 
-                                    onClick={() => handleStarClick(item)} 
-                                    className='wordsTable__translate-inner-star'>
-                                    {item.favorite ? <>&#9733;</> : <>&#9734;</>}
-                                </div> 
+                                {!isShowDate ? 
+                                <>
+                                    <div onClick={() => handleModifyModal()} className='wordsTable__translate-inner-pencil'>
+                                        <img src={pencil} alt='modify pencil'/>
+                                    </div> 
+                                    <div 
+                                        onClick={() => handleStarClick(item)} 
+                                        className='wordsTable__translate-inner-star'>
+                                        {item.favorite ? 
+                                            <img className='' src={fullStar} alt="full star"/> : 
+                                            <img src={star} alt="star"/> 
+                                        }
+                                    </div>
+                                </> : null
+                                }
                             </div>
                         </td>
                         {isShowDate ? 
                             <td className='wordsTable__date'>
-                                {isShowDate ? onFormattedDate(item.date) : null}
+                                <div className='wordsTable__translate-inner'>
+                                    {isShowDate ? onFormattedDate(item.date) : null}
+                                    <div onClick={() => handleModifyModal()} className='wordsTable__translate-inner-pencil'>
+                                        <img src={pencil} alt='modify pencil'/>
+                                    </div> 
+                                    <div 
+                                        onClick={() => handleStarClick(item)} 
+                                        className='wordsTable__translate-inner-star'>
+                                        {item.favorite ? 
+                                            <img className='' src={fullStar} alt="full star"/> : 
+                                            <img src={star} alt="star"/> 
+                                        }
+                                    </div>
+                                </div>
+                                
                             </td> 
                             : 
                         null}
@@ -172,7 +195,7 @@ const WordsTable = ({
         return (
             <>
                 {items.length === 0 || (cuttedArrayOfWords.length === 0 && searchedWord.length > 0) || (cuttedArrayOfWords.length === 0 && selectedLetter.length > 0)? 
-                    loadingStatus === "idle" ? <div className='emptyTable'>There are no words!</div> : null 
+                    <div className='emptyTable'>There are no words!</div>
                     : 
                     <div className='wordsTable__wrapper'>
                         <table className='wordsTable'>
@@ -192,7 +215,7 @@ const WordsTable = ({
                                         {isReverseWords ? 'English words' : 'Russian words'}
                                     </th>
                                     {isShowDate ? 
-                                        <th className='wordsTable__date'>
+                                        <th className='wordsTable__dateHeader'>
                                             Date of adding
                                         </th> 
                                         : 

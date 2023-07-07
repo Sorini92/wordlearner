@@ -1,13 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { CSSTransition, TransitionGroup} from 'react-transition-group';
 import PropTypes from 'prop-types';
 import Spinner from '../Spinner/Spinner';
 import './irregularVerbsTable.scss';
 
-const IrregularVerbsTable = ({searchedWord, cuttedArrayOfWords, selectedLetter, isBlured}) => {
-    
-    const {wordsLoadingStatus, verbs} = useSelector(state => state.irregularVerbs)
+const IrregularVerbsTable = ({loadingStatus, items, searchedWord, cuttedArrayOfWords, selectedLetter, isBlured}) => {
 
     const [idForCompare, setIdForCompare] = useState('');
     const [unbluredWord, setUnbluredWord] = useState('');
@@ -76,12 +73,12 @@ const IrregularVerbsTable = ({searchedWord, cuttedArrayOfWords, selectedLetter, 
             )
         })
     }
-
+    
     const table = () => {
         return (
             <>
-                {verbs.length === 0 || (cuttedArrayOfWords.length === 0 && searchedWord.length > 0) || (cuttedArrayOfWords.length === 0 && selectedLetter.length > 0)? 
-                    wordsLoadingStatus === "idle" ? <div className='emptyTable'>There are no words!</div> : null 
+                {items.length === 0 || (cuttedArrayOfWords.length === 0 && searchedWord.length > 0) || (cuttedArrayOfWords.length === 0 && selectedLetter.length > 0)? 
+                    loadingStatus === "idle" ? <div className='emptyTable'>There are no words!</div> : <Spinner/> 
                     : 
                     <div className='irregularVerbsTable__wrapper'>
                         <table className='irregularVerbsTable'>
@@ -113,10 +110,10 @@ const IrregularVerbsTable = ({searchedWord, cuttedArrayOfWords, selectedLetter, 
 
     return (
         <>
-            {wordsLoadingStatus === "loading" ? 
+            {loadingStatus === "loading" ? 
             <Spinner/>
             :
-            wordsLoadingStatus === "error" ? <div className='error'>Something went wrong, error from server</div> : table()
+            loadingStatus === "error" ? <div className='error'>Something went wrong, error from server</div> : table()
             }
         </>
     )

@@ -9,6 +9,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
     &__numberOfWords {
         font-size: 15px;
         font-weight: 700;
@@ -21,11 +22,9 @@
     }
 }
 
-@media (max-width: 575px) {
+@media (max-width: 655px) {
     .footer {
-        flex-wrap: wrap;
         &__numberOfWords {
-            font-size: 12px;
             font-weight: 700;
         }
     }

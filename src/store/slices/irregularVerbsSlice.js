@@ -5,7 +5,7 @@ const initialState = {
     verbs: [],
     sortType: 'a to z',
     letter: '',
-    wordsLoadingStatus: 'loading',
+    wordsLoadingStatus: 'idle',
     currentPage: 1,
     totalPages: 1,
     wordsPerUpload: 30,
@@ -13,7 +13,7 @@ const initialState = {
 }
 
 export const fetchIrregularVerbs = createAsyncThunk(
-    'irregularVerbs/fetchWords',
+    'irregularVerbs/fetchIrregularVerbs',
     async () => {
         const {request} = useGetData();
         const linkToWords = {
@@ -122,9 +122,6 @@ const {actions, reducer} = irregularVerbsSlice;
 
 export default reducer;
 export const {
-    irregularVerbsFetching,
-    irregularVerbsFetched,
-    irregularVerbsFetchingError,
     setPage,
     setLetter,
     setWordsPerUpload,

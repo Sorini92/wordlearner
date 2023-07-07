@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import scope from '../../resources/scope.svg';
 import "./navigation.scss";
 
-const Navigation = ({setSearched, setOffset, numberPerUpload, setFilteredArrayLength}) => {
+const Navigation = ({setSearched, setOffset, numberPerUpload, setFilteredArrayLength, letter, items}) => {
 
     const [text, setText] = useState('');
     const [active, setActive] = useState(0);
@@ -54,6 +54,8 @@ const Navigation = ({setSearched, setOffset, numberPerUpload, setFilteredArrayLe
         )
     })
 
+    const IsLetterExist = letter ? letter.length === 0 && items.length !== 0 : items.length !== 0
+
     return (
         <>
             <div className="navigation__line"></div>
@@ -63,20 +65,24 @@ const Navigation = ({setSearched, setOffset, numberPerUpload, setFilteredArrayLe
                 </div>
 
                 <div className="navigation__wrapper">
-                    <input 
-                        value={text}
-                        className="navigation__search"
-                        placeholder="Search"
-                        onChange={(e) => handleSearch(e.target.value.replace(/[^a-z, а-я]/g, ''))}
-                    />
-                    <img src={scope} className="navigation__search-scope" alt="scope"/>
-                    {text.length > 0 ? 
-                    <div
-                        className="navigation__searchclear"
-                        onClick={() => clearSearch('')}
-                    >
-                        &times;
-                    </div> : null}
+                    {IsLetterExist ? 
+                    <>
+                         <input 
+                            value={text}
+                            className="navigation__search"
+                            placeholder="Search"
+                            onChange={(e) => handleSearch(e.target.value.replace(/[^a-z а-я]/g, ''))}
+                        />
+                        <img src={scope} className="navigation__search-scope" alt="scope"/>
+                        {text.length > 0 ? 
+                        <div
+                            className="navigation__searchclear"
+                            onClick={() => clearSearch('')}
+                        >
+                            &times;
+                        </div> : null}
+                    </> : null
+                    }
                 </div>
             </div>
         </>

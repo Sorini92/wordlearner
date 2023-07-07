@@ -20,7 +20,7 @@ const WordsPage = () => {
         { name: 'а to я'},
         { name: 'я to а'},
     ];
-
+    
     const numberOfWordsPerPage = [
         { name: 30},
         { name: 60},

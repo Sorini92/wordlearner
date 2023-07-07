@@ -93,7 +93,7 @@ const ModifySentenceModal = ({width, height, maxLength, active, setActive, addre
 
                     <div className='modifySentenceModal__btns'>
                         <button 
-                            className='modifySentenceModal__btn' 
+                            className='modifySentenceModal__closebtn' 
                             onClick={(e) => {
                                 e.preventDefault();
                                 setActive(false);

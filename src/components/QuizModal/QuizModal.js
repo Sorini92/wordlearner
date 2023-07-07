@@ -46,7 +46,7 @@ const QuizModal = ({setActive, active, items, loadingStatus}) => {
                         
                         <div className='quiz__btns'>
                             <button 
-                                className='quiz__btn' 
+                                className='quiz__closebtn' 
                                 onClick={(e) => {
                                     e.preventDefault();
                                     setActive(false);
