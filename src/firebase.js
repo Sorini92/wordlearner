@@ -12,9 +12,11 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+
 initializeFirestore(app, {
 	localCache: persistentLocalCache(CACHE_SIZE_UNLIMITED, {tabManager: persistentMultipleTabManager()})
 });
+
 const database = getFirestore(app);
 
 export default database;

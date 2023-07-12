@@ -1,8 +1,18 @@
+import { Helmet } from "react-helmet";
 import Login from "../components/Login/Login";
 
 const LoginPage = () => {
     return (
-        <Login/>
+        <>
+            <Helmet>
+                <meta
+                    name="description"
+                    content="login page"
+                />
+                <title>Login</title>
+            </Helmet>
+            <Login/>
+        </>
     )
 }
 

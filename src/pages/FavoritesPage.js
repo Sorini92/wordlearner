@@ -1,7 +1,8 @@
 import {useDispatch, useSelector} from 'react-redux';
 import {useEffect} from "react"; 
-import {modifyWord, deleteWord, setTotalPages, fetchFavorites, sortBy, activeSortTypeChanged, setWordsPerUpload, setPage, setLetter, setIsBlured, setIsShowDate, setIsReverseWords} from '../store/slices/favoritesSlice';
 import useAuth from '../hooks/use-auth';
+import { Helmet } from "react-helmet";
+import {modifyWord, deleteWord, setTotalPages, fetchFavorites, sortBy, activeSortTypeChanged, setWordsPerUpload, setPage, setLetter, setIsBlured, setIsShowDate, setIsReverseWords} from '../store/slices/favoritesSlice';
 import WordsTable from '../components/WordsTable/WordsTable';
 import Page from './Page';
 
@@ -42,6 +43,13 @@ const FavoritesPage = () => {
 
     return isAuth ? (
         <>
+            <Helmet>
+                <meta
+                    name="description"
+                    content="favorite words page"
+                />
+                <title>Favorite words</title>
+            </Helmet>
             <Page
                 sortItems={sortItems}
                 sortType={sortType}

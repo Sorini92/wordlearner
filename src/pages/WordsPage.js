@@ -1,5 +1,6 @@
 import {useDispatch, useSelector} from 'react-redux';
 import {useEffect} from "react";
+import { Helmet } from "react-helmet";
 import {deleteWord, deleteWords, addWord, modifyWord, setTotalPages, fetchWords, sortBy, activeSortTypeChanged, setWordsPerUpload, setPage, setLetter, setIsBlured, setIsShowDate, setIsReverseWords, setIsShowTicks} from '../store/slices/wordSlice';
 import useAuth from '../hooks/use-auth';
 import WordsTable from "../components/WordsTable/WordsTable";
@@ -42,6 +43,13 @@ const WordsPage = () => {
     
     return  isAuth ? (
         <>
+            <Helmet>
+                <meta
+                    name="description"
+                    content="words page"
+                />
+                <title>Words</title>
+            </Helmet>
             <Page
                 sortItems={sortItems}
                 sortType={sortType}

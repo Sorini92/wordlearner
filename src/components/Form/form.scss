@@ -1,16 +1,3 @@
-.firstpage {
-    background-color: #fff;
-    max-width: 868px;
-    height: 650px;
-    background: radial-gradient(100% 100% at 50% 0%, #6570b4 0%, #0F1436 100%);
-    border-radius: 15px;
-    margin: 0 auto;
-    margin-top: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .form {
     margin: 0 auto;
     //width: 400px;
@@ -66,6 +53,19 @@
         text-decoration: none;
         &:hover {
             opacity: 0.9;
+        }
+    }
+    &__google {
+        display: flex;
+        align-items: center;
+        &-text {
+            color: white;
+            margin-right: 10px;
+        }
+        img {
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
         }
     }
     &__bottom {

@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import {useDispatch, useSelector} from 'react-redux';
+import { Helmet } from "react-helmet";
+import database from "../firebase";
+import useAuth from '../hooks/use-auth';
 import {fetchSentences, sortBy, activeSortTypeChanged, addSentence, modifySentence, setTotalPages, setSentencesPerUpload, setPage, deleteSentence} from '../store/slices/sentencesSlice';
 import {fetchWords, addWord} from '../store/slices/wordSlice';
-import database from "../firebase";
 import {deleteDoc, collection, doc} from "firebase/firestore"; 
-import useAuth from '../hooks/use-auth';
 import Navigation from "../components/Navigation/Navigation";
 import SentencesTable from "../components/SentencesTable/SentencesTable";
 import SortAndActions from '../components/SortAndActions/SortAndActions';
@@ -203,6 +204,13 @@ const SentencesPage = () => {
     
     return isAuth ? (
         <>
+            <Helmet>
+                <meta
+                    name="description"
+                    content="sentences page"
+                />
+                <title>Sentences</title>
+            </Helmet>
             <Navigation 
                 items={sentences}
                 setSearched={setSearchedSentences}

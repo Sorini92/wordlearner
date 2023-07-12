@@ -1,7 +1,8 @@
 import {useDispatch, useSelector} from 'react-redux';
 import {useEffect} from "react";
-import {setTotalPages, fetchIrregularVerbs, sortBy, activeSortTypeChanged, setWordsPerUpload, setPage, setLetter, setIsBlured} from '../store/slices/irregularVerbsSlice';
 import useAuth from '../hooks/use-auth';
+import { Helmet } from "react-helmet";
+import {setTotalPages, fetchIrregularVerbs, sortBy, activeSortTypeChanged, setWordsPerUpload, setPage, setLetter, setIsBlured} from '../store/slices/irregularVerbsSlice';
 import IrregularVerbsTable from '../components/IrregularVerbsTable.js/IrregularVerbsTable';
 import Page from './Page';
 
@@ -36,6 +37,13 @@ const IrregularVerbsPage = () => {
 
     return isAuth ? (
         <>
+            <Helmet>
+                <meta
+                    name="description"
+                    content="irregular verbs page"
+                />
+                <title>Irregular verbs</title>
+            </Helmet>
             <Page
                 sortItems={sortItems}
                 sortType={sortType}

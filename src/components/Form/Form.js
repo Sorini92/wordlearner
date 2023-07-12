@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import google from "../../resources/google.png";
 import PropTypes from 'prop-types';
 import './form.scss';
 
-const Form = ({type, title, handleClick, to, text}) => {
+const Form = ({type, title, handleClick, to, text, signInWithGoogle}) => {
 
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
@@ -27,6 +28,14 @@ const Form = ({type, title, handleClick, to, text}) => {
                 placeholder="password"
             />
             <div className="form__bottom">
+                {type === "Login" ? 
+                <div className="form__google">
+                    <div className="form__google-text">
+                        Sign in with
+                    </div>
+                    <img src={google} alt="google logo" onClick={signInWithGoogle}/>
+                </div> : null
+                }
                 <button
                     className="form__btn"
                     onClick={() => handleClick(email, pass)}
