@@ -5,7 +5,7 @@ const initialState = {
     words: [],
     sortType: 'from new',
     letter: '',
-    wordsLoadingStatus: 'idle',
+    wordsLoadingStatus: 'loading',
     currentPage: 1,
     totalPages: 1,
     wordsPerUpload: 30,
@@ -25,7 +25,7 @@ export const fetchWords = createAsyncThunk(
             secondUrl: id,
             thirdUrl: 'words'
         }
-
+        
         return await request(linkToWords);
     }
 );

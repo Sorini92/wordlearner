@@ -63,12 +63,20 @@ const ModifyWordModal = ({width, height, maxLength, active, setActive, address, 
         }
     }
 
+    const handleEnterPress = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleSubmit(e);
+        }
+    };
+
     return (
         <div className={active ? "modifymodal active" : "modifymodal"} onClick={() => setActive(false)}>
             <div 
                 style={{width: `${width}px`, height: `${height}px`}}
                 className={active ? "modifymodal__content active" : "modifymodal__content"} 
                 onClick={e => e.stopPropagation()}
+                onKeyDown={handleEnterPress}
             >
                 <form className='modifymodal__form' onSubmit={handleSubmit}>
                     <div className='modifymodal__title'>Modify word</div>

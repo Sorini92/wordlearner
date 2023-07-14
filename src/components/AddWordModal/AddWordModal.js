@@ -66,6 +66,13 @@ const AddWordModal = ({width, height, maxLength, active, setActive, address, fun
         }
     }
 
+    const handleEnterPress = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleSubmit(e);
+        }
+    };
+
     return (
         <>
             <div className={active ? "addmodal active" : "addmodal"} onClick={() => setActive(false)}>
@@ -73,6 +80,7 @@ const AddWordModal = ({width, height, maxLength, active, setActive, address, fun
                     style={{width: `${width}px`, height: `${height}px`}}
                     className={active ? "addmodal__content active" : "addmodal__content"} 
                     onClick={e => e.stopPropagation()}
+                    onKeyDown={handleEnterPress}
                 >
                     <form className='addmodal__form' onSubmit={handleSubmit}>
                         <div className='addmodal__title'>Add new word</div>

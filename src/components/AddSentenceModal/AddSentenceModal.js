@@ -57,6 +57,13 @@ const AddSentenceModal = ({width, height, maxLength, active, setActive, address,
         }
     }
 
+    const handleEnterPress = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleSubmit(e);
+        }
+    };
+
     return (
         <>
             <div className={active ? "addSentenceModal active" : "addSentenceModal"} onClick={() => setActive(false)}>
@@ -64,6 +71,7 @@ const AddSentenceModal = ({width, height, maxLength, active, setActive, address,
                     style={{width: `${width}px`, height: `${height}px`}}
                     className={active ? "addSentenceModal__content active" : "addSentenceModal__content"} 
                     onClick={e => e.stopPropagation()}
+                    onKeyDown={handleEnterPress}
                 >
                     <form className='addSentenceModal__form' onSubmit={handleSubmit}>
                         <div className='addSentenceModal__title'>Add new sentence</div>

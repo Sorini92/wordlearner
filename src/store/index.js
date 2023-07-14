@@ -32,25 +32,25 @@ import sentences from '../store/slices/sentencesSlice';
 const wordsPersistConfig = {
     key: 'words',
     storage: storage,
-    blacklist: ['words']
+    blacklist: ['words', 'wordsLoadingStatus', 'totalPages']
 }
 
 const favoritesPersistConfig = {
     key: 'favorites',
     storage: storage,
-    blacklist: ['favorites']
+    blacklist: ['favorites', 'wordsLoadingStatus', 'totalPages']
 }
 
 const irregularVerbsPersistConfig = {
     key: 'irregularVerbs',
     storage: storage,
-    blacklist: ['verbs']
+    blacklist: ['verbs', 'wordsLoadingStatus', 'totalPages']
 }
 
 const sentencesPersistConfig = {
     key: 'sentences',
     storage: storage,
-    blacklist: ['sentences']
+    blacklist: ['sentences', 'sentencesLoadingStatus', 'totalPages']
 }
 
 const rootReducer = combineReducers({

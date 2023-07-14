@@ -4,7 +4,7 @@ import {useGetData} from '../../hooks/useGetData';
 const initialState = {
     sentences: [],
     sortType: 'from new',
-    sentencesLoadingStatus: 'idle',
+    sentencesLoadingStatus: 'loading',
     currentPage: 1,
     totalPages: 1,
     sentencesPerUpload: 10

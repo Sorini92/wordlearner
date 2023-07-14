@@ -1,15 +1,17 @@
 import Form from '../Form/Form';
 import { useDispatch } from 'react-redux';
-import { getAuth, signInWithEmailAndPassword, signInWithRedirect,  getRedirectResult, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, signInWithRedirect, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 import {setUser} from '../../store/slices/userSlice';
 
 const Login = () => {
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const auth = getAuth(); 
+
     const handleLogin = (email, password) => {
-        const auth = getAuth(); 
 
         signInWithEmailAndPassword(auth, email, password)
             .then(({user}) => {
@@ -22,16 +24,19 @@ const Login = () => {
                 navigate('/')
             })
             .catch(() => alert('Invalid user'))
+
     }
 
     const signInWithGoogle = () => {
 
-        const auth = getAuth(); 
-
         const provider = new GoogleAuthProvider();
-        
-        signInWithPopup(auth, provider)
-            .then((result) => {               
+
+        const isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
+          
+        if (!isMobile) {
+            signInWithPopup(auth, provider)
+            .then((result) => {      
+                      
                 const user = result.user;
 
                 dispatch(setUser({
@@ -39,12 +44,15 @@ const Login = () => {
                     id: user.uid,
                     token: user.accessToken,
                 }))
-
+                
                 navigate('/')
-                // ...
-            }).catch(() => alert('Invalid user'));
+            })
+            .catch(() => alert('Invalid user'));
+        } else {
+            signInWithRedirect(auth, provider)
+        }
     }
-
+    
     return (
         <div className='firstpage'>
             <Form 

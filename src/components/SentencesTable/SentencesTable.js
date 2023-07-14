@@ -132,28 +132,31 @@ const SentencesTable = ({words, items, loadingStatus, setSelectedSentence, cutte
     })
 
     const table = () => {
+
+        if (items.length === 0 || (cuttedArrayOfSentences.length === 0 && searchedSentences.length > 0)) {
+            return (
+                <div className='emptyTable'>There are no sentences!</div>
+            )
+        }
+
         return (
-            <>
-                {items.length === 0 || (cuttedArrayOfSentences.length === 0 && searchedSentences.length > 0)? 
-                    loadingStatus === "idle" ? <div className='emptyTable'>There are no sentences!</div> : null
-                    : 
-                    <div className='sentenceTable'>
-                        <TransitionGroup component="div" className='sentenceTable__wrapper'>
-                            {elements}
-                        </TransitionGroup>
-                    </div>
-                }
-            </>
+            <div className='sentenceTable'>
+                <TransitionGroup component="div" className='sentenceTable__wrapper'>
+                    {elements}
+                </TransitionGroup>
+            </div>
         )
+    }
+    
+    if (loadingStatus === "loading") {
+        return <Spinner/>;
+    } else if (loadingStatus === "error") {
+        return <div className='error'>Something went wrong, error from server</div>
     }
     
     return (
         <>
-            {loadingStatus === "loading" ? 
-            <Spinner/>
-            :
-            loadingStatus === "error" ? <div className='error'>Something went wrong, error from server</div> : table()
-            }
+            {table()}
             {visiblePopup && 
             <TranslationPopup 
                 isTranslationComplete={isTranslationComplete}

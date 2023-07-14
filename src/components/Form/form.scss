@@ -40,7 +40,6 @@
     }
     &__btn {
         margin-left: auto;
-        margin-top: 5px;
         width: 80px;
         height: 30px;
         background-color: #0d6efd;
@@ -69,6 +68,7 @@
         }
     }
     &__bottom {
+        margin-top: 5px;
         display: flex;
         justify-content: flex-end;
         align-items: center;

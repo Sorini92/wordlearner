@@ -42,3 +42,14 @@
         background-color: #333;
     }
 }
+
+@media (max-width: 450px) {
+    .header {
+        &__email {
+            font-size: 12px;
+        }
+        &__logout {
+            font-size: 12px;
+        }
+    }
+}

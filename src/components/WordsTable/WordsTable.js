@@ -192,54 +192,57 @@ const WordsTable = ({
     }
     
     const table = () => {
+
+        if (items.length === 0 || (cuttedArrayOfWords.length === 0 && searchedWord.length > 0) || (cuttedArrayOfWords.length === 0 && selectedLetter.length > 0)) {
+            return (
+                <div className='emptyTable'>There are no words!</div>
+            )
+        }
+
         return (
-            <>
-                {items.length === 0 || (cuttedArrayOfWords.length === 0 && searchedWord.length > 0) || (cuttedArrayOfWords.length === 0 && selectedLetter.length > 0)? 
-                    <div className='emptyTable'>There are no words!</div>
-                    : 
-                    <div className='wordsTable__wrapper'>
-                        <table className='wordsTable'>
-                            <thead>
-                                <tr>
-                                    {isShowTicks ? 
-                                        <th className='wordsTable__ticks'>
-                                            <input type='checkbox' checked={isChecked} onChange={handleSelectAllClick}/>
-                                        </th> 
-                                        :
-                                        null
-                                    }
-                                    <th className='wordsTable__wordHeader'>
-                                        {isReverseWords ? 'Russian words' : 'English words'}
-                                    </th> 
-                                    <th className='wordsTable__translateHeader'>
-                                        {isReverseWords ? 'English words' : 'Russian words'}
-                                    </th>
-                                    {isShowDate ? 
-                                        <th className='wordsTable__dateHeader'>
-                                            Date of adding
-                                        </th> 
-                                        : 
-                                        null
-                                    }
-                                </tr>
-                            </thead>
-                            <TransitionGroup component="tbody">
-                                {elements(cuttedArrayOfWords)}
-                            </TransitionGroup>
-                        </table>
-                    </div>
-                }
-            </>
+            <div className='wordsTable__wrapper'>
+                <table className='wordsTable'>
+                    <thead>
+                        <tr>
+                            {isShowTicks ? 
+                                <th className='wordsTable__ticks'>
+                                    <input type='checkbox' checked={isChecked} onChange={handleSelectAllClick}/>
+                                </th> 
+                                :
+                                null
+                            }
+                            <th className='wordsTable__wordHeader'>
+                                {isReverseWords ? 'Russian words' : 'English words'}
+                            </th> 
+                            <th className='wordsTable__translateHeader'>
+                                {isReverseWords ? 'English words' : 'Russian words'}
+                            </th>
+                            {isShowDate ? 
+                                <th className='wordsTable__dateHeader'>
+                                    Date of adding
+                                </th> 
+                                : 
+                                null
+                            }
+                        </tr>
+                    </thead>
+                    <TransitionGroup component="tbody">
+                        {elements(cuttedArrayOfWords)}
+                    </TransitionGroup>
+                </table>
+            </div>
         )
+    }
+    
+    if (loadingStatus === "loading") {
+        return <Spinner/>;
+    } else if (loadingStatus === "error") {
+        return <div className='error'>Something went wrong, error from server</div>
     }
 
     return (
         <>
-            {loadingStatus === "loading" ? 
-            <Spinner/>
-            :
-            loadingStatus === "error" ? <div className='error'>Something went wrong, error from server</div> : table()
-            }
+            {table()}
         </>
     )
 }

@@ -89,7 +89,8 @@ const Page = ({
         const handleKeyPress = (event) => {
             if (event.key === 'Escape') {
                 setAddModalActive(false);
-                setModifyModalActive(false)
+                setModifyModalActive(false);
+                setQuizModalActive(false);
             }
         };
     

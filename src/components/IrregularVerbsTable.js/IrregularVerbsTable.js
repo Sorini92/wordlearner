@@ -75,46 +75,49 @@ const IrregularVerbsTable = ({loadingStatus, items, searchedWord, cuttedArrayOfW
     }
     
     const table = () => {
+
+        if (items.length === 0 || (cuttedArrayOfWords.length === 0 && searchedWord.length > 0) || (cuttedArrayOfWords.length === 0 && selectedLetter.length > 0)) {
+            return (
+                <div className='emptyTable'>There are no words!</div>
+            )
+        }
+
         return (
-            <>
-                {items.length === 0 || (cuttedArrayOfWords.length === 0 && searchedWord.length > 0) || (cuttedArrayOfWords.length === 0 && selectedLetter.length > 0)? 
-                    loadingStatus === "idle" ? <div className='emptyTable'>There are no words!</div> : <Spinner/> 
-                    : 
-                    <div className='irregularVerbsTable__wrapper'>
-                        <table className='irregularVerbsTable'>
-                            <thead>
-                                <tr>
-                                    <th className='irregularVerbsTable__base'>
-                                        Base form
-                                    </th> 
-                                    <th className='irregularVerbsTable__simple'>
-                                        Past simple
-                                    </th> 
-                                    <th className='irregularVerbsTable__participle'>
-                                        Past participle
-                                    </th>
-                                    <th className='irregularVerbsTable__translation'>
-                                        Translation
-                                    </th> 
-                                </tr>
-                            </thead>
-                            <TransitionGroup component="tbody">
-                                {elements(cuttedArrayOfWords)}
-                            </TransitionGroup>
-                        </table>
-                    </div>
-                }
-            </>
+            <div className='irregularVerbsTable__wrapper'>
+                <table className='irregularVerbsTable'>
+                    <thead>
+                        <tr>
+                            <th className='irregularVerbsTable__base'>
+                                Base form
+                            </th> 
+                            <th className='irregularVerbsTable__simple'>
+                                Past simple
+                            </th> 
+                            <th className='irregularVerbsTable__participle'>
+                                Past participle
+                            </th>
+                            <th className='irregularVerbsTable__translation'>
+                                Translation
+                            </th> 
+                        </tr>
+                    </thead>
+                    <TransitionGroup component="tbody">
+                        {elements(cuttedArrayOfWords)}
+                    </TransitionGroup>
+                </table>
+            </div>
         )
+    }
+    
+    if (loadingStatus === "loading") {
+        return <Spinner/>;
+    } else if (loadingStatus === "error") {
+        return <div className='error'>Something went wrong, error from server</div>
     }
 
     return (
         <>
-            {loadingStatus === "loading" ? 
-            <Spinner/>
-            :
-            loadingStatus === "error" ? <div className='error'>Something went wrong, error from server</div> : table()
-            }
+            {table()}
         </>
     )
 }

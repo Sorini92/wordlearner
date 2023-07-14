@@ -40,7 +40,7 @@ const WordsPage = () => {
         }
         // eslint-disable-next-line
     }, [id]);
-    
+
     return  isAuth ? (
         <>
             <Helmet>

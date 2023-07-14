@@ -23,7 +23,7 @@ export const useGetData = () => {
                         ...doc.data()
                     }
                 })
-
+                
                 return fileredData;
                 
             } catch(e) {

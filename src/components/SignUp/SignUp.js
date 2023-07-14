@@ -18,6 +18,7 @@ const SignUp = () => {
                     id: user.uid,
                     token: user.accessToken,
                 }))
+                
                 navigate('/')
             })
             .catch(console.error)

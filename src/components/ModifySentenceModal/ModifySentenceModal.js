@@ -61,12 +61,20 @@ const ModifySentenceModal = ({width, height, maxLength, active, setActive, addre
         }
     }
 
+    const handleEnterPress = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleSubmit(e);
+        }
+    };
+
     return (
         <div className={active ? "modifySentenceModal active" : "modifySentenceModal"} onClick={() => setActive(false)}>
             <div 
                 style={{width: `${width}px`, height: `${height}px`}}
                 className={active ? "modifySentenceModal__content active" : "modifySentenceModal__content"} 
                 onClick={e => e.stopPropagation()}
+                onKeyDown={handleEnterPress}
             >
                 <form className='modifySentenceModal__form' onSubmit={handleSubmit}>
                     <div className='modifySentenceModal__title'>Modify sentence</div>

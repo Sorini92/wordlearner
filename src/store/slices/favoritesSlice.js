@@ -5,7 +5,7 @@ const initialState = {
     favorites: [],
     sortType: 'from new',
     letter: '',
-    wordsLoadingStatus: 'idle',
+    wordsLoadingStatus: 'loading',
     currentPage: 1,
     totalPages: 1,
     wordsPerUpload: 30,

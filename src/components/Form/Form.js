@@ -28,7 +28,7 @@ const Form = ({type, title, handleClick, to, text, signInWithGoogle}) => {
                 placeholder="password"
             />
             <div className="form__bottom">
-                {type === "Login" ? 
+                {signInWithGoogle ? 
                 <div className="form__google">
                     <div className="form__google-text">
                         Sign in with
