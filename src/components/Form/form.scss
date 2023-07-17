@@ -17,8 +17,10 @@
     }
     &__link {
         color: rgb(74, 204, 193);
+        text-decoration: none;
         &:hover {
             color: rgb(226, 104, 104);
+            text-decoration: underline;
         }
     }
     &__input {

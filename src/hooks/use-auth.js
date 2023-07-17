@@ -12,14 +12,13 @@ const useAuth = () => {
 
     useEffect(() => {
         const auth = getAuth();
+
         const isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
 
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             
             if (user) {
-                
                 if (isMobile) {
-
                     getRedirectResult(auth)
                         .then((result) => {
                             
@@ -36,7 +35,6 @@ const useAuth = () => {
                             }
                             
                         })
-
                 } 
                 
                 dispatch(

@@ -8,7 +8,6 @@ const Login = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
     const auth = getAuth(); 
 
     const handleLogin = (email, password) => {
@@ -35,19 +34,19 @@ const Login = () => {
           
         if (!isMobile) {
             signInWithPopup(auth, provider)
-            .then((result) => {      
-                      
-                const user = result.user;
+                .then((result) => {      
+                        
+                    const user = result.user;
 
-                dispatch(setUser({
-                    email: user.email,
-                    id: user.uid,
-                    token: user.accessToken,
-                }))
-                
-                navigate('/')
-            })
-            .catch(() => alert('Invalid user'));
+                    dispatch(setUser({
+                        email: user.email,
+                        id: user.uid,
+                        token: user.accessToken,
+                    }))
+                    
+                    navigate('/')
+                })
+                .catch(() => alert('Invalid user'));
         } else {
             signInWithRedirect(auth, provider)
         }
