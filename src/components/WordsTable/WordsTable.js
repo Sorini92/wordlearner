@@ -26,7 +26,7 @@ const WordsTable = ({
 
     const [isChecked, setIsChecked] = useState(false);
     const [unbluredWord, setUnbluredWord] = useState('');
-    
+
     const timerRef = useRef(null)
 
     const handleUnblur = (word) => {

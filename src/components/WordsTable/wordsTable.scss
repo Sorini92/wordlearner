@@ -151,11 +151,23 @@
     transition: 0.7s all;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 850px) {
     .wordsTable {
         &__wrapper {
             min-height: 560px;
             margin-top: 15px;
+        }
+        td, th {
+            font-size: 12px;
+            height: 16px;
+        }
+    }
+}
+
+@media (max-width: 600px) {
+    .wordsTable {
+        td, th {
+            height: 15px;
         }
     }
 }
@@ -164,6 +176,22 @@
     .wordsTable {
         td, th {
             font-size: 11px;
+            height: 14px;
+        }
+        &__wrapper {
+            min-height: 400px;
+        }
+        &__translate {
+            &-inner {
+                &-pencil {
+                    height: 14px;
+                    width: 14px;
+                }
+                &-star {
+                    height: 14px;
+                    width: 14px;
+                }
+            }
         }
     }
 }

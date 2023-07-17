@@ -24,8 +24,15 @@
 
 @media (max-width: 655px) {
     .footer {
+        bottom: 60px;
         &__numberOfWords {
             font-weight: 700;
         }
     }
 }
+
+/* @media (max-width: 500px) {
+    .footer {
+        bottom: 60px;
+    }
+} */
