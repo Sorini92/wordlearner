@@ -104,6 +104,8 @@ const WordsTable = ({
         onAddToFavorite(word)
     }
 
+    
+
     const elements = (array) => {
         return array.map((item) => {
 
@@ -140,7 +142,7 @@ const WordsTable = ({
                         <td className='wordsTable__word'>
                             {isReverseWords ? item.russian : item.english}
                         </td> 
-                        <td className='wordsTable__translate'>
+                        <td className='wordsTable__translate' style={isShowDate ? {'paddingRight': 0} : null}>
                             <div className='wordsTable__translate-inner'>
                                 <div
                                     onClick={() => handleUnblur(item.id)} 
@@ -193,9 +195,21 @@ const WordsTable = ({
     
     const table = () => {
 
-        if (items.length === 0 || (cuttedArrayOfWords.length === 0 && searchedWord.length > 0) || (cuttedArrayOfWords.length === 0 && selectedLetter.length > 0)) {
+        if (items.length === 0) {
+            return (
+                <div className='emptyTable'>You have not added words yet!</div>
+            )
+        }
+
+        if ((cuttedArrayOfWords.length === 0 && selectedLetter.length > 0)) {
             return (
                 <div className='emptyTable'>There are no words!</div>
+            )
+        }
+
+        if ((cuttedArrayOfWords.length === 0 && searchedWord.length > 0)) {
+            return (
+                <div className='emptyTable'>No searched word!</div>
             )
         }
 

@@ -8,9 +8,13 @@
         display: flex;
     }
     &__tab {
-        margin-right: 20px;
+        position: relative;
         text-decoration: none;
         color: black;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        padding: 0 15px;
         &:hover {
             opacity: 0.7;
         }
@@ -62,64 +66,27 @@
 }
 
 .activeTab {
-    text-decoration: underline;
-    color: #fe5f1e;
+    transition: 1s all;
+}
+
+.activeTab::after {
+    content: '';
+    position: absolute;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #0d6efd;
 }
 
 @media (max-width: 750px) {
     .navigation {
         &__search {
-            width: 195px;
+            box-sizing: border-box;
+            width: 100%;
             &:focus {
-                width: 300px;
-            }
-        }
-        
-    }
-}
-
-@media (max-width: 550px) {
-    .navigation {
-        &__search {
-            width: 195px;
-            &:focus {
-                width: 195px;
-            }
-        }
-        
-    }
-}
-
-@media (max-width: 450px) {
-    .navigation {
-        &__search {
-            width: 150px;
-            &:focus {
-                width: 150px;
-            }
-        }
-        
-    }
-}
-
-@media (max-width: 380px) {
-    .navigation {
-        &__search {
-            width: 120px;
-            &:focus {
-                width: 120px;
-            }
-        }
-        
-    }
-}
-
-@media (max-width: 350px) {
-    .navigation {
-        &__search {
-            width: 100px;
-            &:focus {
-                width: 100px;
+                box-sizing: border-box;
+                width: 100%;
             }
         }
         

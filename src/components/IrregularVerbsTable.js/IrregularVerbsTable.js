@@ -76,9 +76,21 @@ const IrregularVerbsTable = ({loadingStatus, items, searchedWord, cuttedArrayOfW
     
     const table = () => {
 
-        if (items.length === 0 || (cuttedArrayOfWords.length === 0 && searchedWord.length > 0) || (cuttedArrayOfWords.length === 0 && selectedLetter.length > 0)) {
+        if (items.length === 0) {
+            return (
+                <div className='emptyTable'>You have not added words yet!</div>
+            )
+        }
+
+        if ((cuttedArrayOfWords.length === 0 && selectedLetter.length > 0)) {
             return (
                 <div className='emptyTable'>There are no words!</div>
+            )
+        }
+
+        if ((cuttedArrayOfWords.length === 0 && searchedWord.length > 0)) {
+            return (
+                <div className='emptyTable'>No searched word!</div>
             )
         }
 

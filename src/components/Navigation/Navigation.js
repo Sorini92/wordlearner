@@ -18,7 +18,7 @@ const Navigation = ({setSearched, setOffset, numberPerUpload, setFilteredArrayLe
 
     useEffect(() => {
         const activeTab = links.findIndex((item) => item.to === `/${location.pathname.split('/')[1]}`);
-
+        
         setActive(activeTab);
         // eslint-disable-next-line
     }, [location]);
@@ -27,7 +27,7 @@ const Navigation = ({setSearched, setOffset, numberPerUpload, setFilteredArrayLe
         setText(value)
         setSearched(value)
     }
-
+    
     const clearSearch = () => {
         setText('')
         setSearched('')
@@ -41,7 +41,7 @@ const Navigation = ({setSearched, setOffset, numberPerUpload, setFilteredArrayLe
     const handleTabClick = (index) => {
         setActive(index);
     };
-
+    
     const tabs = links.map((item, i) => {
         return (
             <Link 

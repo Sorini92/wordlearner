@@ -30,6 +30,8 @@
         overflow: hidden;
         padding: 5px 0;
         width: 90px;
+        animation-name: animateOpacity;
+        animation-duration: .7s;
         ul {
             overflow: hidden;
             padding: 0;

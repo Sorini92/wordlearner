@@ -3,8 +3,8 @@
     position: relative;
     &__wrapper {
         padding-top: 15px;
-        min-height: 710px;
-        padding-bottom: 100px;
+        min-height: 670px;
+        padding-bottom: 125px;
         ul {
             position: relative;
             display: grid;
@@ -80,11 +80,13 @@
     background-color: palegoldenrod !important;
 }
 
-.emptyTable {
+/* .emptyTable {
     margin-top: 200px;
     text-align: center;
     font-size: 50px;
-} 
+    animation-name: animateOpacity;
+    animation-duration: 1s;
+}  */
 
 .sentence-enter {
     opacity: 0;

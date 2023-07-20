@@ -8,9 +8,13 @@
         display: flex;
     }
     &__tab {
-        margin-right: 20px;
         text-decoration: none;
+        position: relative;
         color: black;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        padding: 0 15px;
         &:hover {
             opacity: 0.7;
         }
@@ -29,7 +33,19 @@
     }
 }
 
-.activeTab {
-    text-decoration: underline;
-    color: #fe5f1e;
+.activeWordsTab {
+    //color: #fe5f1e;
+    transition: 0.3s all;
+}
+
+.activeWordsTab::after {
+    content: '';
+    position: absolute;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fe5f1e;
+    animation-name: animateOpacityAndWidth;
+    animation-duration: .5s;
 }

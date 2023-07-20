@@ -133,9 +133,15 @@ const SentencesTable = ({words, items, loadingStatus, setSelectedSentence, cutte
 
     const table = () => {
 
-        if (items.length === 0 || (cuttedArrayOfSentences.length === 0 && searchedSentences.length > 0)) {
+        if (items.length === 0) {
             return (
-                <div className='emptyTable'>There are no sentences!</div>
+                <div className='emptyTable'>You have not added sentences yet!</div>
+            )
+        }
+
+        if ((cuttedArrayOfSentences.length === 0 && searchedSentences.length > 0)) {
+            return (
+                <div className='emptyTable'>No searched sentence!</div>
             )
         }
 

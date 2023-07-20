@@ -1,5 +1,7 @@
 .flashcards {
     position: relative;
+    animation-name: animateOpacity;
+    animation-duration: 1s;
     &__close  {
         max-width: 20px;
         max-height: 20px;

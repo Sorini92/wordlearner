@@ -60,7 +60,7 @@ const useFilteredArray = (array, selectedLetter, searchedWord) => {
 
     return { 
         filtered: filtered.current, 
-        filteredLength: filteredLength.current 
+        filteredLength: filteredLength.current,
     };
 };
 

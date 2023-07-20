@@ -31,7 +31,7 @@ const WordsNavigation = ({showSetting, setIsShowDate, setIsShowTicks, setIsRever
             <Link 
                 key={i} 
                 to={`${item.to}`} 
-                className={i === active ? `wordsNavigation__tab activeTab` : `wordsNavigation__tab`} 
+                className={i === active ? `wordsNavigation__tab activeWordsTab` : `wordsNavigation__tab`} 
                 onClick={() => handleTabClick(i)}>
                     {item.text}
             </Link>
@@ -44,6 +44,7 @@ const WordsNavigation = ({showSetting, setIsShowDate, setIsShowTicks, setIsRever
             <div className="wordsNavigation">
                 <div className="wordsNavigation__tabs">
                     {tabs}
+                    <span className="tabsIndicator"/>
                 </div>
                 {showSetting ? 
                 <TableSetting
