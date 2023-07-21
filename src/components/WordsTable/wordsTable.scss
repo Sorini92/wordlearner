@@ -3,6 +3,8 @@
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
+    animation-name: animateOpacity;
+    animation-duration: .7s;
     &__wrapper {
         min-height: 630px;
         padding-bottom: 130px;
