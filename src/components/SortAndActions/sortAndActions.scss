@@ -8,7 +8,7 @@
     &__learnIcon {
         position: absolute;
         left: 50%;
-        transform: translateX(-50%);
+        transform: translateX(-100%);
         height: 40px;
         width: 40px;
         cursor: pointer;
@@ -36,7 +36,6 @@
         &__learnIcon {
             left: 100%;
             transform: translateX(-100%);
-            //top: 10px;
         }
     }
 }
