@@ -1,6 +1,8 @@
 .sentenceTable {
     margin-top: 10px;
     position: relative;
+    animation-name: animateOpacity;
+    animation-duration: .7s;
     &__wrapper {
         padding-top: 15px;
         min-height: 670px;
