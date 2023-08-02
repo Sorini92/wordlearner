@@ -1,9 +1,9 @@
 {
   "files": {
     "main.css": "/wordlearner/static/css/main.cab00454.css",
-    "main.js": "/wordlearner/static/js/main.b19670a9.js",
-    "static/js/999.d398ea0b.chunk.js": "/wordlearner/static/js/999.d398ea0b.chunk.js",
-    "static/js/124.1743ff82.chunk.js": "/wordlearner/static/js/124.1743ff82.chunk.js",
+    "main.js": "/wordlearner/static/js/main.e925016f.js",
+    "static/js/999.5a0bfb53.chunk.js": "/wordlearner/static/js/999.5a0bfb53.chunk.js",
+    "static/js/124.49a32ca2.chunk.js": "/wordlearner/static/js/124.49a32ca2.chunk.js",
     "static/js/99.1cc3455e.chunk.js": "/wordlearner/static/js/99.1cc3455e.chunk.js",
     "static/css/127.bbef8d6d.chunk.css": "/wordlearner/static/css/127.bbef8d6d.chunk.css",
     "static/js/127.74e2e0bc.chunk.js": "/wordlearner/static/js/127.74e2e0bc.chunk.js",
@@ -15,8 +15,8 @@
     "static/js/161.2cb284b0.chunk.js": "/wordlearner/static/js/161.2cb284b0.chunk.js",
     "static/js/270.248f9ff7.chunk.js": "/wordlearner/static/js/270.248f9ff7.chunk.js",
     "static/js/636.a8d31286.chunk.js": "/wordlearner/static/js/636.a8d31286.chunk.js",
-    "static/js/848.8986fc37.chunk.js": "/wordlearner/static/js/848.8986fc37.chunk.js",
-    "static/js/4.fa990118.chunk.js": "/wordlearner/static/js/4.fa990118.chunk.js",
+    "static/js/848.c78e7697.chunk.js": "/wordlearner/static/js/848.c78e7697.chunk.js",
+    "static/js/4.c07f0d9d.chunk.js": "/wordlearner/static/js/4.c07f0d9d.chunk.js",
     "static/css/60.de3b7a4a.chunk.css": "/wordlearner/static/css/60.de3b7a4a.chunk.css",
     "static/media/leftarrow.png": "/wordlearner/static/media/leftarrow.575cdb3d669802484cae.png",
     "static/media/rightarrow.png": "/wordlearner/static/media/rightarrow.c5df6e3a753fa7ac4bd6.png",
@@ -34,9 +34,9 @@
     "static/media/delete.svg": "/wordlearner/static/media/delete.111dd6f7fa9b11341219ad2218e407e9.svg",
     "index.html": "/wordlearner/index.html",
     "main.cab00454.css.map": "/wordlearner/static/css/main.cab00454.css.map",
-    "main.b19670a9.js.map": "/wordlearner/static/js/main.b19670a9.js.map",
-    "999.d398ea0b.chunk.js.map": "/wordlearner/static/js/999.d398ea0b.chunk.js.map",
-    "124.1743ff82.chunk.js.map": "/wordlearner/static/js/124.1743ff82.chunk.js.map",
+    "main.e925016f.js.map": "/wordlearner/static/js/main.e925016f.js.map",
+    "999.5a0bfb53.chunk.js.map": "/wordlearner/static/js/999.5a0bfb53.chunk.js.map",
+    "124.49a32ca2.chunk.js.map": "/wordlearner/static/js/124.49a32ca2.chunk.js.map",
     "99.1cc3455e.chunk.js.map": "/wordlearner/static/js/99.1cc3455e.chunk.js.map",
     "127.bbef8d6d.chunk.css.map": "/wordlearner/static/css/127.bbef8d6d.chunk.css.map",
     "127.74e2e0bc.chunk.js.map": "/wordlearner/static/js/127.74e2e0bc.chunk.js.map",
@@ -48,12 +48,12 @@
     "161.2cb284b0.chunk.js.map": "/wordlearner/static/js/161.2cb284b0.chunk.js.map",
     "270.248f9ff7.chunk.js.map": "/wordlearner/static/js/270.248f9ff7.chunk.js.map",
     "636.a8d31286.chunk.js.map": "/wordlearner/static/js/636.a8d31286.chunk.js.map",
-    "848.8986fc37.chunk.js.map": "/wordlearner/static/js/848.8986fc37.chunk.js.map",
-    "4.fa990118.chunk.js.map": "/wordlearner/static/js/4.fa990118.chunk.js.map",
+    "848.c78e7697.chunk.js.map": "/wordlearner/static/js/848.c78e7697.chunk.js.map",
+    "4.c07f0d9d.chunk.js.map": "/wordlearner/static/js/4.c07f0d9d.chunk.js.map",
     "60.de3b7a4a.chunk.css.map": "/wordlearner/static/css/60.de3b7a4a.chunk.css.map"
   },
   "entrypoints": [
     "static/css/main.cab00454.css",
-    "static/js/main.b19670a9.js"
+    "static/js/main.e925016f.js"
   ]
 }
