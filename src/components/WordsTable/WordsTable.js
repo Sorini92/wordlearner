@@ -132,7 +132,7 @@ const WordsTable = ({
                             <td className='wordsTable__ticks'>
                                 <input 
                                     checked={selectedWords.includes(item.id) || isChecked} 
-                                    onChange={(e) => handleSelect(item.id)} 
+                                    onChange={() => handleSelect(item.id)} 
                                     type='checkbox'
                                 />
                             </td>
