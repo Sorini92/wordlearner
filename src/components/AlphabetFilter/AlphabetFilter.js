@@ -31,6 +31,7 @@ const AlpabetFilter = ({searchedWord, setLetter, letter, setOffset, wordsPerUplo
             return (
                 <Fragment key={i}>
                     <div 
+                        title={`Filter by "${item}" letter`}
                         className={item === letter ? 'alphabet__letter activeLetter' : 'alphabet__letter'} 
                         onClick={() => handleSelectLetter(item, i)}
                     >
@@ -48,22 +49,22 @@ const AlpabetFilter = ({searchedWord, setLetter, letter, setOffset, wordsPerUplo
             <div className='alphabet__wrapper'>
                 <div className='alphabet__switcher' onClick={() => handleSwitchAlphabet()}>
                     {switcher ? 
-                    <>
+                    <div title='Change to russian alphabet'>
                         <img src={en} alt="english alphabet icon"/>
                         <img src={arrow} alt="arrow"/>
                         <img src={ru} alt="russian alphabet icon"/>
-                    </>  :
-                    <>
+                    </div>  :
+                    <div title='Change to english alphabet'>
                         <img src={ru} alt="russian alphabet icon"/>
                         <img src={arrow} alt="arrow"/>
                         <img src={en} alt="english alphabet icon"/>
-                    </> 
+                    </div> 
                     }
                 </div>
                 <div className='alphabet__dot'>&bull;</div>
                 {switcher ? elements(englishAlphabet) : elements(russianAlphabet)}
                 <div className='alphabet__all' onClick={() => onClearLetter()}>
-                    <img src={all} alt="all words"/>
+                    <img title='Show all words' src={all} alt="all words"/>
                 </div>
             </div> : null
             }

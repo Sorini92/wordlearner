@@ -4,7 +4,7 @@ import google from "../../resources/google.png";
 import PropTypes from 'prop-types';
 import './form.scss';
 
-const Form = ({type, title, handleClick, to, text, signInWithGoogle}) => {
+const Form = ({type, title, handleClick, to, text, signInWithGoogle, isError}) => {
 
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
@@ -27,6 +27,7 @@ const Form = ({type, title, handleClick, to, text, signInWithGoogle}) => {
                 onChange={(e) => setPass(e.target.value)}
                 placeholder="password"
             />
+            {isError.error ? <div className="authError">{isError.message}</div> : null}
             <div className="form__bottom">
                 {signInWithGoogle ? 
                 <div className="form__google">
@@ -56,6 +57,7 @@ Form.propTypes = {
     handleClick:  PropTypes.func.isRequired,
     to:  PropTypes.string.isRequired, 
     text:  PropTypes.string.isRequired, 
+    isError: PropTypes.object.isRequired
 }
 
 export default Form;

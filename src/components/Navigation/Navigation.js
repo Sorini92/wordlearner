@@ -76,6 +76,7 @@ const Navigation = ({setSearched, setOffset, numberPerUpload, setFilteredArrayLe
                         <img src={scope} className="navigation__search-scope" alt="scope"/>
                         {text.length > 0 ? 
                         <div
+                            title="Clear"
                             className="navigation__searchclear"
                             onClick={() => clearSearch('')}
                         >

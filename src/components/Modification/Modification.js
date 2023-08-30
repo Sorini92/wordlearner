@@ -6,8 +6,8 @@ import './modification.scss';
 const Modification = ({handleAddModal, onDelete}) => {
     return (
         <div className='modification'>
-            <img onClick={() => handleAddModal()} className='modification__icon' src={add} alt="add"/>
-            {onDelete ? <img onClick={() => onDelete()} className='modification__icon' src={remove} alt="delete"/> : null}
+            <img title='Add new item' onClick={() => handleAddModal()} className='modification__icon' src={add} alt="add"/>
+            {onDelete ? <img title='Delete item' onClick={() => onDelete()} className='modification__icon' src={remove} alt="delete"/> : null}
         </div>
     )
 }
