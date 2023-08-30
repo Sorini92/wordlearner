@@ -153,14 +153,14 @@ const WordsTable = ({
                                 {!isShowDate ? 
                                 <>
                                     <div onClick={() => handleModifyModal()} className='wordsTable__translate-inner-pencil'>
-                                        <img src={pencil} alt='modify pencil'/>
+                                        <img title='Modify word' src={pencil} alt='modify pencil'/>
                                     </div> 
                                     <div 
                                         onClick={() => handleStarClick(item)} 
                                         className='wordsTable__translate-inner-star'>
                                         {item.favorite ? 
-                                            <img className='' src={fullStar} alt="full star"/> : 
-                                            <img src={star} alt="star"/> 
+                                            <img title='Delete from favorite words' className='' src={fullStar} alt="full star"/> : 
+                                            <img title='Add to favorite words' src={star} alt="star"/> 
                                         }
                                     </div>
                                 </> : null
@@ -172,14 +172,14 @@ const WordsTable = ({
                                 <div className='wordsTable__translate-inner'>
                                     {isShowDate ? onFormattedDate(item.date) : null}
                                     <div onClick={() => handleModifyModal()} className='wordsTable__translate-inner-pencil'>
-                                        <img src={pencil} alt='modify pencil'/>
+                                        <img title='Modify word' src={pencil} alt='modify pencil'/>
                                     </div> 
                                     <div 
                                         onClick={() => handleStarClick(item)} 
                                         className='wordsTable__translate-inner-star'>
                                         {item.favorite ? 
-                                            <img className='' src={fullStar} alt="full star"/> : 
-                                            <img src={star} alt="star"/> 
+                                            <img title='Delete from favorite words' className='' src={fullStar} alt="full star"/> : 
+                                            <img title='Add to favorite words' src={star} alt="star"/> 
                                         }
                                     </div>
                                 </div>

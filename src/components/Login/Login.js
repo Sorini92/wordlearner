@@ -3,8 +3,14 @@ import { useDispatch } from 'react-redux';
 import { getAuth, signInWithEmailAndPassword, signInWithRedirect, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 import {setUser} from '../../store/slices/userSlice';
+import { useState } from 'react';
 
 const Login = () => {
+
+    const [isError, setIsError] = useState({
+        error: false,
+        message: ''
+    });
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -22,7 +28,15 @@ const Login = () => {
                 
                 navigate('/')
             })
-            .catch(() => alert('Invalid user'))
+            .catch((e) => {
+                const errorMessage = e.message.split('/')[1].slice(0, -2).split('-').join(' ')
+                const errorMessageWithUpperCase = errorMessage.charAt(0).toUpperCase() + errorMessage.slice(1)
+
+                setIsError({
+                    error: true,
+                    message: errorMessageWithUpperCase
+                })
+            })
 
     }
 
@@ -60,6 +74,7 @@ const Login = () => {
                 type='Login'  
                 title='sign in' 
                 handleClick={handleLogin}
+                isError={isError}
                 signInWithGoogle={signInWithGoogle}
             />
         </div>

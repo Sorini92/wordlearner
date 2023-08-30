@@ -70,15 +70,15 @@ const Pagination = ({items, cuttedArray, loadingStatus, filteredArrayLength, num
         if (currentPage === 1) {
             return (
                 <>
-                    <button disabled className="pagination__prev disabled" onClick={() => dispatch(setPage(1))}>&laquo;</button>
-                    <button disabled className="pagination__prev disabled" onClick={() => dispatch(setPage(currentPage - 1))}>&#8249;</button>
+                    <button title='First page' disabled className="pagination__prev disabled" onClick={() => dispatch(setPage(1))}>&laquo;</button>
+                    <button title='Previous page' disabled className="pagination__prev disabled" onClick={() => dispatch(setPage(currentPage - 1))}>&#8249;</button>
                 </>
             )
         } else {
             return (
                 <>
-                    <button className="pagination__prev" onClick={() => dispatch(setPage(1))}>&laquo;</button>
-                    <button className="pagination__prev" onClick={() => dispatch(setPage(currentPage - 1))}>&#8249;</button>
+                    <button title='First page' className="pagination__prev" onClick={() => dispatch(setPage(1))}>&laquo;</button>
+                    <button title='Previous page' className="pagination__prev" onClick={() => dispatch(setPage(currentPage - 1))}>&#8249;</button>
                 </>
             )
         }
@@ -88,15 +88,15 @@ const Pagination = ({items, cuttedArray, loadingStatus, filteredArrayLength, num
         if (currentPage === totalPages) {
             return (
                 <>
-                    <button disabled className="pagination__next disabled" onClick={() => dispatch(setPage(currentPage + 1))}>&#8250;</button>
-                    <button disabled className="pagination__next disabled" onClick={() => dispatch(setPage(totalPages))}>&raquo;</button>
+                    <button title='Next page' disabled className="pagination__next disabled" onClick={() => dispatch(setPage(currentPage + 1))}>&#8250;</button>
+                    <button title='Last page' disabled className="pagination__next disabled" onClick={() => dispatch(setPage(totalPages))}>&raquo;</button>
                 </>
             )
         } else {
             return (
                 <>
-                    <button className="pagination__next" onClick={() => dispatch(setPage(currentPage + 1))}>&#8250;</button>
-                    <button className="pagination__next" onClick={() => dispatch(setPage(totalPages))}>&raquo;</button>
+                    <button title='Next page' className="pagination__next" onClick={() => dispatch(setPage(currentPage + 1))}>&#8250;</button>
+                    <button title='Last page' className="pagination__next" onClick={() => dispatch(setPage(totalPages))}>&raquo;</button>
                 </>
             )
         }

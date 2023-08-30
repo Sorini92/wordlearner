@@ -78,23 +78,23 @@ const FlashCards = ({setActive, setVariant, items, loadingStatus}) => {
 
     return (
         <div className='flashcards'>
-            <div onClick={() => setActive(false)} className='flashcards__close'>&times;</div>
+            <div title='Close' onClick={() => setActive(false)} className='flashcards__close'>&times;</div>
 
             <div className='flashcards__wrapper'>
                 {indexOfCard === 0 ? 
-                    <img src={leftArrow} alt='left arrow' className='flashcards__left'/> 
+                    <img title='Previous word' src={leftArrow} alt='left arrow' className='flashcards__left'/> 
                     : 
-                    <img onClick={handlePrevClick} src={leftArrow} alt='left arrow' className='flashcards__left'/>
+                    <img title='Previous word' onClick={handlePrevClick} src={leftArrow} alt='left arrow' className='flashcards__left'/>
                 }
 
-                <div className={isFlipped ? 'flashcards__cards flipped' : 'flashcards__cards'} onClick={handleCardClick}>
+                <div title='Flip card' className={isFlipped ? 'flashcards__cards flipped' : 'flashcards__cards'} onClick={handleCardClick}>
                     {loadingStatus === 'loading' ? <Spinner/> : cards(arrayOfCards)}
                 </div>
 
                 {indexOfCard === arrayOfCards.length ? 
-                    <img src={rightArrow} alt='right arrow' className='flashcards__right'/> 
+                    <img title='Next word' src={rightArrow} alt='right arrow' className='flashcards__right'/> 
                     : 
-                    <img onClick={handleNextClick} src={rightArrow} alt='right arrow' className='flashcards__right'/>
+                    <img title='Next word' onClick={handleNextClick} src={rightArrow} alt='right arrow' className='flashcards__right'/>
                 }
             </div>
 

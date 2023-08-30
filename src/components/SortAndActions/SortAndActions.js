@@ -16,7 +16,7 @@ const SortAndActions = ({address, items, handleAddModal, onDelete, filteredArray
             }
 
             {handleQuizModal && (address.thirdUrl === 'words' || address.thirdUrl === 'favoriteWords') ? 
-                <img onClick={() => handleQuizModal()} className='modifying__learnIcon' src={learn} alt="quiz"/>:
+                <img title='Quiz and Flash cards' onClick={() => handleQuizModal()} className='modifying__learnIcon' src={learn} alt="quiz"/>:
                 null
             }
 

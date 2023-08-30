@@ -76,6 +76,11 @@
     }
 }
 
+.authError {
+    color: red;
+    margin: 0 auto;
+}
+
 @media (max-width: 450px) {
     .form {
         width: 300px;

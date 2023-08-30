@@ -68,7 +68,7 @@ const TableSetting = ({address, setIsShowDate, setIsShowTicks, setIsReverseWords
         <>
             <div ref={selectRef} className="tableSetting">
                 <div className="tableSetting__label">
-                    <img src={settingImg} alt='setting img' onClick={toggleVisiblePopup}/>
+                    <img title='Setting' src={settingImg} alt='setting img' onClick={toggleVisiblePopup}/>
                 </div>
                 {visiblePopup && (
                     <div className="tableSetting__popup">

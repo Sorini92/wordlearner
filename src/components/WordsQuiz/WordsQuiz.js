@@ -138,7 +138,7 @@ const WordsQuiz = ({setVariant, setActive, items, loadingStatus}) => {
     return (
         <div className="wordsquiz">
             <div className='wordsquiz__form'>
-                <div onClick={() => onHandleClose()} className='wordsquiz__close'>&times;</div>
+                <div title='Close' onClick={() => onHandleClose()} className='wordsquiz__close'>&times;</div>
 
                 <div className='wordsquiz__wrapper'>
                     <div className='wordsquiz__score'>
