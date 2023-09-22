@@ -24,13 +24,14 @@ const WordsQuiz = ({setVariant, setActive, items, loadingStatus}) => {
 
     const nextQuestion = () => {
         let copiedArray = [...items];
-        const randomIndex = getRandomInt(copiedArray.length);
-        const correctAnswer = copiedArray[randomIndex];
+        const randomIndexForAnswer = getRandomInt(copiedArray.length);
+        const correctAnswer = copiedArray[randomIndexForAnswer];
         const variantsOfAnswers = [];
         
         for (let i = 0; i < 3; i++) {
-            if (randomIndex !== getRandomInt(copiedArray.length)) {
-                variantsOfAnswers.push(copiedArray[getRandomInt(copiedArray.length)]);
+            let randomIndexForVariant = getRandomInt(copiedArray.length);
+            if (randomIndexForAnswer !== randomIndexForVariant) {
+                variantsOfAnswers.push(copiedArray[randomIndexForVariant]);
             } else {
                 i = i - 1;
             }          
@@ -40,7 +41,7 @@ const WordsQuiz = ({setVariant, setActive, items, loadingStatus}) => {
         
         setVariants(shuffle(variantsOfAnswers));
         setCorrect(correctAnswer);
-        setOneQuestion([copiedArray[randomIndex].english]);
+        setOneQuestion([copiedArray[randomIndexForAnswer].english]);
         setAnswer('');
         setIndex('');
         setIsFalse(false);
