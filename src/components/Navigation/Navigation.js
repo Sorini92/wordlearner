@@ -70,6 +70,7 @@ const Navigation = ({setSearched, setOffset, numberPerUpload, setFilteredArrayLe
                          <input 
                             value={text}
                             className="navigation__search"
+                            name="search"
                             placeholder="Search"
                             onChange={(e) => handleSearch(e.target.value.replace(/[^a-z а-я]/g, ''))}
                         />
