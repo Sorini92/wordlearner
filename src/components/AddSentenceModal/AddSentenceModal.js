@@ -80,7 +80,7 @@ const AddSentenceModal = ({width, height, maxLength, active, setActive, address,
                         <textarea 
                             value={english}
                             maxLength={maxLength}
-                            onChange={(e) => setEnglish(e.target.value.replace(/[^a-zA-Z.,!?\- ]/g, ''))}
+                            onChange={(e) => setEnglish(e.target.value.replace(/[^a-zA-Z.,!?\-() ]/g, ''))}
                             type="text" 
                             id='english' 
                             placeholder='Write here' 
@@ -91,7 +91,7 @@ const AddSentenceModal = ({width, height, maxLength, active, setActive, address,
                         <textarea 
                             value={russian}
                             maxLength={maxLength}
-                            onChange={(e) => setRussian(e.target.value.replace(/[^а-яА-Я.,!?\- ]/g, ''))}
+                            onChange={(e) => setRussian(e.target.value.replace(/[^а-яА-Я.,!?\-() ]/g, ''))}
                             type="text" 
                             id='russian' 
                             placeholder='Write here' 

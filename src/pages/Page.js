@@ -362,7 +362,7 @@ const Page = ({
             <AddWordModal 
                 width={290}
                 height={230}
-                maxLength={30}
+                maxLength={40}
                 active={addModalActive} 
                 setActive={setAddModalActive} 
                 address={address}
@@ -374,7 +374,7 @@ const Page = ({
             <ModifyWordModal
                 width={290}
                 height={230}
-                maxLength={30}
+                maxLength={40}
                 active={modifyModalActive} 
                 setActive={setModifyModalActive} 
                 address={address}
