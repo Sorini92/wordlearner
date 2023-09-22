@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
 import PropTypes from 'prop-types';
 import makeSentence from "../../utils/makeSentense";
-import compareArrays from "../../utils/compareArrays";
 import './modifySentenceModal.scss';
 
 const ModifySentenceModal = ({width, height, maxLength, active, setActive, address, func, items,  selected, setMessage, setShowMessage}) => {
@@ -28,37 +27,27 @@ const ModifySentenceModal = ({width, height, maxLength, active, setActive, addre
         
         const englishArray = english.toLowerCase().split(/([ ,.]+)/).map(item=> item.trim()).filter(item => item !== ' ' && item !== '')
         const russianArray = russian.toLowerCase().split(/([ ,.]+)/).map(item=> item.trim()).filter(item => item !== ' ' && item !== '')
-        
-        const englishIndex = items.findIndex(item => (compareArrays(item.english, englishArray)))
-        
-        if (englishIndex === -1) {
             
-            const obj = {
-                english: englishArray,
-                russian: russianArray,
-                id: dataForModify.id,
-                date: dataForModify.date
-            }
-            
-            dispatch(func(obj));
-
-            setActive(false);
-
-            const colRef = collection(database, address.firstUrl, address.secondUrl, address.thirdUrl)
-            setDoc(doc(colRef, obj.id), obj);
-
-            setShowMessage(true);
-            setMessage({
-                text: "It's was successfully modifyied!",
-                color: 'green'
-            })
-        } else {
-            setShowMessage(true);
-            setMessage({
-                text: "It's already there!",
-                color: 'red'
-            })
+        const obj = {
+            english: englishArray,
+            russian: russianArray,
+            id: dataForModify.id,
+            date: dataForModify.date
         }
+        
+        dispatch(func(obj));
+
+        setActive(false);
+
+        const colRef = collection(database, address.firstUrl, address.secondUrl, address.thirdUrl)
+        setDoc(doc(colRef, obj.id), obj);
+
+        setShowMessage(true);
+        setMessage({
+            text: "It's was successfully modifyied!",
+            color: 'green'
+        })
+        
     }
 
     const handleEnterPress = (e) => {

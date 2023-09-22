@@ -26,41 +26,31 @@ const ModifyWordModal = ({width, height, maxLength, active, setActive, address, 
 
         const favoriteColRef = collection(database, address.firstUrl, address.secondUrl, 'favoriteWords')
         const wordsColRef = collection(database, address.firstUrl, address.secondUrl, 'words')
-        
-        const index = items.findIndex(e => e.english === english.toLowerCase());
-        
-        if (index === -1) {
-            
-            const obj = {
-                favorite : dataForModify.favorite,
-                english: english.toLowerCase(),
-                russian: russian.toLowerCase(),
-                id: dataForModify.id,
-                date: dataForModify.date
-            }
-            
-            dispatch(func(obj));
-            setActive(false);
-
-            if (dataForModify.favorite) {
-                setDoc(doc(favoriteColRef, obj.id), obj);
-                setDoc(doc(wordsColRef, obj.id), obj);
-            } else {
-                setDoc(doc(wordsColRef, obj.id), obj);
-            }
-
-            setShowMessage(true);
-            setMessage({
-                text: "It's was successfully modifyied!",
-                color: 'green'
-            })
-        } else {
-            setShowMessage(true);
-            setMessage({
-                text: "It's already there!",
-                color: 'red'
-            })
+    
+        const obj = {
+            favorite : dataForModify.favorite,
+            english: english.toLowerCase(),
+            russian: russian.toLowerCase(),
+            id: dataForModify.id,
+            date: dataForModify.date
         }
+        
+        dispatch(func(obj));
+        setActive(false);
+
+        if (dataForModify.favorite) {
+            setDoc(doc(favoriteColRef, obj.id), obj);
+            setDoc(doc(wordsColRef, obj.id), obj);
+        } else {
+            setDoc(doc(wordsColRef, obj.id), obj);
+        }
+
+        setShowMessage(true);
+        setMessage({
+            text: "It's was successfully modifyied!",
+            color: 'green'
+        })
+        
     }
 
     const handleEnterPress = (e) => {
