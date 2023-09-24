@@ -12,7 +12,7 @@ const useAuth = () => {
 
     useEffect(() => {
         const auth = getAuth();
-
+        
         const isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
 
         const unsubscribe = onAuthStateChanged(auth, (user) => {

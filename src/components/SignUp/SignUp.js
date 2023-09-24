@@ -1,11 +1,13 @@
 import Form from '../Form/Form';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import {setUser} from '../../store/slices/userSlice';
 
 const SignUp = () => {
+
+    const {email} = useSelector(state => state.user)
 
     const [isError, setIsError] = useState({
         error: false,
@@ -14,6 +16,13 @@ const SignUp = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if(email !== null) {
+            navigate('/')
+        }
+        // eslint-disable-next-line
+    }, [email])
     
     const handleRegister = (email, password) => {
         const auth = getAuth();

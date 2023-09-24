@@ -1,11 +1,13 @@
 import Form from '../Form/Form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getAuth, signInWithEmailAndPassword, signInWithRedirect, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 import {setUser} from '../../store/slices/userSlice';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const Login = () => {
+
+    const {email} = useSelector(state => state.user)
 
     const [isError, setIsError] = useState({
         error: false,
@@ -15,6 +17,13 @@ const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const auth = getAuth(); 
+    
+    useEffect(() => {
+        if(email !== null) {
+            navigate('/')
+        }
+        // eslint-disable-next-line
+    }, [email])
 
     const handleLogin = (email, password) => {
 
