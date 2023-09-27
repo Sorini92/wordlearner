@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { CSSTransition } from "react-transition-group";
+import Portal from "../Portal/Portal";
 import './message.scss';
 
 const Message = ({showMessage, message, setShowMessage, color}) => {
@@ -18,11 +20,20 @@ const Message = ({showMessage, message, setShowMessage, color}) => {
     }, [showMessage]);
 
     return (
-        <div className={showMessage ? "message active" : "message"}>
-            <div style={{"color": `${color}`}}  className={showMessage ? "message__content active" : "message__content"}>
-                {message}
-            </div>
-        </div>
+        <Portal>
+            <CSSTransition
+                in={showMessage}
+                timeout={{ enter: 2100, exit: 300 }}
+                unmountOnExit
+                classNames={"message"}
+            >
+                <div className="message">
+                    <div style={{"color": `${color}`}}  className="message__content">
+                        {message}
+                    </div>
+                </div>
+            </CSSTransition>
+        </Portal>
     )       
 }
 

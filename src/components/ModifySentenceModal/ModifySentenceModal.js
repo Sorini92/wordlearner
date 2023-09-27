@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
 import PropTypes from 'prop-types';
 import makeSentence from "../../utils/makeSentense";
+import { CSSTransition } from "react-transition-group";
+import Portal from "../Portal/Portal";
 import './modifySentenceModal.scss';
 
 const ModifySentenceModal = ({width, height, maxLength, active, setActive, address, func, items,  selected, setMessage, setShowMessage}) => {
@@ -58,51 +60,60 @@ const ModifySentenceModal = ({width, height, maxLength, active, setActive, addre
     };
 
     return (
-        <div className={active ? "modifySentenceModal active" : "modifySentenceModal"} onClick={() => setActive(false)}>
-            <div 
-                style={{width: `${width}px`, height: `${height}px`}}
-                className={active ? "modifySentenceModal__content active" : "modifySentenceModal__content"} 
-                onClick={e => e.stopPropagation()}
-                onKeyDown={handleEnterPress}
+        <Portal>
+            <CSSTransition
+                in={active}
+                timeout={{ enter: 300, exit: 300 }}
+                unmountOnExit
+                classNames={"modifySentenceModal"}
             >
-                <form className='modifySentenceModal__form' onSubmit={handleSubmit}>
-                    <div className='modifySentenceModal__title'>Modify sentence</div>
+                <div className="modifySentenceModal" onClick={() => setActive(false)}>
+                    <div 
+                        style={{width: `${width}px`, height: `${height}px`}}
+                        className="modifySentenceModal__content" 
+                        onClick={e => e.stopPropagation()}
+                        onKeyDown={handleEnterPress}
+                    >
+                        <form className='modifySentenceModal__form' onSubmit={handleSubmit}>
+                            <div className='modifySentenceModal__title'>Modify sentence</div>
 
-                    <label htmlFor="english">English</label>
-                    <textarea 
-                        value={english}
-                        maxLength={maxLength}
-                        onChange={(e) => setEnglish(e.target.value.replace(/[^a-zA-Z.,!?\-() ]/g, '').trimStart())}
-                        type="text" 
-                        id='english' 
-                        placeholder='Write here' 
-                        required/>
+                            <label htmlFor="english">English</label>
+                            <textarea 
+                                value={english}
+                                maxLength={maxLength}
+                                onChange={(e) => setEnglish(e.target.value.replace(/[^a-zA-Z.,!?\-() ]/g, '').trimStart())}
+                                type="text" 
+                                id='english' 
+                                placeholder='Write here' 
+                                required/>
 
-                    <label htmlFor="russian">Russian</label>
-                    <textarea 
-                        value={russian}
-                        maxLength={maxLength}
-                        onChange={(e) => setRussian(e.target.value.replace(/[^а-яА-Я.,!?\-() ]/g, '').trimStart())}
-                        type="text" 
-                        id='russian' 
-                        placeholder='Write here' 
-                        required/>
+                            <label htmlFor="russian">Russian</label>
+                            <textarea 
+                                value={russian}
+                                maxLength={maxLength}
+                                onChange={(e) => setRussian(e.target.value.replace(/[^а-яА-Я.,!?\-() ]/g, '').trimStart())}
+                                type="text" 
+                                id='russian' 
+                                placeholder='Write here' 
+                                required/>
 
-                    <div className='modifySentenceModal__btns'>
-                        <button 
-                            className='modifySentenceModal__closebtn' 
-                            onClick={(e) => {
-                                e.preventDefault();
-                                setActive(false);
-                            }}    
-                        >
-                            Close
-                        </button>
-                        <button className='modifySentenceModal__btn' type='submit'>Modify</button>
+                            <div className='modifySentenceModal__btns'>
+                                <button 
+                                    className='modifySentenceModal__closebtn' 
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setActive(false);
+                                    }}    
+                                >
+                                    Close
+                                </button>
+                                <button className='modifySentenceModal__btn' type='submit'>Modify</button>
+                            </div>
+                        </form>
                     </div>
-                </form>
-            </div>
-        </div>
+                </div>
+            </CSSTransition>
+        </Portal>
     )
 }
 

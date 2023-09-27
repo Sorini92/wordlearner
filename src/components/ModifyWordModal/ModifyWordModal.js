@@ -2,8 +2,11 @@ import database from "../../firebase";
 import { setDoc, collection, doc } from "firebase/firestore"; 
 import { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
+import { CSSTransition } from "react-transition-group";
 import PropTypes from 'prop-types';
+import Portal from "../Portal/Portal";
 import './modifyWordModal.scss';
+
 
 const ModifyWordModal = ({width, height, maxLength, active, setActive, address, func, items,  selected, setMessage, setShowMessage}) => {
     
@@ -61,51 +64,60 @@ const ModifyWordModal = ({width, height, maxLength, active, setActive, address, 
     };
 
     return (
-        <div className={active ? "modifymodal active" : "modifymodal"} onClick={() => setActive(false)}>
-            <div 
-                style={{width: `${width}px`, height: `${height}px`}}
-                className={active ? "modifymodal__content active" : "modifymodal__content"} 
-                onClick={e => e.stopPropagation()}
-                onKeyDown={handleEnterPress}
+        <Portal>
+            <CSSTransition
+                in={active}
+                timeout={{ enter: 300, exit: 300 }}
+                unmountOnExit
+                classNames={"modifymodal"}
             >
-                <form className='modifymodal__form' onSubmit={handleSubmit}>
-                    <div className='modifymodal__title'>Modify word</div>
+                <div className="modifymodal" onClick={() => setActive(false)}>
+                    <div 
+                        style={{width: `${width}px`, height: `${height}px`}}
+                        className="modifymodal__content"
+                        onClick={e => e.stopPropagation()}
+                        onKeyDown={handleEnterPress}
+                    >
+                        <form className='modifymodal__form' onSubmit={handleSubmit}>
+                            <div className='modifymodal__title'>Modify word</div>
 
-                    <label htmlFor="english">English</label>
-                    <input 
-                        value={english}
-                        maxLength={maxLength}
-                        onChange={(e) => setEnglish(e.target.value.replace(/[^a-zA-Z-.,!?() ]/g, '').trimStart())}
-                        type="text" 
-                        id='english' 
-                        placeholder='Write here' 
-                        required/>
+                            <label htmlFor="english">English</label>
+                            <input 
+                                value={english}
+                                maxLength={maxLength}
+                                onChange={(e) => setEnglish(e.target.value.replace(/[^a-zA-Z-.,!?() ]/g, '').trimStart())}
+                                type="text" 
+                                id='english' 
+                                placeholder='Write here' 
+                                required/>
 
-                    <label htmlFor="russian">Russian</label>
-                    <input 
-                        value={russian}
-                        maxLength={maxLength}
-                        onChange={(e) => setRussian(e.target.value.replace(/[^а-яА-Я-.,!?() ]/g, '').trimStart())}
-                        type="text" 
-                        id='russian' 
-                        placeholder='Write here' 
-                        required/>
+                            <label htmlFor="russian">Russian</label>
+                            <input 
+                                value={russian}
+                                maxLength={maxLength}
+                                onChange={(e) => setRussian(e.target.value.replace(/[^а-яА-Я-.,!?() ]/g, '').trimStart())}
+                                type="text" 
+                                id='russian' 
+                                placeholder='Write here' 
+                                required/>
 
-                    <div className='modifymodal__btns'>
-                        <button 
-                            className='modifymodal__closebtn' 
-                            onClick={(e) => {
-                                e.preventDefault();
-                                setActive(false);
-                            }}    
-                        >
-                            Close
-                        </button>
-                        <button className='modifymodal__btn' type='submit'>Modify</button>
+                            <div className='modifymodal__btns'>
+                                <button 
+                                    className='modifymodal__closebtn' 
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setActive(false);
+                                    }}    
+                                >
+                                    Close
+                                </button>
+                                <button className='modifymodal__btn' type='submit'>Modify</button>
+                            </div>
+                        </form>
                     </div>
-                </form>
-            </div>
-        </div>
+                </div>
+            </CSSTransition>
+        </Portal>
     )
 }
 

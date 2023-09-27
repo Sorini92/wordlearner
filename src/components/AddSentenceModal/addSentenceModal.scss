@@ -8,16 +8,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: 0.5s;
-    z-index: 2;
     &__content {
         padding: 20px;
         border-radius: 12px;
         background-color: white;
-        transform: scale(0.5);
-        transition: 0.4s all;
         min-width: 290px;
         min-height: 230px;
     }
@@ -89,12 +83,20 @@
     }
 }
 
-.addSentenceModal.active {
-    opacity: 1;
-    pointer-events: all;
-    //transform: scale(1);
+.addSentenceModal-enter {
+    opacity: 0;
 }
 
-.addSentenceModal__content.active {
-    transform: scale(1);
+.addSentenceModal-enter-active {
+    opacity: 1;
+    transition: 300ms ease-in;
+}
+
+.addSentenceModal-exit {
+    opacity: 1;
+}
+
+.addSentenceModal-exit-active {
+    opacity: 0;
+    transition: 300ms ease-in;
 }

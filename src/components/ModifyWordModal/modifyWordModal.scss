@@ -8,17 +8,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: 0.5s;
-    z-index: 2;
-    //transform: scale(0);
     &__content {
         padding: 20px;
         border-radius: 12px;
         background-color: white;
-        transform: scale(0.5);
-        transition: 0.4s all;
         min-width: 290px;
         min-height: 230px;
     }
@@ -89,12 +82,20 @@
     }
 }
 
-.modifymodal.active {
-    opacity: 1;
-    pointer-events: all;
-    //transform: scale(1);
+.modifymodal-enter {
+    opacity: 0;
 }
 
-.modifymodal__content.active {
-    transform: scale(1);
+.modifymodal-enter-active {
+    opacity: 1;
+    transition: 300ms ease-in;
+}
+
+.modifymodal-exit {
+    opacity: 1;
+}
+
+.modifymodal-exit-active {
+    opacity: 0;
+    transition: 300ms ease-in;
 }

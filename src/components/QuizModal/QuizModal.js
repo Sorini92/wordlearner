@@ -4,6 +4,8 @@ import FlashCards from '../FlashCards/FlashCards';
 import WordsQuiz from '../WordsQuiz/WordsQuiz';
 import cards from '../../resources/cards.jpg';
 import quiz from '../../resources/quiz.png';
+import { CSSTransition } from "react-transition-group";
+import Portal from "../Portal/Portal";
 import './quizModal.scss';
 
 const QuizModal = ({setActive, active, items, loadingStatus}) => {
@@ -58,18 +60,25 @@ const QuizModal = ({setActive, active, items, loadingStatus}) => {
                     </div>
 
     return (
-        <>
-            <div className={active ? "quiz active" : "quiz"}>
-                <div 
-                    className={active ? "quiz__content active" : "quiz__content"} 
-                    onClick={e => e.stopPropagation()}
-                >
-                    {variant === '' ? mainForm : null}
-                    {variant === 0 ? <WordsQuiz items={items} loadingStatus={loadingStatus} setVariant={setVariant} setActive={setActive}/> : null}
-                    {variant === 1 ? <FlashCards items={items} loadingStatus={loadingStatus} setVariant={setVariant} setActive={setActive}/> : null}
+        <Portal>
+            <CSSTransition
+                in={active}
+                timeout={{ enter: 300, exit: 300 }}
+                unmountOnExit
+                classNames={"quiz"}
+            >
+                <div className="quiz">
+                    <div 
+                        className="quiz__content" 
+                        onClick={e => e.stopPropagation()}
+                    >
+                        {variant === '' ? mainForm : null}
+                        {variant === 0 ? <WordsQuiz items={items} loadingStatus={loadingStatus} setVariant={setVariant} setActive={setActive}/> : null}
+                        {variant === 1 ? <FlashCards items={items} loadingStatus={loadingStatus} setVariant={setVariant} setActive={setActive}/> : null}
+                    </div>
                 </div>
-            </div>
-        </>        
+            </CSSTransition>
+        </Portal>        
     )
 }
 
