@@ -4,6 +4,7 @@ import useAuth from '../hooks/use-auth';
 import { Helmet } from "react-helmet";
 import {setTotalPages, fetchIrregularVerbs, sortBy, activeSortTypeChanged, setWordsPerUpload, setPage, setLetter, setIsBlured} from '../store/slices/irregularVerbsSlice';
 import IrregularVerbsTable from '../components/IrregularVerbsTable.js/IrregularVerbsTable';
+import Spinner from '../components/Spinner/Spinner';
 import Page from './Page';
 
 const IrregularVerbsPage = () => {
@@ -34,6 +35,10 @@ const IrregularVerbsPage = () => {
         dispatch(fetchIrregularVerbs());
         // eslint-disable-next-line
     }, []);
+
+    if (wordsLoadingStatus === "loading") {
+        return <Spinner/>;
+    }
 
     return isAuth ? (
         <>

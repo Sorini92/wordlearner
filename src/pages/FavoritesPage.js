@@ -4,6 +4,7 @@ import useAuth from '../hooks/use-auth';
 import { Helmet } from "react-helmet";
 import {modifyWord, deleteWord, setTotalPages, fetchFavorites, sortBy, activeSortTypeChanged, setWordsPerUpload, setPage, setLetter, setIsBlured, setIsShowDate, setIsReverseWords} from '../store/slices/favoritesSlice';
 import WordsTable from '../components/WordsTable/WordsTable';
+import Spinner from '../components/Spinner/Spinner';
 import Page from './Page';
 
 const FavoritesPage = () => {
@@ -40,6 +41,10 @@ const FavoritesPage = () => {
         }
         // eslint-disable-next-line
     }, [id]);
+
+    if (wordsLoadingStatus === "loading") {
+        return <Spinner/>;
+    }
 
     return isAuth ? (
         <>

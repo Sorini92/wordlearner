@@ -4,7 +4,9 @@ import { Helmet } from "react-helmet";
 import {deleteWord, deleteWords, addWord, modifyWord, setTotalPages, fetchWords, sortBy, activeSortTypeChanged, setWordsPerUpload, setPage, setLetter, setIsBlured, setIsShowDate, setIsReverseWords, setIsShowTicks} from '../store/slices/wordSlice';
 import useAuth from '../hooks/use-auth';
 import WordsTable from "../components/WordsTable/WordsTable";
+import Spinner from '../components/Spinner/Spinner';
 import Page from './Page';
+
 
 const WordsPage = () => {
 
@@ -40,6 +42,10 @@ const WordsPage = () => {
         }
         // eslint-disable-next-line
     }, [id]);
+
+    if (wordsLoadingStatus === "loading") {
+        return <Spinner/>;
+    }
 
     return  isAuth ? (
         <>

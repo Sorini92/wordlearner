@@ -15,6 +15,7 @@ import AddWordModal from '../components/AddWordModal/AddWordModal';
 import ModifySentenceModal from '../components/ModifySentenceModal/ModifySentenceModal';
 import ArrowScrollUp from '../components/ArrowScrollUp/ArrowScrollUp';
 import Footer from '../components/Footer/Footer';
+import Spinner from '../components/Spinner/Spinner';
 
 const SentencesPage = () => {
 
@@ -200,6 +201,10 @@ const SentencesPage = () => {
 
     const switchToFirstPage = () => {
         dispatch(setPage(1))
+    }
+
+    if (sentencesLoadingStatus === "loading") {
+        return <Spinner/>;
     }
     
     return isAuth ? (

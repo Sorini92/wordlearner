@@ -16,8 +16,8 @@ function App() {
 	return (
 		<div className="app">
 			<Router>
-				<Header/>
 				<Suspense fallback={<Spinner/>}>
+					<Header/>
 					<Routes>
 						<Route path="/" element={<Navigate replace to='/words'/>}/>
 						<Route path="/words" element={<WordsPage/>}/>
