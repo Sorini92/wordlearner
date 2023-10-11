@@ -25,7 +25,7 @@ const Navigation = ({setSearched, setOffset, numberPerUpload, setFilteredArrayLe
 
     const handleSearch = (value) => {
         setText(value)
-        setSearched(value)
+        setSearched(value.toLowerCase())
     }
     
     const clearSearch = () => {
@@ -72,7 +72,7 @@ const Navigation = ({setSearched, setOffset, numberPerUpload, setFilteredArrayLe
                             className="navigation__search"
                             name="search"
                             placeholder="Search"
-                            onChange={(e) => handleSearch(e.target.value.replace(/[^a-z а-я]/g, ''))}
+                            onChange={(e) => handleSearch(e.target.value.replace(/[^a-z а-я A-Z А-Я]/g, ''))}
                         />
                         <img src={scope} className="navigation__search-scope" alt="scope"/>
                         {text.length > 0 ? 
