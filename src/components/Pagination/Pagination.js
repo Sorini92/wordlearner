@@ -6,7 +6,6 @@ import './pagination.scss';
 const Pagination = ({items, cuttedArray, loadingStatus, filteredArrayLength, numberPerUpload, currentPage, totalPages, setPage}) => {
 
     const [arrOfCurrPages, setArrOfCurrPages] = useState([])
-
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -19,7 +18,7 @@ const Pagination = ({items, cuttedArray, loadingStatus, filteredArrayLength, num
         let tempNumberOfPages = [...arrOfCurrPages]
         
         let dotsInitial = '...'
-        let dotsLeft = '... '
+        let dotsLeft = '...'
         let dotsRight = ' ...'
     
         if (numberOfPages.length < 8) {
@@ -109,13 +108,14 @@ const Pagination = ({items, cuttedArray, loadingStatus, filteredArrayLength, num
                 
                 {arrOfCurrPages.map(((item, i) => {
                     return (
-                        <div
+                        <button
+                            disabled={typeof item === "string"}
                             key={i}
-                            className={`${item === currentPage ? 'pagination__activepage' : 'pagination__page'}`}
+                            className={`${item === currentPage ? 'pagination__activepage' : typeof item === "string" ? 'pagination__page disabled' : 'pagination__page'}`}
                             onClick={() => handlePageClick(item)}
                         >
                             {item}
-                        </div>
+                        </button>
                     )
                 }))}
 
