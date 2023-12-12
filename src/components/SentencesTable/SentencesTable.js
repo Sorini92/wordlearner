@@ -25,8 +25,8 @@ const SentencesTable = ({words, items, loadingStatus, setSelectedSentence, cutte
                 return regex.test(item.english) || ingRegex.test(item.english);
             });
         } else {
-            const regex = new RegExp(`(?:^|\\s)${selectedWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?=\\s|$)`, "iu");
-
+            const regex = new RegExp(`${selectedWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`, "iu");
+            
             data = array.filter(item => {
                 return regex.test(item.russian);
             }); 
