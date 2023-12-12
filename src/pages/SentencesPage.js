@@ -173,7 +173,7 @@ const SentencesPage = () => {
 
             setShowMessage(true)
             setMessage({
-                text: "The word was successfully deleted!",
+                text: "Successfully deleted!",
                 color: 'green'
             })
         }
@@ -189,7 +189,7 @@ const SentencesPage = () => {
         } else {
             setShowMessage(true);
             setMessage({
-                text: "Choose the word!",
+                text: "Choose the sentence!",
                 color: 'red'
             })
         }

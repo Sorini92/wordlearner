@@ -50,7 +50,7 @@ const ModifyWordModal = ({width, height, maxLength, active, setActive, address, 
 
         setShowMessage(true);
         setMessage({
-            text: "It's was successfully modifyied!",
+            text: "Successfully modified!",
             color: 'green'
         })
         

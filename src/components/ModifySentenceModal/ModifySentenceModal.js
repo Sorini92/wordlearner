@@ -3,7 +3,7 @@ import { setDoc, collection, doc } from "firebase/firestore";
 import { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
 import PropTypes from 'prop-types';
-import makeSentence from "../../utils/makeSentense";
+import makeSentence from "../../utils/makeSentence";
 import { CSSTransition } from "react-transition-group";
 import Portal from "../Portal/Portal";
 import './modifySentenceModal.scss';
@@ -46,7 +46,7 @@ const ModifySentenceModal = ({width, height, maxLength, active, setActive, addre
 
         setShowMessage(true);
         setMessage({
-            text: "It's was successfully modifyied!",
+            text: "Successfully modified!",
             color: 'green'
         })
         

@@ -255,7 +255,7 @@ const Page = ({
                     
                     setShowMessage(true)
                     setMessage({
-                        text: "The word was successfully deleted!",
+                        text: "Successfully deleted!",
                         color: 'green'
                     })
                 }

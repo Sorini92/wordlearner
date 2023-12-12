@@ -40,7 +40,7 @@ const AddSentenceModal = ({width, height, maxLength, active, setActive, address,
             
             setShowMessage(true);
             setMessage({
-                text: "It's was successfully added!",
+                text: "Successfully added!",
                 color: 'green'
             })
 

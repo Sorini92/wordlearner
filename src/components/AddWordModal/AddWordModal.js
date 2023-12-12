@@ -49,7 +49,7 @@ const AddWordModal = ({width, height, maxLength, active, setActive, address, fun
             
             setShowMessage(true);
             setMessage({
-                text: "It's was successfully added!",
+                text: "Successfully added!",
                 color: 'green'
             })
 
