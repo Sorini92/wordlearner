@@ -1,7 +1,7 @@
 import { useState, useLayoutEffect } from "react";
 import { createPortal } from "react-dom";
 
-function createWrapperAndAppendToBody(wrapperId) {
+const createWrapperAndAppendToBody = (wrapperId) => {
     const wrapperElement = document.createElement("div");
     wrapperElement.setAttribute("id", wrapperId);
     document.body.append(wrapperElement);
@@ -9,7 +9,7 @@ function createWrapperAndAppendToBody(wrapperId) {
     return wrapperElement;
 }
 
-function Portal({children, wrapperId = "portal-wrapper"}) {
+const Portal = ({children, wrapperId = "portal-wrapper"}) => {
     const [wrapperElement, setWrapperElement] = useState(null);
 
     useLayoutEffect(() => {

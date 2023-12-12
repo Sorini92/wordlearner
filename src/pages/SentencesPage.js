@@ -6,7 +6,6 @@ import useAuth from '../hooks/use-auth';
 import {fetchSentences, sortBy, activeSortTypeChanged, addSentence, modifySentence, setTotalPages, setSentencesPerUpload, setPage, deleteSentence} from '../store/slices/sentencesSlice';
 import {fetchWords, addWord} from '../store/slices/wordSlice';
 import {deleteDoc, collection, doc} from "firebase/firestore"; 
-import Navigation from "../components/Navigation/Navigation";
 import SentencesTable from "../components/SentencesTable/SentencesTable";
 import SortAndActions from '../components/SortAndActions/SortAndActions';
 import Message from '../components/Message/Message';
@@ -16,6 +15,7 @@ import ModifySentenceModal from '../components/ModifySentenceModal/ModifySentenc
 import ArrowScrollUp from '../components/ArrowScrollUp/ArrowScrollUp';
 import Footer from '../components/Footer/Footer';
 import Spinner from '../components/Spinner/Spinner';
+import SearchInput from '../components/SearchInput/SearchInput';
 
 const SentencesPage = () => {
 
@@ -216,12 +216,12 @@ const SentencesPage = () => {
                 />
                 <title>Sentences</title>
             </Helmet>
-            <Navigation 
+            <SearchInput 
                 items={sentences}
                 setSearched={setSearchedSentences}
                 setOffset={setOffset}
                 numberPerUpload={sentencesPerUpload}
-            />
+            /> 
             <SortAndActions
                 items={cuttedArrayOfSentences}
                 handleAddModal={handleAddModal}

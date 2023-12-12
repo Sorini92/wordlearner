@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate} from "react-router-do
 import Spinner from "./components/Spinner/Spinner";
 import './styles/style.scss';
 import Header from "./components/Header/Header";
+import Navigation from "./components/Navigation/Navigation";
 
 const WordsPage = lazy(() => import("./pages/WordsPage"))
 const FavoritesPage = lazy(() => import("./pages/FavoritesPage"))
@@ -18,6 +19,7 @@ function App() {
 			<Router>
 				<Suspense fallback={<Spinner/>}>
 					<Header/>
+					<Navigation/>
 					<Routes>
 						<Route path="/" element={<Navigate replace to='/words'/>}/>
 						<Route path="/words" element={<WordsPage/>}/>

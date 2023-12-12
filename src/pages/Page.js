@@ -3,7 +3,6 @@ import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 import database from "../firebase";
 import {deleteDoc, collection, doc, setDoc} from "firebase/firestore"; 
-import Navigation from "../components/Navigation/Navigation";
 import AddWordModal from "../components/AddWordModal/AddWordModal";
 import ModifyWordModal from "../components/ModifyWordModal/ModifyWordModal";
 import AlpabetFilter from '../components/AlphabetFilter/AlphabetFilter';
@@ -14,6 +13,7 @@ import WordsNavigation from '../components/WordsNavigation/WordsNavigation';
 import Footer from '../components/Footer/Footer';
 import SortAndActions from '../components/SortAndActions/SortAndActions';
 import useFilteredArray from '../hooks/useFilteredArray';
+import SearchInput from "../components/SearchInput/SearchInput";
 
 const Page = ({
     TableComponent, 
@@ -283,14 +283,14 @@ const Page = ({
     
     return (
         <>
-            <Navigation 
+            {/* <Navigation 
                 letter={letter}
                 items={items}
                 setSearched={setSearchedWord}
                 setOffset={setOffset}
                 numberPerUpload={numberPerUpload}
                 setFilteredArrayLength={setFilteredArrayLength}
-            />
+            /> */}
             <WordsNavigation
                 showSetting={true}
                 setIsShowDate={setIsShowDate}
@@ -303,6 +303,14 @@ const Page = ({
                 isBlured={isBlured}
                 address={address}
             />
+            <SearchInput 
+                setSearched={setSearchedWord}
+                setOffset={setOffset}
+                numberPerUpload={numberPerUpload}
+                setFilteredArrayLength={setFilteredArrayLength}
+                letter={letter}
+                items={items}
+            /> 
             <SortAndActions
                 items={cuttedArrayOfWords}
                 handleAddModal={handleAddModal}

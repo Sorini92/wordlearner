@@ -28,41 +28,6 @@
         height: 35px;
         background-color: #9999;
     }
-    &__wrapper {
-        position: relative;
-    }
-    &__search {
-        border-radius: 3px;
-        padding: 5px;
-        padding-left: 30px;
-        padding-right: 30px;
-        border: 2px solid #ccc;
-        border-radius: 20px;
-        font-size: 16px;
-        color: #555;
-        outline: none;
-        width: 195px;
-        &:focus {
-            width: 500px;
-            border-color: #007bff;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-        }
-        &-scope {
-            position: absolute;
-            width: 15px;
-            height: 15px;
-            left: 10px;
-            top: 9px;
-        }
-    }
-    &__searchclear {
-        position: absolute;
-        top: 0;
-        font-size: 25px;
-        right: 10px;
-        cursor: pointer;
-        color: #555;
-    }
 }
 
 .activeTab {
@@ -77,18 +42,4 @@
     left: 0;
     width: 100%;
     background-color: #0d6efd;
-}
-
-@media (max-width: 750px) {
-    .navigation {
-        &__search {
-            box-sizing: border-box;
-            width: 100%;
-            &:focus {
-                box-sizing: border-box;
-                width: 100%;
-            }
-        }
-        
-    }
 }
