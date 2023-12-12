@@ -4,6 +4,7 @@ import Spinner from "./components/Spinner/Spinner";
 import './styles/style.scss';
 import Header from "./components/Header/Header";
 import Navigation from "./components/Navigation/Navigation";
+import WordsNavigation from "./components/WordsNavigation/WordsNavigation";
 
 const WordsPage = lazy(() => import("./pages/WordsPage"))
 const FavoritesPage = lazy(() => import("./pages/FavoritesPage"))
@@ -20,6 +21,7 @@ function App() {
 				<Suspense fallback={<Spinner/>}>
 					<Header/>
 					<Navigation/>
+					<WordsNavigation/>
 					<Routes>
 						<Route path="/" element={<Navigate replace to='/words'/>}/>
 						<Route path="/words" element={<WordsPage/>}/>

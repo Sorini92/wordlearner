@@ -1,10 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-import PropTypes from 'prop-types';
-import TableSetting from '../TableSetting/TableSetting';
 import "./wordsNavigation.scss";
 
-const WordsNavigation = ({showSetting, setIsShowDate, setIsShowTicks, setIsReverseWords, setIsBlured, isShowDate, isShowTicks, isReverseWords, isBlured, address}) => {
+const WordsNavigation = () => {
 
     const location = useLocation();
     const [active, setActive] = useState(0);
@@ -39,42 +37,20 @@ const WordsNavigation = ({showSetting, setIsShowDate, setIsShowTicks, setIsRever
     })
 
     return (
-        <>
-            <div className="wordsNavigation__line"></div>
-            <div className="wordsNavigation">
-                <div className="wordsNavigation__tabs">
-                    {tabs}
-                    <span className="tabsIndicator"/>
-                </div>
-                {showSetting ? 
-                <TableSetting
-                    address={address}
-                    setIsShowDate={setIsShowDate}
-                    setIsShowTicks={setIsShowTicks}
-                    setIsReverseWords={setIsReverseWords}
-                    setIsBlured={setIsBlured}
-                    isShowDate={isShowDate}
-                    isShowTicks={isShowTicks}
-                    isReverseWords={isReverseWords}
-                    isBlured={isBlured}
-                /> : null
-                }
-            </div>
+        <> 
+            {location.pathname.split('/')[1] === "words" ? 
+                <>
+                    <div className="wordsNavigation__line"></div>
+                    <div className="wordsNavigation">
+                        <div className="wordsNavigation__tabs">
+                            {tabs}
+                        </div>
+                    </div>
+                </> 
+                : null
+            }
         </>
     )   
-}
-
-WordsNavigation.propTypes = {
-    showSetting:  PropTypes.bool.isRequired, 
-    address:  PropTypes.object.isRequired,
-    setIsShowDate:  PropTypes.func,
-    setIsShowTicks:  PropTypes.func,
-    setIsReverseWords:  PropTypes.func,
-    setIsBlured:  PropTypes.func, 
-    isReverseWords:  PropTypes.bool, 
-    isShowDate:  PropTypes.bool,
-    isShowTicks:  PropTypes.bool, 
-    isBlured:  PropTypes.bool, 
 }
 
 export default WordsNavigation;

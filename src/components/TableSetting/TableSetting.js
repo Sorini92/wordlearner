@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import settingImg from '../../resources/setting.png';
 import './tableSetting.scss';
 
-const TableSetting = ({address, setIsShowDate, setIsShowTicks, setIsReverseWords, setIsBlured, isShowDate, isShowTicks, isReverseWords, isBlured}) => {
+const TableSetting = ({address, setIsShowDate, setIsShowTicks, setIsReverseWords, setIsBlured, isShowDate, isShowTicks, isReverseWords, isBlured, showSetting}) => {
     
     const [visiblePopup, setVisiblePopup] = useState(false);
     
@@ -66,20 +66,23 @@ const TableSetting = ({address, setIsShowDate, setIsShowTicks, setIsReverseWords
 
     return (
         <>
-            <div ref={selectRef} className="tableSetting">
-                <div className="tableSetting__label">
-                    <img title='Setting' src={settingImg} alt='setting img' onClick={toggleVisiblePopup}/>
-                </div>
-                {visiblePopup && (
-                    <div className="tableSetting__popup">
-                        <div className='tableSetting__wrapper'>
-                            {address.thirdUrl === 'words' ? elements(items) : null}
-                            {address.thirdUrl === 'favoriteWords' ? elements(favoriteItems) : null}
-                            {address.thirdUrl === 'irregularVerb' ? elements(verbsItems) : null}
-                        </div>
+            {showSetting ? 
+                <div ref={selectRef} className="tableSetting">
+                    <div className="tableSetting__label">
+                        <img title='Setting' src={settingImg} alt='setting img' onClick={toggleVisiblePopup}/>
                     </div>
-                )}
-            </div> 
+                    {visiblePopup && (
+                        <div className="tableSetting__popup">
+                            <div className='tableSetting__wrapper'>
+                                {address.thirdUrl === 'words' ? elements(items) : null}
+                                {address.thirdUrl === 'favoriteWords' ? elements(favoriteItems) : null}
+                                {address.thirdUrl === 'irregularVerb' ? elements(verbsItems) : null}
+                            </div>
+                        </div>
+                    )}
+                </div> 
+                : null
+            }
         </>
     )
 }

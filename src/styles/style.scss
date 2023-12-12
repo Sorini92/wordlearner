@@ -47,6 +47,11 @@ body {
     animation-duration: 1s;
 } 
 
+.searchAndSettings {
+    display: flex;
+    align-items: center;
+}
+
 @keyframes animateOpacity {
     from {
         opacity: 0;

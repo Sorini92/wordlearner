@@ -1,16 +1,23 @@
-import { NavLink } from "react-router-dom";
-import { useState } from "react";
-import PropTypes from 'prop-types';
+import { NavLink, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
 import "./navigation.scss";
 
 const Navigation = () => {
 
+    const location = useLocation();
     const [active, setActive] = useState(0);
 
     const links = [
         {to: '/words', text: 'Words'},
         {to: '/sentences', text: 'Sentences'},
     ]
+
+    useEffect(() => {
+        const activeTab = links.findIndex((item) => item.to === `/${location.pathname.split('/')[1]}`);
+        
+        setActive(activeTab);
+        // eslint-disable-next-line
+    }, [location]);
 
     const handleTabClick = (index) => {
         setActive(index);
@@ -38,13 +45,6 @@ const Navigation = () => {
             </div>
         </>
     )
-}
-
-Navigation.propTypes = {
-    setSearched:  PropTypes.func.isRequired,
-    setOffset:  PropTypes.func.isRequired,
-    numberPerUpload:  PropTypes.number.isRequired,
-    setFilteredArrayLength:  PropTypes.func
 }
 
 export default Navigation;

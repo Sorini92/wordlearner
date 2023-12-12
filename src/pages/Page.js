@@ -9,11 +9,11 @@ import AlpabetFilter from '../components/AlphabetFilter/AlphabetFilter';
 import Message from '../components/Message/Message';
 import ArrowScrollUp from '../components/ArrowScrollUp/ArrowScrollUp';
 import QuizModal from '../components/QuizModal/QuizModal';
-import WordsNavigation from '../components/WordsNavigation/WordsNavigation';
 import Footer from '../components/Footer/Footer';
 import SortAndActions from '../components/SortAndActions/SortAndActions';
 import useFilteredArray from '../hooks/useFilteredArray';
 import SearchInput from "../components/SearchInput/SearchInput";
+import TableSetting from "../components/TableSetting/TableSetting";
 
 const Page = ({
     TableComponent, 
@@ -283,34 +283,28 @@ const Page = ({
     
     return (
         <>
-            {/* <Navigation 
-                letter={letter}
-                items={items}
-                setSearched={setSearchedWord}
-                setOffset={setOffset}
-                numberPerUpload={numberPerUpload}
-                setFilteredArrayLength={setFilteredArrayLength}
-            /> */}
-            <WordsNavigation
-                showSetting={true}
-                setIsShowDate={setIsShowDate}
-                setIsShowTicks={setIsShowTicks}
-                setIsReverseWords={setIsReverseWords}
-                setIsBlured={setIsBlured}
-                isShowDate={isShowDate}
-                isShowTicks={isShowTicks}
-                isReverseWords={isReverseWords}
-                isBlured={isBlured}
-                address={address}
-            />
-            <SearchInput 
-                setSearched={setSearchedWord}
-                setOffset={setOffset}
-                numberPerUpload={numberPerUpload}
-                setFilteredArrayLength={setFilteredArrayLength}
-                letter={letter}
-                items={items}
-            /> 
+            <div className="searchAndSettings">
+                <SearchInput 
+                    setSearched={setSearchedWord}
+                    setOffset={setOffset}
+                    numberPerUpload={numberPerUpload}
+                    setFilteredArrayLength={setFilteredArrayLength}
+                    letter={letter}
+                    items={items}
+                />
+                <TableSetting
+                    address={address}
+                    setIsShowDate={setIsShowDate}
+                    setIsShowTicks={setIsShowTicks}
+                    setIsReverseWords={setIsReverseWords}
+                    setIsBlured={setIsBlured}
+                    isShowDate={isShowDate}
+                    isShowTicks={isShowTicks}
+                    isReverseWords={isReverseWords}
+                    isBlured={isBlured}
+                    showSetting={true}
+                />
+            </div> 
             <SortAndActions
                 items={cuttedArrayOfWords}
                 handleAddModal={handleAddModal}

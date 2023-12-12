@@ -1,8 +1,8 @@
 .searching {
     margin-top: 5px;
+    width: 100%;
     &__search {
         position: relative;
-        width: 100%;
     }
     &__input {
         box-sizing: border-box;
@@ -15,10 +15,8 @@
         font-size: 16px;
         color: #555;
         outline: none;
-        //width: 195px;
         width: 100%;
         &:focus {
-            //width: 500px;
             border-color: #007bff;
             box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
         }
@@ -31,7 +29,10 @@
         }
         &-searchclear {
             position: absolute;
-            top: 0;
+            width: 17px;
+            height: 17px;
+            top: 9px;
+            line-height: 10px;
             font-size: 25px;
             right: 10px;
             cursor: pointer;
