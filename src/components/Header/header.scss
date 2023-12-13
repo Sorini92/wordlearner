@@ -44,17 +44,6 @@
     }
 }
 
-@media (max-width: 450px) {
-    .header {
-        &__email {
-            font-size: 12px;
-        }
-        &__logout {
-            font-size: 12px;
-        }
-    }
-}
-
 .dropdown {
     display: flex;
     flex-direction: column;
@@ -125,4 +114,25 @@
         border: 0;
         background-color: #fff;
     } */
+}
+
+@media (max-width: 850px) {
+    .header {
+        &__text {
+            &:hover {
+                opacity: 1;
+            }
+        }
+    }
+}
+
+@media (max-width: 450px) {
+    .header {
+        &__email {
+            font-size: 12px;
+        }
+        &__logout {
+            font-size: 12px;
+        }
+    }
 }

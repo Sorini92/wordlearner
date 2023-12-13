@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import scope from '../../resources/scope.svg';
+import cross from '../../resources/cross.png';
 import './searchInput.scss'
 
 const SearchInput = ({setSearched, setOffset, numberPerUpload, setFilteredArrayLength, letter, items}) => {
@@ -36,13 +37,15 @@ const SearchInput = ({setSearched, setOffset, numberPerUpload, setFilteredArrayL
                     />
                     <img src={scope} className="searching__input-scope" alt="scope"/>
                     {text.length > 0 ? 
-                    <div
-                        title="Clear"
-                        className="searching__input-searchclear"
-                        onClick={() => clearSearch('')}
-                    >
-                        &times;
-                    </div> : null}
+                        <img 
+                            src={cross} 
+                            title="Clear" 
+                            className="searching__input-searchclear" 
+                            alt="scope" 
+                            onClick={() => clearSearch('')}
+                        />
+                        : null
+                    }
                 </div> : null
             }
         </div>

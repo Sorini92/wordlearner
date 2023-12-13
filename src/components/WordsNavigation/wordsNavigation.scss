@@ -47,5 +47,15 @@
     width: 100%;
     background-color: #fe5f1e;
     animation-name: animateOpacityAndWidth;
-    animation-duration: .5s;
+    animation-duration: 1s;
+}
+
+@media (max-width: 850px) {
+    .wordsNavigation {
+        &__tab {
+            &:hover {
+                opacity: 1;
+            }
+        }
+    }
 }

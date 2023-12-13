@@ -76,10 +76,14 @@ body {
     from {
         opacity: 0;
         width: 0;
+        margin-left: 50%;
+        margin-right: 50%;
     }
     to {
         opacity: 1;
         width: 100%;
+        margin-left: 0;
+        margin-right: 0;
     }
 }
 

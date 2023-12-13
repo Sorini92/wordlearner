@@ -41,5 +41,17 @@
     bottom: 0;
     left: 0;
     width: 100%;
+    animation-name: animateOpacityAndWidth;
+    animation-duration: 1s;
     background-color: #0d6efd;
+}
+
+@media (max-width: 850px) {
+    .navigation {
+        &__tab {
+            &:hover {
+                opacity: 1;
+            }
+        }
+    }
 }

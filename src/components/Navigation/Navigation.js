@@ -21,7 +21,7 @@ const Navigation = () => {
 
     const handleTabClick = (index) => {
         setActive(index);
-    };
+    };    
     
     const tabs = links.map((item, i) => {
         return (

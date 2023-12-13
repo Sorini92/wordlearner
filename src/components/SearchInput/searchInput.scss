@@ -26,17 +26,23 @@
             height: 15px;
             left: 10px;
             top: 9px;
+            img {
+                width: 15px;
+                height: 15px;
+            }
         }
         &-searchclear {
             position: absolute;
-            width: 17px;
-            height: 17px;
+            width: 15px;
+            height: 15px;
             top: 9px;
-            line-height: 10px;
-            font-size: 25px;
             right: 10px;
             cursor: pointer;
             color: #555;
+            img {
+                width: 15px;
+                height: 15px;
+            }
         }
     }
     
