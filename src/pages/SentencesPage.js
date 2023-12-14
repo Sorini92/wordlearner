@@ -221,6 +221,7 @@ const SentencesPage = () => {
                 setSearched={setSearchedSentences}
                 setOffset={setOffset}
                 numberPerUpload={sentencesPerUpload}
+                switchToFirstPage={switchToFirstPage}
             /> 
             <SortAndActions
                 items={cuttedArrayOfSentences}

@@ -4,12 +4,13 @@ import scope from '../../resources/scope.svg';
 import cross from '../../resources/cross.png';
 import './searchInput.scss'
 
-const SearchInput = ({setSearched, setOffset, numberPerUpload, setFilteredArrayLength, letter, items}) => {
+const SearchInput = ({setSearched, setOffset, numberPerUpload, setFilteredArrayLength, letter, items, switchToFirstPage}) => {
     const [text, setText] = useState('');
 
     const handleSearch = (value) => {
         setText(value)
         setSearched(value.toLowerCase())
+        switchToFirstPage();
     }
     
     const clearSearch = () => {

@@ -290,6 +290,7 @@ const Page = ({
                     numberPerUpload={numberPerUpload}
                     setFilteredArrayLength={setFilteredArrayLength}
                     letter={letter}
+                    switchToFirstPage={switchToFirstPage}
                     items={items}
                 />
                 <TableSetting
