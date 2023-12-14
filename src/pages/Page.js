@@ -271,10 +271,12 @@ const Page = ({
     }
 
     const onClearLetter = () => {
-        dispatch(setLetter(''));
-        setFilteredArrayLength(0);
-        setOffset(numberPerUpload);
-        dispatch(setPage(1))
+        if (letter.length !== 0) {
+            dispatch(setLetter(''));
+            setFilteredArrayLength(0);
+            setOffset(numberPerUpload);
+            dispatch(setPage(1))
+        }
     }
 
     const switchToFirstPage = () => {
