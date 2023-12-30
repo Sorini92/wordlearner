@@ -1,11 +1,14 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./wordsNavigation.scss";
+import useAuth from "../../hooks/use-auth";
 
 const WordsNavigation = () => {
 
     const location = useLocation();
     const [active, setActive] = useState(0);
+
+    const {isAuth} = useAuth();
 
     const links = [
         {to: '/words', text: 'All words'},
@@ -35,6 +38,8 @@ const WordsNavigation = () => {
             </Link>
         )
     })
+    
+    if (!isAuth) return null
 
     return (
         <> 

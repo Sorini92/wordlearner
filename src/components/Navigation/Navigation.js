@@ -1,11 +1,14 @@
 import { NavLink, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./navigation.scss";
+import useAuth from "../../hooks/use-auth";
 
 const Navigation = () => {
 
     const location = useLocation();
     const [active, setActive] = useState(0);
+
+    const {isAuth} = useAuth();
 
     const links = [
         {to: '/words', text: 'Words'},
@@ -34,6 +37,8 @@ const Navigation = () => {
             </NavLink>
         )
     })
+
+    if (!isAuth) return null
 
     return (
         <>
